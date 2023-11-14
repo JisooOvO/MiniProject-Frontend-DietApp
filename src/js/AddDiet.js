@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import FoodLists from "./FoodLists"
 
 const AddDiet = () => {
   let searchFood;
-  const [FoodList,setFoodList] = useState([]);
+  const [isNot_SearchFood,stateIsNot_SearchFood] = useState();
+  const [FoodList,setFoodList] = useState();
   let url = `https://apis.data.go.kr/1471000/FoodNtrIrdntInfoService1/getFoodNtrItdntList1?`
   url = url + `ServiceKey=${process.env.REACT_APP_SERVICE_KEY}`
   url = url + `&type=json&numOfRows=20`
@@ -14,21 +15,20 @@ const AddDiet = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
+    if(!searchFood) return;
     let nurl = url + `&desc_kor=${searchFood}`
-    console.log(nurl)
-
+    stateIsNot_SearchFood(false);
     fetch(nurl)
     .then(res => res.json())
     .then(data => {
+      if(data.body.totalCount === 0) 
+        stateIsNot_SearchFood(true);
       setFoodList(data.body.items);
+      console.log(isNot_SearchFood, FoodList)
     })
     .catch(e => console.log(e))  
 
   }
-
-  useEffect(()=>{
-    console.log(FoodList);
-  },[FoodList])
 
   return (
     <div>
@@ -38,7 +38,8 @@ const AddDiet = () => {
                 <input type="text" name="food" onKeyDown={handleSearchFood} placeholder="음식"/>
                 <input type="submit" onClick={handleSearch} className="hover:cursor-pointer" value={"검색"}/>
             </form>
-            { FoodList ? <FoodLists FoodList={FoodList}/> : <div>검색 조건에 맞는 아이템이 없습니다</div> }
+            { !isNot_SearchFood ? "" : <p>조건에 해당하는 항목이 존재하지 않습니다</p> }
+            { FoodList ? <FoodLists FoodList={FoodList}/> : "" }
           </div>
           <div>
             <div>영양성분표시</div>
