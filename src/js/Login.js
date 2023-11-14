@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import './login.module.css'
+import '../style/login.module.css'
 
 const login = () => {
   return (
@@ -15,7 +15,7 @@ const login = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-center">
               <input className="hover:cursor-pointer" type="submit" value="로그인"/>
-              <Link to={'/signUp'} ><button>회원가입</button></Link>
+              <Link to={'/signUp'} className='flex flex-col items-center'>회원가입</Link>
             </div>
         </form>
       </div>
