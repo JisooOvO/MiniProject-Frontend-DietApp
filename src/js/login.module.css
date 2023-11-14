@@ -1,0 +1,9 @@
+input, button{
+    border: 1px solid black;
+    margin: 1%;
+    padding: 1%;
+}
+
+input::placeholder{
+    padding: 1%;
+}
