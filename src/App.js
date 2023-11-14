@@ -5,21 +5,26 @@ import Header from "./js/Header.js";
 import Signup from "./js/Signup.js";
 import AddDiet from "./js/AddDiet.js";
 import AddActivity from "./js/AddActivity.js";
-import SideBar from "./js/SideBar.js";
+import GetStart from "./js/GetStart.js";
+import Main from "./js/Main.js";
 
 function App() {
-  let auth = true;
+  let auth = false;
   return (
-    <BrowserRouter>
-      <Header auth={auth}/>
-      <SideBar auth={auth}/>
-      <Routes>
-        { auth || <Route path="/" element={<Login/>}></Route> }
-        <Route path="/signUp" element={<Signup/>}></Route>
-        <Route path="/add/diet" element={<AddDiet/>}></Route>
-        <Route path="/add/activity" element={<AddActivity/>}></Route>
-      </Routes>
-    </BrowserRouter>
+      <BrowserRouter>
+        <Header/>
+        <div className="flex flex-col w-screen grow">
+          <Routes>
+            <Route path="/" element={<GetStart/>}></Route>
+            { auth || <Route path="/login" element={<Login/>}></Route> }
+            <Route path="/main" element={<Main/>}></Route>
+            <Route path="/signUp" element={<Signup/>}></Route>
+            <Route path="/main/add/diet" element={<AddDiet/>}></Route>
+            <Route path="/main/add/activity" element={<AddActivity/>}></Route>
+          </Routes>
+        </div>
+      </BrowserRouter>
+
   );
 }
 

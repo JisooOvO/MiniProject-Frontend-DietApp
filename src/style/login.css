@@ -1,7 +1,5 @@
 input, button, a{
     border: 1px solid black;
-    margin: 1%;
-    padding: 1%;
 }
 
 input::placeholder{

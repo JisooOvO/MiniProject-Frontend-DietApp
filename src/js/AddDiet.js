@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import FetchFood from "./FetchFood"
+import FoodLists from "./FoodLists"
 
 const AddDiet = () => {
   let searchFood;
@@ -31,12 +31,20 @@ const AddDiet = () => {
   },[FoodList])
 
   return (
-    <div className="ml-[26%]">
-        <form action="#">
-            <input type="text" name="food" onKeyDown={handleSearchFood} placeholder="음식"/>
-            <input type="submit" onClick={handleSearch} className="hover:cursor-pointer" value={"검색"}/>
-        </form>
-        { FoodList ? <FetchFood FoodList={FoodList}/> : <div>hi</div> }
+    <div>
+        <div className="flex gap-4">
+          <div>
+            <form action="#">
+                <input type="text" name="food" onKeyDown={handleSearchFood} placeholder="음식"/>
+                <input type="submit" onClick={handleSearch} className="hover:cursor-pointer" value={"검색"}/>
+            </form>
+            { FoodList ? <FoodLists FoodList={FoodList}/> : <div>검색 조건에 맞는 아이템이 없습니다</div> }
+          </div>
+          <div>
+            <div>영양성분표시</div>
+            <div>추가된아이템</div>
+          </div>
+        </div>
     </div>
   )
 }
