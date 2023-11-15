@@ -24,7 +24,6 @@ const AddDiet = () => {
       if(data.body.totalCount === 0) 
         stateIsNot_SearchFood(true);
       setFoodList(data.body.items);
-      console.log(isNot_SearchFood, FoodList)
     })
     .catch(e => console.log(e))  
 
