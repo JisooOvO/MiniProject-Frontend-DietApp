@@ -1,6 +1,5 @@
+import { useEffect, useState } from "react";
 import "../style/foodList.css"
-import "./ClassFood"
-import ClassFoodList from "./ClassFood";
 
 const FoodLists = ({FoodList}) => {
   /**
@@ -20,22 +19,40 @@ const FoodLists = ({FoodList}) => {
    * 식단기록날짜
    */
 
-  /** 상세 정보 팝업 */
-  const addedview = document.querySelector("#addedview");
+
+  const [addView,setAddView] = useState();
+  const [nutr, setNutr] = useState([]);
+  const [add, setAdd] = useState([]);
+
+  const renderingSelectView = (key,val) => {
+    if(!val) return;
+    for(let i of add){
+      if(i[0] === key) return;
+    }
+    setAdd(add => [...add,val]);
+  }
 
   const handleDetailButton = () =>{
     console.log("hi");
   }
 
-  const renderingSelectView = (addList) => {
-    console.log(addList);
-  }
-  
-  const handleAddButton = (e) =>{
+  useEffect(()=>{
+    console.log(add);
+    setAddView(add.map((item,idx) => 
+        <div key={`key${idx}`} className="w-full px-1 border flex justify-between items-center border-slate-900">
+          <div>
+            <div className="text-sm ">{item[0]}</div>
+            <div className="text-sm">{item[1]}g, {item[2]}kcal</div>
+          </div>
+          <div className="hover:cursor-pointer">❌</div>
+        </div>
+    ));
+  },[add])
+
+  const handleAddButton = (e) => {
     let target = e.target.closest('#selectFood').childNodes[0].childNodes;
     target = Array.from(target).filter(item => item.id !== "notUsed").map(item => item.innerHTML);
-    let addList = new ClassFoodList(...target);
-    renderingSelectView(addList);
+    renderingSelectView(target[0],[...target]);
   }
 
   const handleSelectFood = (e) => {
@@ -46,6 +63,7 @@ const FoodLists = ({FoodList}) => {
     if(relativedtarget) Array.from(relativedtarget.childNodes).map(item => item.classList.remove("selectedFood"));
     if(target) target.classList.toggle("selectedFood");
   }
+
 
   const view = FoodList.map((item,idx)=>
     <div id="selectFood" className="w-full px-1 border flex justify-between items-center border-slate-900 hover:cursor-pointer" onClick={handleSelectFood} key={`key${idx}`}>
@@ -70,14 +88,16 @@ const FoodLists = ({FoodList}) => {
     </div>    
   );
 
-
-
   return (
-    <div className="flex">
-      <div id="allFoodList" className="h-screen overflow-scroll overflow-x-hidden w-1/3">
+    <div className="flex h-full w-full">
+      <div id="allFoodList" className="h-full overflow-scroll border bg-[#f1f1f1] overflow-x-hidden w-1/3">
         {view}
       </div>
-      <div id="addedview">이곳은 파뤼</div>
+      <div className="w-[50%]">
+        <div className="border h-[47%]">통계</div>
+        <div><span>아침점심저녁간식</span></div>
+        <div className="overflow-scroll h-1/2 overflow-x-hidden">{addView}</div>
+      </div>
     </div>
   )
 }
