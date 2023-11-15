@@ -13,7 +13,7 @@ function App() {
   return (
       <BrowserRouter>
         <Header/>
-        <div className="flex flex-col w-screen grow">
+        <div className="w-screen flex flex-col grow">
           <Routes>
             <Route path="/" element={<GetStart/>}></Route>
             { auth || <Route path="/login" element={<Login/>}></Route> }

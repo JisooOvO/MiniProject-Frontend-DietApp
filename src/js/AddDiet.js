@@ -7,7 +7,7 @@ const AddDiet = () => {
   const [FoodList,setFoodList] = useState();
   let url = `https://apis.data.go.kr/1471000/FoodNtrIrdntInfoService1/getFoodNtrItdntList1?`
   url = url + `ServiceKey=${process.env.REACT_APP_SERVICE_KEY}`
-  url = url + `&type=json&numOfRows=20`
+  url = url + `&type=json&numOfRows=50&bgn_year=2017`
 
   const handleSearchFood = (e) => {
     searchFood = e.target.value;
@@ -26,26 +26,21 @@ const AddDiet = () => {
       setFoodList(data.body.items);
     })
     .catch(e => console.log(e))  
-
   }
 
   return (
-    <div>
+    <>
         <div className="flex gap-4">
-          <div>
-            <form action="#">
+          <div className="w-full">
+            <form action="#" className="flex w-full">
                 <input type="text" name="food" onKeyDown={handleSearchFood} placeholder="음식"/>
                 <input type="submit" onClick={handleSearch} className="hover:cursor-pointer" value={"검색"}/>
             </form>
             { !isNot_SearchFood ? "" : <p>조건에 해당하는 항목이 존재하지 않습니다</p> }
-            { FoodList ? <FoodLists FoodList={FoodList}/> : "" }
-          </div>
-          <div>
-            <div>영양성분표시</div>
-            <div>추가된아이템</div>
+            { isNot_SearchFood === false && FoodList ? <FoodLists FoodList={FoodList} /> : "" }
           </div>
         </div>
-    </div>
+    </>
   )
 }
 
