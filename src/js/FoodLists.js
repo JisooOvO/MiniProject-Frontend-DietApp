@@ -89,7 +89,7 @@ const FoodLists = ({FoodList}) => {
   );
 
   return (
-    <div className="flex h-full w-full">
+    <div className="flex h-1/3 w-full">
       <div id="allFoodList" className="h-full overflow-scroll border bg-[#f1f1f1] overflow-x-hidden w-1/3">
         {view}
       </div>

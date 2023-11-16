@@ -8,15 +8,16 @@ import AddActivity from "./js/AddActivity.js";
 import GetStart from "./js/GetStart.js";
 import Main from "./js/Main.js";
 
+
 function App() {
-  let auth = false;
+
   return (
       <BrowserRouter>
         <Header/>
         <div className="w-screen flex flex-col grow">
           <Routes>
             <Route path="/" element={<GetStart/>}></Route>
-            { auth || <Route path="/login" element={<Login/>}></Route> }
+            <Route path="/login" element={<Login/>}></Route>
             <Route path="/main" element={<Main/>}></Route>
             <Route path="/signUp" element={<Signup/>}></Route>
             <Route path="/main/add/diet" element={<AddDiet/>}></Route>

@@ -1,6 +1,14 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 const Main = () => {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+
+  if(!token){
+    alert("로그인이 필요한 서비스입니다");
+    navigate("../login");
+  }
+
   return (
     <div>
         <nav className="flex items-center gap-4">

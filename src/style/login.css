@@ -1,7 +1,6 @@
-input, button, a{
-    border: 1px solid black;
+#loginSubmit{
+    text-align: center;
+    height: 2.5rem;
+    font-size: large;
 }
 
-input::placeholder{
-    padding: 1%;
-}
