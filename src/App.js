@@ -1,11 +1,10 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import './App.css';
-import Login from "./js/Login.js";
-import Header from "./js/Header.js";
-import Signup from "./js/Signup.js";
-import AddDiet from "./js/AddDiet.js";
-import GetStart from "./js/GetStart.js";
-import Main from "./js/Main.js";
+import Login from "./js/routes/Login.js";
+import Header from "./js/common/Header.js";
+import Signup from "./js/routes/Signup.js";
+import Main from "./js/routes/Main.js";
+import User from "./js/routes/User.js";
 
 
 function App() {
@@ -15,11 +14,10 @@ function App() {
         <Header/>
         <div className="w-screen flex flex-col grow">
           <Routes>
-            <Route path="/" element={<GetStart/>}></Route>
+            <Route path="/" element={<Main/>}></Route>
             <Route path="/login" element={<Login/>}></Route>
-            <Route path="/main" element={<Main/>}></Route>
             <Route path="/signUp" element={<Signup/>}></Route>
-            <Route path="/main/add/diet" element={<AddDiet/>}></Route>
+            <Route path="/user/:date" element={<User/>}></Route>
           </Routes>
         </div>
       </BrowserRouter>

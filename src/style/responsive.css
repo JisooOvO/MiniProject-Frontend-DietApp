@@ -1,0 +1,87 @@
+@media (max-width:760px) {
+    #mainTitle{
+        font-size: 200%;
+        height: 40%;
+    }
+    #logo{
+        margin-right: 30%;
+    }
+    #linkButton{
+        width: 8rem;
+        font-size: 120%;
+    }
+    #matinText2{
+        margin-bottom: 0;
+    }
+    input{
+        font-size: 80%;
+    }
+    #signUp{
+        grid-row: 2;
+    }
+    #loginButtonContainer{
+        gap: 0;
+    }
+}
+
+@media (max-width:450px) {
+    #mainTitle{
+        font-size: 130%;
+        height: 40%;
+    }
+    #logo{
+        margin-right: 30%;
+    }
+    #linkButton{
+        width: 8rem;
+        font-size: 120%;
+    }
+    #matinText2{
+        margin-bottom: 0;
+    }
+    input{
+        font-size: 80%;
+    }
+    #googleLogin{
+        font-size: 95%;
+    }
+    #signUp{
+        margin-top: 0.5rem;
+        font-size: 95%;
+        grid-row: 2;
+    }
+    #loginSubmit{
+        width: 11rem;
+        font-size: 95%;
+    }
+    a{
+        margin: 0 !important; 
+    }
+}
+
+@media (max-width:375px){
+    #mainTitle{
+        font-size: 125%;
+    }
+    #logo{
+        margin-right: 30%;
+    }
+    #linkButton{
+        width: 6rem;
+        font-size: 100%;
+    }
+}
+
+@media (max-width:320px){
+    #mainTitle{
+        font-size: 100%;
+    }
+    #logo{
+        margin-right: 30%;
+    }
+    #linkButton{
+        width: 5rem;
+        font-size: 90%;
+    }
+
+}
