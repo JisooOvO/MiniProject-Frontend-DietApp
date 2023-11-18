@@ -31,7 +31,7 @@ const Login = () => {
       if (auth) {
         localStorage.setItem("token",auth);
         alert("로그인에 성공했습니다. 유저 페이지로 이동합니다.");
-        navigate(`/user/${today}`);
+        navigate(`/user/${today}/아침`);
       }else{
         alert("로그인 정보와 일치하지 않습니다.");
       }
@@ -53,7 +53,7 @@ const Login = () => {
       <div className="flex flex-col items-center h-[30%]">
       <form action="#" className='w-full'>
       <div className="mb-4 flex flex-col justify-center items-center">
-          <label htmlFor="name" className="hidden">아이디</label>
+          <label htmlFor="id" className="hidden">아이디</label>
             <input id="id" className="md:w-[32rem] h-10 p-1 mb-[8%] border-b" 
             name="id" type="text" placeholder="아이디" required/>
           <label htmlFor="password" className="hidden">비밀번호</label>
