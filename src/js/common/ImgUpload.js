@@ -30,7 +30,7 @@ const ImgUpload = () => {
   }
 
   return (
-    <div className="border bg-white shadow-inner rounded-md relative flex flex-col items-center">
+    <div className="border bg-white shadow-inner rounded-md relative flex flex-col items-center h-[40rem] ">
         <div className="my-5 w-[90%] h-10 border rounded-lg shadow-inner flex justify-center items-center">사진 기록 📸</div>
         <div className="w-[90%] h-[60%] shadow-inner border rounded-lg flex flex-col justify-center items-center text-gray-600">
             <div id="preview" className="flex flex-col items-center">

@@ -88,7 +88,7 @@ const User = () => {
     /** 추가된 음식 리스트 */
     useEffect(()=>{
       setSelectFoodView(Array.from(new Set(selectfood)).map((item,idx) =>
-        <div key={`key${idx}`} className="h-[70%] xl:h-[25%] w-[95%] p-2 border m-2 rounded-md shadow-md">
+        <div key={`key${idx}`} className="h-[30%] xl:h-[35%] w-[95%] p-2 border m-2 rounded-md shadow-md">
           <div className="flex justify-between mb-1 h-[28%] w-[95%]">
             <div className="flex gap-2 border rounded-md w-[80%] mb-1 shadow-inner bg-[#EFEFEF] p-2 text-gray-700">
               <div className="flex items-center text-[80%]">{item["식품명"]}</div>
@@ -100,19 +100,19 @@ const User = () => {
           </div>
           <div className="h-[80%] w-[95%] flex flex-col justify-center border-t">
             <div className="h-[20%] flex justify-center items-center">
-              <span className="text-[80%] whitespace-nowrap w-[20%]">칼로리</span>
+              <span className="text-[70%] whitespace-nowrap w-[20%]">칼로리</span>
               <Bar serveMn={+item["섭취량"]} originalServeMn={+item["_1회제공량"]} nutr={+item["칼로리"]} color={"#F7CD01"} isKcal={true}/>
             </div>
             <div className="h-[20%] flex justify-center items-center">
-              <span className="text-[80%] whitespace-nowrap w-[20%]">탄수화물</span>
+              <span className="text-[70%] whitespace-nowrap w-[20%]">탄수화물</span>
               <Bar serveMn={+item["섭취량"]} originalServeMn={+item["_1회제공량"]} nutr={+item["탄수화물"]} color={"#88CB53"}/>
             </div>
             <div className="h-[20%] flex justify-center items-center">
-              <span className="text-[80%] whitespace-nowrap w-[20%]">단백질</span>
+              <span className="text-[70%] whitespace-nowrap w-[20%]">단백질</span>
               <Bar serveMn={+item["섭취량"]} originalServeMn={+item["_1회제공량"]} nutr={+item["단백질"]} color={"#35abf4"}/>
             </div>
             <div className="h-[20%] flex justify-center items-center">
-              <span className="text-[80%] whitespace-nowrap w-[20%]">지방</span>
+              <span className="text-[70%] whitespace-nowrap w-[20%]">지방</span>
               <Bar serveMn={+item["섭취량"]} originalServeMn={+item["_1회제공량"]} nutr={+item["지방"]} color={"#F54545"}/>
             </div>
           </div>
@@ -247,13 +247,13 @@ const User = () => {
             <div>{selectSlot}</div>
             <img src={rightarrow} alt="rightarrow" onClick={handleSlotRightButton} className="h-full hover:cursor-pointer drop-shadow-md"/>
           </div>
-          <div className="grid gap-1 md:grid-cols-2 p-4 w-full h-[95%]">
+          <div className="grid gap-1 md:grid-cols-2 p-4 w-full ">
             <ImgUpload/>
             <div className="border overflow-scroll overflow-x-hidden bg-white rounded-lg shadow-inner">
               {selectfoodView}
             </div>
             <div className="border col-span-2 bg-white shadow-inner rounded-lg">
-              <div className="h-96">hi</div>
+              <div className="h-[40rem]">hi</div>
             </div>
           </div>
         </div>

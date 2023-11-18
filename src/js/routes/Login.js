@@ -12,7 +12,7 @@ const Login = () => {
   useEffect(()=>{
     const auth = localStorage.getItem("token");
     // 여기 수정
-    if(auth) navigate(`/user/${today}`);
+    if(auth) navigate(`/user/${today}/아침`);
     // eslint-disable-next-line
   },[])
 
