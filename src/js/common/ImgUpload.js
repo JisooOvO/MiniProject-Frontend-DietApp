@@ -1,8 +1,7 @@
 import { useState } from "react";
-import "../../style/myhidden.css"
+import "../../style/myhidden.css";
 
-const ImgUpload = () => {
-  const [imageUrl, setImageUrl] = useState('');
+const ImgUpload = ({imageUrl,setImageUrl}) => {
 
   /** 사진 업로드 함수 */
   const handleUploadButton = () => {
@@ -10,7 +9,7 @@ const ImgUpload = () => {
     const preview = document.getElementById('preview');
     const img = document.getElementById('img');
     const file = input.files[0];
-    
+
     if(file){
       const allowedExts = ['.jpg', '.jpeg', '.png'];
       const ext = file.name.slice(((file.name.lastIndexOf(".") - 1) >>> 0) + 2).toLowerCase();
@@ -19,7 +18,7 @@ const ImgUpload = () => {
         const reader = new FileReader();
 
         reader.onload = (e) => {
-            setImageUrl(e.target.result);
+          setImageUrl(e.target.result);
         };
 
         reader.readAsDataURL(file);

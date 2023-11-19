@@ -19,7 +19,8 @@ const User = () => {
   const slotList = ["아침","점심","저녁","간식"];
   const [selectSlotIndex, setSelectSlotIndex] = useState(0);
   const [selectSlot, setSelectSlot] = useState(slotList[0]);
- 
+  const [imageUrl, setImageUrl] = useState('');
+
   const arr = [
     { 
       "식품명" : "감자",
@@ -192,7 +193,10 @@ const User = () => {
   const handleCancelButton = () => {
     const preview = document.getElementById("preview");
     const img = document.getElementById("img");
-    img.classList.add("myhidden");
+    const input = document.getElementById('image');
+    input.value = ''
+    setImageUrl("");
+    img.classList.add('myhidden');
     preview.classList.remove("hidden");
     setSelectFood("");
   }
@@ -248,7 +252,7 @@ const User = () => {
             <img src={rightarrow} alt="rightarrow" onClick={handleSlotRightButton} className="h-full hover:cursor-pointer drop-shadow-md"/>
           </div>
           <div className="grid gap-1 md:grid-cols-2 p-4 w-full ">
-            <ImgUpload/>
+            <ImgUpload imageUrl={imageUrl} setImageUrl={setImageUrl}/>
             <div className="border overflow-scroll overflow-x-hidden bg-white rounded-lg shadow-inner">
               {selectfoodView}
             </div>
