@@ -8,9 +8,9 @@ import { CalToday } from '../common/Calday';
 const Login = () => {
   const navigate = useNavigate();
   const today = CalToday();
+  const auth = localStorage.getItem("token");
   
   useEffect(()=>{
-    const auth = localStorage.getItem("token");
     // 여기 수정
     if(auth) navigate(`/user/${today}/아침`);
     // eslint-disable-next-line

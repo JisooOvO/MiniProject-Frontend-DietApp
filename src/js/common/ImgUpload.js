@@ -1,4 +1,3 @@
-import { useState } from "react";
 import "../../style/myhidden.css";
 
 const ImgUpload = ({imageUrl,setImageUrl}) => {
@@ -24,15 +23,17 @@ const ImgUpload = ({imageUrl,setImageUrl}) => {
         reader.readAsDataURL(file);
         img.classList.remove('myhidden');
         preview.classList.add("hidden");
+      } else{
+        alert("확장자가 jpg, jpeg, png 인 파일만 업로드 할 수 있습니다.");
       }
     }
   }
 
   return (
-    <div className="border bg-white shadow-inner rounded-md relative flex flex-col items-center h-[40rem] ">
+    <div className="border bg-white shadow-inner rounded-md relative flex flex-col items-center h-full">
         <div className="my-5 w-[90%] h-10 border rounded-lg shadow-inner flex justify-center items-center">사진 기록 📸</div>
         <div className="w-[90%] h-[60%] shadow-inner border rounded-lg flex flex-col justify-center items-center text-gray-600">
-            <div id="preview" className="flex flex-col items-center">
+            <div id="preview" className="flex flex-col items-center whitespace-nowrap text-sm">
                 <div>jpg, jpeg, png 확장자로 시작하는</div>
                 <div>파일을 등록하실 수 있습니다</div>
             </div>

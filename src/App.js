@@ -6,7 +6,6 @@ import Signup from "./js/routes/Signup.js";
 import Main from "./js/routes/Main.js";
 import User from "./js/routes/User.js";
 
-
 function App() {
 
   return (
