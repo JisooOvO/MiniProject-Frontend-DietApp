@@ -1,13 +1,14 @@
 import FormTitle from "../common/FormTitle";
 import "../../style/login.css";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { CalToday } from "../common/Calday";
 
 const Signup = () => {
   const navigate = useNavigate();
   const today = CalToday();
   const auth = localStorage.getItem("token");
+  const [checkMsg, setCheckMsg] = useState('');
 
   useEffect(()=>{
     // 여기 수정
@@ -45,6 +46,22 @@ const Signup = () => {
     navigate("/login");
   }
 
+  const handleCheckPassword = () => {
+    const password = document.querySelector("#password").value;
+    const checkPassword = document.querySelector("#checkPassword").value;
+    const checkMsgContainer = document.querySelector("#checkMsg");
+
+    if(password !== checkPassword){
+      setCheckMsg("비밀번호가 일치하지 않습니다.");
+      checkMsgContainer.classList.add("text-red-700");
+      checkMsgContainer.classList.remove("text-blue-700");
+    }else if(password === checkPassword){
+      setCheckMsg("비밀번호가 일치합니다.");
+      checkMsgContainer.classList.add("text-blue-700");
+      checkMsgContainer.classList.remove("text-red-700");
+    }
+  }
+
   return (
     <div className="border-2 w-4/5 min-h-[400px] h-[70%] m-auto shadow-xl 
     flex flex-col items-center rounded-lg relative">
@@ -74,8 +91,14 @@ const Signup = () => {
                 <div>비밀번호는 10자 이상, 20자 이내의</div>
                 <div>영문과 숫자, 특수문자(!,@,#,$)의 조합입니다.</div>
               </div>
+              <input id="checkPassword" className="md:w-96 w-[14rem] h-10 p-1 border-b" onChange={handleCheckPassword}
+              name="password" type="password" placeholder="비밀번호 확인" maxLength={18}
+              required title="비밀먼호는 10자 이상, 20자 이내의 영어 대소문자, 숫자, 특수문자(!,@,#,$)를 포함하여야합니다."
+              pattern="^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$]).{10,20}$"/>
+              <div id="checkMsg" className="mb-10 mt-1 text-[30%] w-[14rem] md:text-sm whitespace-nowrap
+              flex flex-col items-start md:w-96">{checkMsg}</div>
             </div>
-          <div className="grid md:grid-cols-2 gap-2">
+          <div className="grid md:grid-cols-2 gap-2 my-10">
             <button onClick={handleGoBack} className='flex flex-col h-10 text-white rounded-md
             drop-shadow-lg bg-[#14A8DD]
             hover:bg-[#3A84F5] justify-center text-lg w-44 border items-center'>뒤로가기</button>
