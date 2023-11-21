@@ -31,7 +31,7 @@ const ImgUpload = ({imageUrl,setImageUrl}) => {
 
   return (
     <div className="border bg-white shadow-inner rounded-md relative flex flex-col items-center h-full">
-        <div className="my-5 w-[90%] h-10 border rounded-lg shadow-inner flex justify-center items-center">사진 기록 📸</div>
+        <div className="my-5 w-[90%] h-10 border rounded-lg shadow-inner flex justify-center drop-shadow items-center">사진 기록 📸</div>
         <div className="w-[90%] h-[60%] shadow-inner border rounded-lg flex flex-col justify-center items-center text-gray-600">
             <div id="preview" className="flex flex-col items-center whitespace-nowrap text-sm">
                 <div>jpg, jpeg, png 확장자로 시작하는</div>
