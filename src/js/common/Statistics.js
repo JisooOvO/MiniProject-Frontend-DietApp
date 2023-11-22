@@ -1,6 +1,7 @@
 import "../../style/responsive.css"
 
-const Statistics = ({ height, weight, gender, age, func }) => {
+const Statistics = ({ height, weight, gender, age, activityFactor, func }) => {
+    console.log(height,weight,gender,age,activityFactor);
     const NutrToggleHidden = document.querySelector("#NutrToggleHidden");
     const NutrToggleBt = document.querySelector("#NutrToggleBt");
 

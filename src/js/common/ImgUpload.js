@@ -1,12 +1,20 @@
+import { useEffect } from "react";
 import "../../style/myhidden.css";
 
 const ImgUpload = ({imageUrl,setImageUrl}) => {
+  const img = document.getElementById('img');
+  const preview = document.getElementById('preview');
+
+  useEffect(()=>{
+    if(imageUrl){
+      img.classList.remove('myhidden');
+      preview.classList.add("hidden");
+    }
+  },[imageUrl])
 
   /** 사진 업로드 함수 */
   const handleUploadButton = () => {
     const input = document.getElementById('image');
-    const preview = document.getElementById('preview');
-    const img = document.getElementById('img');
     const file = input.files[0];
 
     if(file){
@@ -39,7 +47,8 @@ const ImgUpload = ({imageUrl,setImageUrl}) => {
             </div>
             <img id="img" alt="foodImage" src={imageUrl} className="rounded-lg drop-shadow-md h-full w-full myhidden"/>
         </div>
-        <label htmlFor="image" className="border absolute bottom-0 right-2 rounded-lg shadow-lg w-24 h-8 mb-2 flex justify-center items-center bg-[#14A8DD] hover:bg-[#3A84F5] text-white">등록하기</label>
+        <label htmlFor="image" className="border absolute bottom-0 right-2 text-[60%] sm:text-[100%]
+        rounded-lg shadow-lg w-24 h-8 mb-2 flex justify-center items-center bg-[#14A8DD] hover:bg-[#3A84F5] text-white">등록하기</label>
         <input onChange={handleUploadButton} type="file" id="image" accept=".jpg, .jpeg, .png" className="hidden"/>
   </div>
   )

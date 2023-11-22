@@ -9,8 +9,9 @@ import ImgUpload from "../common/ImgUpload";
 import "../../style/myhidden.css";
 import Statistics from "../common/Statistics";
 import CalBMR from "../common/CalBMR.js";
-import DonutChart from "../common/DonutChart.js";
 import HorizontalBarChart from "../common/HorizontalBarChart.js";
+import CursorInfo from "../common/CursorInfo.js";
+import FoodDetailInfo from "../common/FoodDetailInfo.js";
 
 const User = () => {
   IsLogin();
@@ -21,7 +22,7 @@ const User = () => {
   const navigate = useNavigate();
   const day = useParams().date;
   const slot = useParams().slot;
-  const slotList = ["아침", "점심", "저녁", "간식"];
+  const slotList = ["아침", "점심", "저녁"]; 
   const [selectSlotIndex, setSelectSlotIndex] = useState(slotList.indexOf(slot));
   const [selectSlot, setSelectSlot] = useState(slot);
   const [imageUrl, setImageUrl] = useState('');
@@ -29,83 +30,90 @@ const User = () => {
   const [isClickSlotButton, setIsClickSlotButton] = useState(false);
   const [sumNutr, setSumwNutr] = useState('');
   const [showNutr, setShowwNutr] = useState('');
-  let bmr;
+  const [bmr,setBmr] = useState(0);
+  const [userInfo, setUserInfo] = useState('');
+  const [cursorInfo, setCursorInfo] = useState('');
+  const [foodDetailInfo, setFoodDetailInfo] = useState('');
 
   //let arr;
   const arr = [
     {
-      "식품명": "감자",
-      "_1회제공량": 100,
-      "칼로리": 80,
-      "탄수화물": 30,
-      "단백질": 10,
-      "지방": 50
+      "food_name": "감자",
+      "serving_size": 100,
+      "kcal": 80,
+      "carbohydrate": 30,
+      "protein": 10,
+      "fat": 50
     },
     {
-      "식품명": "고구마",
-      "_1회제공량": 200,
-      "칼로리": 20,
-      "탄수화물": 50,
-      "단백질": 70,
-      "지방": 90
+      "food_name": "고구마",
+      "serving_size": 200,
+      "kcal": 20,
+      "carbohydrate": 50,
+      "protein": 70,
+      "fat": 90
     },
     {
-      "식품명": "고르곤졸라피자",
-      "_1회제공량": 600,
-      "칼로리": 1200,
-      "탄수화물": 120,
-      "단백질": 70,
-      "지방": 100
+      "food_name": "고르곤졸라피자",
+      "serving_size": 600,
+      "kcal": 1200,
+      "carbohydrate": 120,
+      "protein": 70,
+      "fat": 100
     },
     {
-      "식품명": "제로콜라",
-      "_1회제공량": 100,
-      "칼로리": 400,
-      "탄수화물": 250,
-      "단백질": 72,
-      "지방": 9
+      "food_name": "제로콜라",
+      "serving_size": 100,
+      "kcal": 400,
+      "carbohydrate": 250,
+      "protein": 72,
+      "fat": 9
     }
   ];
-
+  
   /** 접속시 데이터 불러오기 */
   useEffect(() => {
-
-    fetch("http://10.125.121.212:8080/getFoodList", {
-      method: "post",
-      headers: {
-        "Authorization": token
-      },
-      body: JSON.stringify({
-        "date": day,
-        "slot": slot
-      })
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data.diets);
-        setSelectFood(data.diets)
-        //BMR = CalBMR(/** 데이터 */)
-      })
-      .catch(e => console.log(e));
+    // fetch("http://10.125.121.212:8080/getFoodList", {
+    //   method: "post",
+    //   headers: {
+    //     "Authorization": token
+    //   },
+    //   body: JSON.stringify({
+    //     "date": day,
+    //     "slot": slot
+    //   })
+    // })
+    //   .then(res => res.json())
+    //   .then(data => {
+    //     console.log(data);
+    //     setSelectFood(data.history.diets);
+    //     setImageUrl(data.history.img);
+    //     setUserInfo(data.HI);
+    //   })
+    //   .catch(e => {
+    //     console.log(e);
+    //     alert("데이터 수신 중 에러 발생");
+    //   });
 
     // eslint-disable-next-line
   }, [])
 
+  /** 삭제 함수 */
   const handleDeleteButton = (e) => {
     const foodNm = e.target.parentNode.parentNode.innerText;
-    const searchfoodNm = foodNm.slice(0, foodNm.indexOf("\n"))
-    setSelectFood((prevItem => prevItem.filter((item) => item["식품명"] !== searchfoodNm)));
+    const searchfoodNm = foodNm.slice(0, foodNm.indexOf("\n"));
+    setSelectFood((prevItem => prevItem.filter((item) => item["food_name"] !== searchfoodNm)));
   }
 
   /** 날짜 이동 함수 */
   const handleLeftButton = () => {
-    const yesterday = CalYesterday(day);
+    const yesterday = CalYesterday(day.replaceAll("-",""));
     navigate(`/user/${yesterday}/${slot}`)
   }
 
   /** 날짜 이동 함수 */
   const handleRightButton = () => {
-    const tomorrow = CalTomorrow(day);
+    const tomorrow = CalTomorrow(day.replaceAll("-",""));
     navigate(`/user/${tomorrow}/${slot}`)
   }
 
@@ -114,35 +122,35 @@ const User = () => {
     const foodNm = e.target.parentNode.parentNode.parentNode.innerText;
     const foodServeMn = foodNm.split("\n");
     let temp = JSON.parse(JSON.stringify(arr.filter((item) =>
-      item["식품명"] === foodServeMn[0]
+      item["food_name"] === foodServeMn[0]
     )));
 
-    temp[0]["섭취량"] = e.target.parentNode.parentNode.firstChild.firstChild.valueAsNumber
+    temp[0]["intake_size"] = e.target.parentNode.parentNode.firstChild.firstChild.valueAsNumber
 
-    let gram = +temp[0]["섭취량"];
-    let oriGram = +temp[0]["_1회제공량"];
+    let gram = +temp[0]["intake_size"];
+    let oriGram = +temp[0]["serving_size"];
 
 
     Object.entries(temp[0]).forEach(([key, value]) => {
-      if (key === "식품코드" || key === "식품명" || key === "섭취량" || key === "_1회제공량") {
+      if (key === "food_name" || key === "intake_size" || key === "serving_size") {
         temp[0][key] = value;
       } else {
-        temp[0][key] = String(+value * (gram / oriGram));
+        temp[0][key] = String((+value * (gram / oriGram)).toFixed(2));
       }
     });
 
     setSelectFood((previtem) => [...previtem, ...temp]);
   }
 
-  /** 추가된 음식 리스트와 그래프 */
+  /** 추가된 음식 리스트 */
   useEffect(() => {
     if (selectfood) {
 
       loop1:
       for (let idx = 0; idx < selectfood.length; idx++) {
-        const foodNm = selectfood[idx]["식품명"];
+        const foodNm = selectfood[idx]["food_name"];
         for (let i = selectfood.length - 1; i > idx; i--) {
-          const compareNm = selectfood[i]["식품명"];
+          const compareNm = selectfood[i]["food_name"];
           if (foodNm === compareNm) {
             selectfood.splice(idx, 1);
             break loop1;
@@ -150,14 +158,13 @@ const User = () => {
         }
       }
 
-
       setSelectFoodView(selectfood.map((item, idx) =>
         <div key={`key${idx}`} className="h-[80%] md:h-[35%] w-[95%] p-2 border m-2 rounded-md shadow-md">
           <div className="flex justify-between mb-1 h-[28%] w-[95%]">
             <div className="flex gap-2 border rounded-md w-[80%] mb-1 shadow-inner bg-[#EFEFEF] p-2 text-gray-700">
-              <div className="flex items-center text-[80%]">{item["식품명"]}</div>
+              <div className="flex items-center text-[80%]">{item["food_name"]}</div>
               <div className="flex items-center text-[80%]">
-                <div>{item["섭취량"] + "g"}</div>
+                <div>{item["intake_size"] + "g"}</div>
               </div>
             </div>
             <div className="flex items-center mb-1"><button onClick={handleDeleteButton} className="hover:bg-[#707070] border w-7 h-7 shadow-md bg-white rounded-[50%] flex justify-center items-center">❌</button></div>
@@ -165,19 +172,19 @@ const User = () => {
           <div className="h-[80%] w-[95%] flex flex-col justify-center border-t">
             <div className="h-[20%] flex justify-center items-center">
               <span className="text-[70%] whitespace-nowrap w-[20%]">칼로리</span>
-              <Bar nutr={+item["칼로리"]} color={"#F7CD01"} isKcal={true} />
+              <Bar nutr={+item["kcal"]} color={"#F7CD01"} isKcal={true} />
             </div>
             <div className="h-[20%] flex justify-center items-center">
               <span className="text-[70%] whitespace-nowrap w-[20%]">탄수화물</span>
-              <Bar nutr={+item["탄수화물"]} color={"#88CB53"} />
+              <Bar nutr={+item["carbohydrate"]} color={"#88CB53"} />
             </div>
             <div className="h-[20%] flex justify-center items-center">
               <span className="text-[70%] whitespace-nowrap w-[20%]">단백질</span>
-              <Bar nutr={+item["단백질"]} color={"#35abf4"} />
+              <Bar nutr={+item["protein"]} color={"#35abf4"} />
             </div>
             <div className="h-[20%] flex justify-center items-center">
               <span className="text-[70%] whitespace-nowrap w-[20%]">지방</span>
-              <Bar nutr={+item["지방"]} color={"#F54545"} />
+              <Bar nutr={+item["fat"]} color={"#F54545"} />
             </div>
           </div>
         </div>
@@ -191,14 +198,8 @@ const User = () => {
       let totalSugars = 0;
       let totalFiber = 0;
       let totalCalcium = 0;
-      let totalIron = 0;
       let totalMagnesium = 0;
-      let totalPhosphorus = 0;
-      let totalPotassium = 0;
       let totalSodium = 0;
-      let totalZinc = 0;
-      let totalCopper = 0;
-      let totalManganese = 0;
       let totalB1 = 0;
       let totalB2 = 0;
       let totalB12 = 0;
@@ -208,55 +209,44 @@ const User = () => {
       let totalTrans = 0;
 
       selectfood.forEach(item => {
-        totalKcal = totalKcal + +item["칼로리"];
-        totalWater = totalWater + +item["수분"];
-        totalProtein = totalProtein + +item["단백질"];
-        totalFat = totalFat + +item["지방"];
-        totalCarbohydrate = totalCarbohydrate + +item["탄수화물"];
-        totalSugars = totalSugars + +item["당류"];
-        totalFiber = totalFiber + +item["식이섬유"];
-        totalCalcium = totalCalcium + +item["칼슘"];
-        totalIron = totalIron + +item["철"];
-        totalMagnesium = totalMagnesium + +item["마그네슘"];
-        totalPhosphorus = totalPhosphorus + +item["인"];
-        totalPotassium = totalPotassium + +item["칼륨"];
-        totalSodium = totalSodium + +item["나트륨"];
-        totalZinc = totalZinc + +item["아연"];
-        totalCopper = totalCopper + +item["구리"];
-        totalManganese = totalManganese + +item["망간"];
-        totalB1 = totalB1 + +item["비타민B1"];
-        totalB2 = totalB2 + +item["비타민B2"];
-        totalB12 = totalB12 + +item["비타민B12"];
-        totalC = totalC + +item["비타민C"];
-        totalCholesterol = totalCholesterol + +item["콜레스테롤"];
-        totalSaturated = totalSaturated + +item["포화지방산"];
-        totalTrans = totalTrans + +item["트랜스지방산"];
+        console.log(item);
+        totalKcal = totalKcal + +item["kcal"];
+        totalWater = totalWater + +item["water"];
+        totalProtein = totalProtein + +item["protein"];
+        totalFat = totalFat + +item["fat"];
+        totalCarbohydrate = totalCarbohydrate + +item["carbohydrate"];
+        totalSugars = totalSugars + +item["sugars"];
+        totalFiber = totalFiber + +item["fiber"];
+        totalCalcium = totalCalcium + +item["calcium"];
+        totalMagnesium = totalMagnesium + +item["magnesium"];
+        totalSodium = totalSodium + +item["sodium"];
+        totalB1 = totalB1 + +item["vita_b1"];
+        totalB2 = totalB2 + +item["vita_b2"];
+        totalB12 = totalB12 + +item["vita_b12"];
+        totalC = totalC + +item["vita_c"];
+        totalCholesterol = totalCholesterol + +item["cholesterol"];
+        totalSaturated = totalSaturated + +item["saturated_fat"];
+        totalTrans = totalTrans + +item["trans_fat"];
       })
 
       setSumwNutr({
-        "총 칼로리": totalKcal,
-        "총 수분": totalWater,
-        "총 단백질": totalProtein,
-        "총 지방": totalFat,
-        "총 탄수화물": totalCarbohydrate,
-        "총 당류": totalSugars,
-        "총 식이섬유": totalFiber,
-        "총 칼슘": totalCalcium,
-        "총 철분": totalIron,
-        "총 마그네슘": totalMagnesium,
-        "총 인": totalPhosphorus,
-        "총 칼륨": totalPotassium,
-        "총 나트륨": totalSodium,
-        "총 아연": totalZinc,
-        "총 구리": totalCopper,
-        "총 망간": totalManganese,
-        "총 비타민B1": totalB1,
-        "총 비타민B2": totalB2,
-        "총 비타민B12": totalB12,
-        "총 비타민C": totalC,
-        "총 콜레스테롤": totalCholesterol,
-        "총 포화지방산": totalSaturated,
-        "총 트랜스지방산": totalTrans
+        "총 kcal": totalKcal,
+        "총 water": totalWater,
+        "총 protein": totalProtein,
+        "총 fat": totalFat,
+        "총 carbohydrate": totalCarbohydrate,
+        "총 sugars": totalSugars,
+        "총 fiber": totalFiber,
+        "총 calcium": totalCalcium,
+        "총 magnesium": totalMagnesium,
+        "총 sodium": totalSodium,
+        "총 vita_b1": totalB1,
+        "총 vita_b2": totalB2,
+        "총 vita_b12": totalB12,
+        "총 vita_c": totalC,
+        "총 cholesterol": totalCholesterol,
+        "총 saturated_fat": totalSaturated,
+        "총 trans_fat": totalTrans
       });
 
     }
@@ -269,23 +259,57 @@ const User = () => {
     const gender = document.querySelector("#gender").value;
     const age = document.querySelector("#age").valueAsNumber;
     const activityFactor = document.querySelector("#activityFactor").value;
-    bmr = CalBMR(height, weight, gender, age, activityFactor)
-    console.log(bmr);
+
+    setBmr(CalBMR(height, weight, gender, age, activityFactor));
+
+    fetch("http://10.125.121.212:8080/health/add",{
+      method : "post",
+      headers : {
+        "Content-Type" :"application/json",
+        "Authorization" : token
+      },
+      body : JSON.stringify({
+        "height" : height,
+        "weight" : weight,
+        "gender" : gender,
+        "age" : age,
+        "activityFactor" : activityFactor
+      })
+    })
+    .then(res => console.log(res))
+    .catch(e => {
+      console.log(e);
+      alert("유저 정보 저장 중 에러 발생");
+    });
   }
 
   /** 통계 함수(미완) */
   useEffect(() => {
     if (sumNutr) {
       setShowwNutr(
-        Object.entries(sumNutr).map(([key, value]) => console.log(key, value))
+//        Object.entries(sumNutr).map(([key, value]) => console.log(key, value))
+        <div className="w-[90%] mx-auto flex flex-col justify-center items-center gap-8">
+          <HorizontalBarChart  userData={bmr} recommendData={sumNutr}/>
+          <HorizontalBarChart  userData={bmr} recommendData={sumNutr}/>
+          <HorizontalBarChart  userData={bmr} recommendData={sumNutr}/>
+          <HorizontalBarChart  userData={bmr} recommendData={sumNutr}/>
+
+        </div>
       );
     }
-  }, [sumNutr])
+  }, [sumNutr,bmr])
 
 
   /** 디테일 버튼(미완)*/
   const handleDetailButton = (e) => {
+    const detailContainer = document.querySelector("#detailContainer");
+    detailContainer.classList.remove("hidden");
+    setFoodDetailInfo(<FoodDetailInfo/>)
+  }
 
+  /** 자동완성 함수(미완) */
+  const handleSearchFood = (e) => {
+    console.dir(e);
   }
 
   /** 검색 함수 */
@@ -296,15 +320,15 @@ const User = () => {
     setSearchFood(arr.map((item, idx) =>
       <div key={`key${idx}`} className="w-full h-[10%] xl:h-[10%] p-2 border bg-[#efefef] grid grid-cols-2 shadow-inner rounded-lg mb-1">
         <div className="flex flex-col justify-center border h-[90%] bg-white rounded-md p-2">
-          <div id="foodName" className="w-[70%] text-ellipsis drop-shadow text-[80%] md:text-[100%] text-gray-700">{item["식품명"]}</div>
+          <div id="food_name" className="w-[70%] text-ellipsis drop-shadow text-[80%] md:text-[100%] text-gray-700">{item["food_name"]}</div>
           <div className="flex text-sm text-gray-500">
-            <div className="text-[75%] md:text-[90%]">{item["_1회제공량"] + "g"}</div>
-            <div className="text-[75%] md:text-[90%]">&nbsp;{item["칼로리"] + "kcal"}</div>
+            <div className="text-[75%] md:text-[90%]">{item["serving_size"] + "g"}</div>
+            <div className="text-[75%] md:text-[90%]">&nbsp;{item["kcal"] + "kcal"}</div>
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center justify-items-end h-full p-2">
           <div className="flex items-center">
-            <input type="number" id="foodServeMn" defaultValue={item["_1회제공량"]}
+            <input type="number" id="foodServeMn" defaultValue={item["serving_size"]}
               className="border max-w-[4rem] shadow-inner p-1 rounded-lg" /><span>g&nbsp;</span>
           </div>
           <div className="flex">
@@ -329,15 +353,15 @@ const User = () => {
     //   setSearchFood(arr.map((item,idx) =>
     //   <div key={`key${idx}`} className="w-full h-[10%] xl:h-[10%] p-2 border bg-[#efefef] grid grid-cols-2 shadow-inner rounded-lg mb-1">
     //     <div className="flex flex-col justify-center border h-[90%] bg-white rounded-md p-2">
-    //       <div id="foodName" className="w-[70%] text-ellipsis drop-shadow text-[80%] md:text-[100%] text-gray-700">{item["식품명"]}</div>
+    //       <div id="food_name" className="w-[70%] text-ellipsis drop-shadow text-[80%] md:text-[100%] text-gray-700">{item["food_name"]}</div>
     //       <div className="flex text-sm text-gray-500">
-    //           <div className="text-[75%] md:text-[90%]">{item["_1회제공량"]+"g"}</div>
-    //           <div className="text-[75%] md:text-[90%]">&nbsp;{item["칼로리"]+"kcal"}</div>
+    //           <div className="text-[75%] md:text-[90%]">{item["serving_size"]+"g"}</div>
+    //           <div className="text-[75%] md:text-[90%]">&nbsp;{item["kcal"]+"kcal"}</div>
     //       </div>
     //     </div>
     //     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center justify-items-end h-full p-2">
     //         <div className="flex items-center">
-    //           <input type="number" id="foodServeMn" defaultValue={item["_1회제공량"]}
+    //           <input type="number" id="foodServeMn" defaultValue={item["serving_size"]}
     //            className="border max-w-[4rem] shadow-inner p-1 rounded-lg"/><span>g&nbsp;</span>
     //         </div>
     //         <div className="flex">
@@ -354,11 +378,6 @@ const User = () => {
     //   console.log(e);
     //   alert("데이터 조회 중 에러 발생");
     // });
-  }
-
-  /** 자동완성 함수(미완) */
-  const handleSearchFood = (e) => {
-    console.dir(e);
   }
 
   /** 저장 함수 */
@@ -385,7 +404,6 @@ const User = () => {
         console.log(e);
         alert("데이터 저장 중 오류 발생");
       });
-
   }
 
   /** 초기화 함수 */
@@ -404,7 +422,7 @@ const User = () => {
 
   /** 시간대 이동 함수 */
   const handleSlotLeftButton = () => {
-    setSelectSlotIndex(i => i + 3);
+    setSelectSlotIndex(i => i + 2);
     setIsClickSlotButton(true);
   }
 
@@ -415,7 +433,7 @@ const User = () => {
   }
 
   useEffect(() => {
-    setSelectSlot(slotList[selectSlotIndex % 4]);
+    setSelectSlot(slotList[selectSlotIndex % 3]);
     // eslint-disable-next-line
   }, [selectSlotIndex]);
 
@@ -423,7 +441,6 @@ const User = () => {
     if (isClickSlotButton) navigate(`/user/${today}/${selectSlot}`);
     setIsClickSlotButton(false);
   }, [selectSlot])
-
 
   /** 화면 사이즈에따른 음식 검색 창 반응형 디자인 */
   const toggleContainer = document.querySelector("#toggleContainer");
@@ -452,11 +469,21 @@ const User = () => {
     toggleContainer.classList.toggle("hidden");
   }
 
+  /** 커서 대면 통계 관련된 정보나오는 함수 */
+  const handleCursorInformation = () => {
+    setCursorInfo(<CursorInfo/>)
+  }
+
+  const hadleCursorOut = () => {
+    setCursorInfo('')
+  }
+
   return (
-    <div className="flex flex-col m-auto items-center w-[95%] h-[70rem] ">
+    <div id="container" className="flex flex-col m-auto items-center w-[95%] h-[70rem] relative">
+      <div id="detailContainer">{foodDetailInfo}</div>
       <div className="w-full text-2xl sm:text-3xl h-20 flex justify-center items-center">
         <img src={leftarrow} alt="leftarrow" onClick={handleLeftButton} className="h-1/2 sm:h-full hover:cursor-pointer drop-shadow-md" />
-        <span className="text-[70%] sm:text-[100%] drop-shadow">{day.slice(0, 4) + "년 " + day.slice(4, 6) + "월 " + day.slice(6, 8) + "일"}</span>
+        <span className="text-[70%] sm:text-[100%] drop-shadow">{day.slice(0, 4) + "년 " + day.slice(5, 7) + "월 " + day.slice(8, 10) + "일"}</span>
         <img src={rightarrow} alt="rightarrow" onClick={handleRightButton} className="h-1/2 sm:h-full hover:cursor-pointer drop-shadow-md" />
       </div>
       <div className="flex gap-1 justify-between w-full">
@@ -475,7 +502,10 @@ const User = () => {
             <div className="mb-2 w-full relative flex items-center gap-2">
               <input id="searchfood" type="text" name="food"
                 className="w-[98%] p-2 shadow-inner rounded-lg border-b-2" onKeyDown={handleSearchFood} placeholder="음식을 검색하세요" />
-              <button onClick={handleSearch} className="hover:cursor-pointer p-1 w-7 h-7 hover:bg-[#707070] shadow-md bg-white  rounded-[50%] border flex flex-col justify-center items-center">🔍</button>
+              <button 
+              onClick={handleSearch} 
+              className="hover:cursor-pointer p-1 w-7 h-7 hover:bg-[#707070] shadow-md bg-white 
+              rounded-[50%] border flex flex-col justify-center items-center">🔍</button>
             </div>
             <div className="border m-1 lg:h-[95%] h-[85%] overflow-scroll overflow-x-hidden bg-white rounded-xl shadow-inner p-2">
               {searchfood}
@@ -497,17 +527,24 @@ const User = () => {
               {selectfoodView}
             </div>
             <div className="border col-span-2 bg-white shadow-inner rounded-lg h-[35rem] overflow-scroll overflow-x-hidden p-2">
-              <div className="my-5 w-[90%] mx-auto h-10 border rounded-lg shadow-inner flex justify-center drop-shadow items-center">식단 분석 🕵️‍♂️</div>
-              <Statistics
-                height={/** 데이터 받을 자리 */170}
-                weight={/** 데이터 받을 자리*/70}
-                age={/** 데이터 받을 자리*/27}
-                gender={/** 데이터 받을 자리*/1}
-                activityFactor={/** 데이터 받을 자리*/1}
+              <div className="my-5 w-[90%] mx-auto h-10 border rounded-lg shadow-inner flex justify-center drop-shadow relative items-center">
+                <p>식단 분석 🕵️‍♂️</p>
+                <button onMouseEnter={handleCursorInformation}
+                onMouseLeave={hadleCursorOut} 
+                className="absolute right-5 border w-7 h-7 rounded-[50%] z-50
+                bg-[#14A8DD] hover:bg-[#3A84F5] text-white shadow-md 
+                hover:cursor-pointer p-1 flex justify-center items-center">❕</button>
+              </div>
+              <div>{cursorInfo}</div>
+              { userInfo && <Statistics
+                height={+userInfo["height"]}
+                weight={+userInfo["weight"]}
+                age={+userInfo["age"]}
+                gender={+userInfo["gender"]}
+                activityFactor={+userInfo["activityFactor"]}
                 func={handleUserInfoSaveBt}
-              />
-              <DonutChart className="h-[30%]"/>
-              <HorizontalBarChart className="h-[30%]"/>
+              /> }
+              {showNutr}
             </div>
           </div>
         </div>
