@@ -14,7 +14,7 @@ import CursorInfo from "../common/CursorInfo.js";
 import FoodDetailInfo from "../common/FoodDetailInfo.js";
 
 const User = () => {
-  IsLogin();
+  //IsLogin();
 
   const [searchfood, setSearchFood] = useState();
   const [selectfood, setSelectFood] = useState([]);
