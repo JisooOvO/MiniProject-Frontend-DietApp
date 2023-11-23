@@ -198,7 +198,7 @@ const User = () => {
   const handleRightButton = () => {
     const tomorrow = CalTomorrow(day.replaceAll("-",""));
     setS(tomorrow);
-    navigate(`/user/${tomorrow}/${slot}`)
+    navigate(`/user/${tomorrow}/${slot}`);
   }
 
   /** 음식 추가 버튼 */
