@@ -34,7 +34,7 @@ const Statistics = ({ height, weight, gender, age, activityFactor, func }) => {
                 className="border flex justify-center items-center rounded-lg whitespace-nowrap text-[60%] 
                 shadow-lg w-24 h-8 mb-2 ml-[5%] bg-[#14A8DD] hover:bg-[#3A84F5] text-white">내 정보 보기 🔻</div>
             <div id="NutrToggleHidden" className="grid grid-cols-1 relative md:grid-cols-2 gap-2 items-center w-[90%] mx-auto">
-                <button onClick={func} id="responsiveBt" className="absolute -top-[11%] right-0 md:top-[100%]
+                <button onClick={func} id="responsiveBt" className="absolute -top-[12%] right-0 md:top-[100%]
                 border flex justify-center items-center rounded-lg whitespace-nowrap text-[60%] sm:text-[80%]
                 shadow-lg w-24 h-8 mb-2 ml-[5%] bg-[#14A8DD] hover:bg-[#3A84F5] text-white">
                     설정 저장

@@ -142,7 +142,7 @@ const User = () => {
         }
       })
       .then(data => {
-        console.log(data);
+        //console.log(data);
         if(data.history !== null){
           setSelectFood(data.history.diets);
           setImageUrl(data.history.img);          
@@ -258,19 +258,19 @@ const User = () => {
           <div className="h-[70%] w-full flex flex-col justify-center border-t">
             <div className="h-[20%] flex justify-between items-center">
               <span className="text-[70%] whitespace-nowrap w-[20%]">칼로리</span>
-              <Bar nutr={+item["kcal"]} color={"#F7CD01"} isKcal={true} />
+              <Bar nutr={+item["kcal"]} color={"#F7CD01"} isKcal={true} unit={"kcal"} />
             </div>
             <div className="h-[20%] flex justify-between items-center">
               <span className="text-[70%] whitespace-nowrap w-[20%]">탄수화물</span>
-              <Bar nutr={+item["carbohydrate"]} color={"#88CB53"} />
+              <Bar nutr={+item["carbohydrate"]} color={"#88CB53"} unit={"g"} type={"탄"}/>
             </div>
             <div className="h-[20%] flex justify-between items-center">
               <span className="text-[70%] whitespace-nowrap w-[20%]">단백질</span>
-              <Bar nutr={+item["protein"]} color={"#35abf4"} />
+              <Bar nutr={+item["protein"]} color={"#35abf4"} unit={"g"} type={"단"}/>
             </div>
             <div className="h-[20%] flex justify-between items-center">
               <span className="text-[70%] whitespace-nowrap w-[20%]">지방</span>
-              <Bar nutr={+item["fat"]} color={"#F54545"} />
+              <Bar nutr={+item["fat"]} color={"#F54545"} unit={"g"} type={"지"}/>
             </div>
           </div>
         </div>
@@ -379,12 +379,11 @@ const User = () => {
     if (sumNutr) {
       setShowwNutr(
 //        Object.entries(sumNutr).map(([key, value]) => console.log(key, value))
-        <div className="w-[90%] mx-auto flex flex-col justify-center items-center gap-8">
+        <div className="w-[90%] mt-10 mx-auto flex flex-col justify-center items-center gap-8">
           <HorizontalBarChart  userData={bmr} recommendData={sumNutr}/>
           <HorizontalBarChart  userData={bmr} recommendData={sumNutr}/>
           <HorizontalBarChart  userData={bmr} recommendData={sumNutr}/>
           <HorizontalBarChart  userData={bmr} recommendData={sumNutr}/>
-
         </div>
       );
     }
@@ -393,14 +392,19 @@ const User = () => {
 
   /** 디테일 버튼(미완)*/
   const handleDetailButton = (e) => {
+    const food_nameElem = e.target.parentNode.parentNode.parentNode.innerText;
+    const foodNm = food_nameElem.slice(0,food_nameElem.indexOf("\n"));
+
+    const targetFood = arr.filter((item)=> item["food_name"] === foodNm);
+
     const detailContainer = document.querySelector("#detailContainer");
     detailContainer.classList.remove("hidden");
-    setFoodDetailInfo(<FoodDetailInfo/>)
+    setFoodDetailInfo(<FoodDetailInfo targetFood={targetFood}/>)
   }
 
   /** 자동완성 함수(미완) */
   const handleSearchFood = (e) => {
-    console.dir(e);
+    //console.dir(e);
   }
 
   /** 검색 함수 */
@@ -622,7 +626,7 @@ const User = () => {
               {selectfoodView}
             </div>
             <div 
-            className="border col-span-2 bg-white shadow-inner rounded-lg h-min sm:h-[32rem]
+            className="border col-span-2 bg-white shadow-inner rounded-lg h-min sm:h-[34rem]
             sm:overflow-scroll sm:overflow-x-hidden p-2">
               <div className="my-5 w-[90%] mx-auto h-10 border rounded-lg shadow-inner 
               flex justify-center drop-shadow relative items-center">
