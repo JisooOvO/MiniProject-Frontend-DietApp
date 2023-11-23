@@ -9,6 +9,7 @@ const Login = () => {
   const navigate = useNavigate();
   const today = CalToday();
   const auth = localStorage.getItem("token");
+  const isOauth2 = false;
   
   useEffect(()=>{
     // 여기 수정
@@ -66,10 +67,10 @@ const Login = () => {
         <Link to={'/signUp'} id='signUp' className='flex flex-col h-10 text-white rounded-md drop-shadow-lg bg-[#14A8DD]
           hover:bg-[#3A84F5] justify-center text-lg border items-center'>회원가입</Link>
         <div className='col-span-2 hover:cursor-pointer' onClick={handleGoogleoauth}>
-          <div id='googleLogin' className='flex h-10 text-white rounded-md drop-shadow-lg bg-[#14A8DD]
+          { isOauth2 ? <div id='googleLogin' className='flex h-10 text-white rounded-md drop-shadow-lg bg-[#14A8DD]
           hover:bg-[#3A84F5] justify-center text-lg border items-center'>
             <img src={googlelogo} alt='googlelogo' className='w-6 h-6'/><span>&nbsp; 구글 로그인</span>
-          </div>
+          </div> : ''}
         </div>
       </div>
       </div>
