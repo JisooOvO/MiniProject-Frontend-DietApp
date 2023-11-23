@@ -38,8 +38,9 @@ const Signup = () => {
     })
   });
 
+  /** 중복 아이디 검증(미완성) */
   const handleIsDuplication = () => {
-    //중복 아이디 검증
+    
   }
 
   const handleGoBack = () => {
@@ -70,35 +71,35 @@ const Signup = () => {
             <div className="w-[90%]">
               <label htmlFor="username" className="hidden">아이디</label>
               <input id="username" 
-              className="md:w-96 w-[11rem] sm:w-[14rem] h-10 p-1 border-b"
+              className="md:w-96 w-[14rem] h-10 p-1 border-b"
               name="username" type="text" placeholder="아이디" maxLength={20}
               required title="아이디는 5자 이상, 20자 이내의 영문과 숫자를 포함하여야합니다." 
               pattern="^[a-zA-Z0-9]{5,20}$"/>
               <div 
-              className="mb-5 mt-1 text-gray-500 text-[30%] w-[9rem] 
-              sm:w-[14rem] md:text-sm relative
-              flex justify-start md:w-96">아이디는 5자 이상, 20자 이내의 영문과 숫자의 조합입니다.
-              <button onClick={handleIsDuplication} className="flex flex-col top-0 -right-16 
-              md:-right-24 absolute h-8 text-white rounded-md 
-              drop-shadow-lg bg-[#14A8DD] hover:bg-[#3A84F5] 
-              justify-center text-[70%] p-2 md:text-sm md:w-20 border items-center">중복확인</button>              
+              className="mb-5 mt-1 text-gray-500 text-[30%] w-full 
+              sm:w-[14rem] lg:text-sm 
+              flex justify-between md:w-96">아이디는 5자 이상, 20자 이내의 영문과 숫자의 조합입니다.
+              <button onClick={handleIsDuplication} className="flex flex-col
+              md:-right-24 h-8 text-white rounded-md whitespace-nowrap
+              drop-shadow-lg bg-[#14A8DD] hover:bg-[#3A84F5]
+              justify-center text-[50%] p-2 md:text-[70%] md:w-20 border items-center">중복확인</button>              
               </div>
             </div>
             <div className="w-[90%]">
               <label htmlFor="password" className="hidden">비밀번호</label>
               <input id="password" 
-              className="md:w-96 w-[11rem] sm:w-[14rem] h-10 p-1 border-b"
+              className="md:w-96 w-[14rem] h-10 p-1 border-b"
               name="password" type="password" placeholder="비밀번호" maxLength={18}
               required title="비밀먼호는 10자 이상, 20자 이내의 영어 대소문자, 숫자, 특수문자(!,@,#,$)를 포함하여야합니다."
               pattern="^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$]).{10,20}$"/>
               <div 
-              className="mb-5 mt-1 text-gray-500 text-[30%] w-[14rem] 
-              md:text-sm flex flex-col items-start md:w-96">
-                <div>비밀번호는 10자 이상, 20자 이내의</div>
-                <div>영문과 숫자, 특수문자(!,@,#,$)의 조합입니다.</div>
+              className="mb-5 mt-1 text-gray-500 text-[30%] w-full 
+              lg:text-sm flex flex-col items-start md:w-96">
+                비밀번호는 10자 이상, 20자 이내의
+                영문과 숫자, 특수문자(!,@,#,$)의 조합입니다.
               </div>
               <input id="checkPassword" 
-              className="md:w-96 w-[11rem] sm:w-[14rem] h-10 p-1 border-b" onChange={handleCheckPassword}
+              className="md:w-96 w-[14rem] h-10 p-1 border-b" onChange={handleCheckPassword}
               name="password" type="password" placeholder="비밀번호 확인" maxLength={18}
               required title="비밀먼호는 10자 이상, 20자 이내의 영어 대소문자, 숫자, 특수문자(!,@,#,$)를 포함하여야합니다."
               pattern="^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$]).{10,20}$"/>
@@ -109,13 +110,13 @@ const Signup = () => {
             <button onClick={handleGoBack} 
             className='flex flex-col h-10 text-white rounded-md
             drop-shadow-lg bg-[#14A8DD] text-[95%]
-            hover:bg-[#3A84F5] justify-center text-lg w-44 border items-center'>뒤로가기</button>
-            <input id="signUp"
+            hover:bg-[#3A84F5] justify-center text-lg w-44 border items-center'>로그인하기</button>
+            <button id="signUp"
             onClick={handleSubmit}
             className='flex flex-col h-10 text-white rounded-md
-            drop-shadow-lg bg-[#14A8DD]
+            drop-shadow-lg bg-[#14A8DD] text-[95%]
             hover:bg-[#3A84F5] justify-center text-lg w-44 border items-center'
-            type="submit" value="회원가입"/>
+            >회원가입</button>
           </div>
         </div>
     </div>
