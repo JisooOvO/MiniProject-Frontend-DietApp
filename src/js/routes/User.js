@@ -178,8 +178,9 @@ const User = () => {
       });
 
     // eslint-disable-next-line
-  }, [])
+  }, [day,slot]);
 
+  
   /** 화면 사이즈에따른 음식 검색 창 반응형 디자인 */
   const toggleContainer = document.querySelector("#toggleContainer");
   const hiddenBt = document.querySelector("#hiddenBt");
