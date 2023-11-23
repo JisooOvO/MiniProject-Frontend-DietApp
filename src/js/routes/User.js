@@ -34,88 +34,88 @@ const User = () => {
   const [cursorInfo, setCursorInfo] = useState('');
   const [foodDetailInfo, setFoodDetailInfo] = useState('');
 
-  let arr;
-  // const arr = [
-  //   {
-  //     "food_name": "감자",
-  //     "serving_size": 100,
-  //     "kcal": 80,
-  //     "carbohydrate": 30,
-  //     "protein": 10,
-  //     "fat": 50
-  //   },
-  //   {
-  //     "food_name": "고구마",
-  //     "serving_size": 200,
-  //     "kcal": 20,
-  //     "carbohydrate": 50,
-  //     "protein": 70,
-  //     "fat": 90
-  //   },
-  //   {
-  //     "food_name": "고르곤졸라피자",
-  //     "serving_size": 600,
-  //     "kcal": 1200,
-  //     "carbohydrate": 120,
-  //     "protein": 70,
-  //     "fat": 100
-  //   },
-  //   {
-  //     "food_name": "제로콜라",
-  //     "serving_size": 100,
-  //     "kcal": 400,
-  //     "carbohydrate": 250,
-  //     "protein": 72,
-  //     "fat": 9
-  //   },
-  //   {
-  //     "food_name": "제로콜라",
-  //     "serving_size": 100,
-  //     "kcal": 400,
-  //     "carbohydrate": 250,
-  //     "protein": 72,
-  //     "fat": 9
-  //   },
-  //   {
-  //     "food_name": "제로콜라",
-  //     "serving_size": 100,
-  //     "kcal": 400,
-  //     "carbohydrate": 250,
-  //     "protein": 72,
-  //     "fat": 9
-  //   },    {
-  //     "food_name": "제로콜라",
-  //     "serving_size": 100,
-  //     "kcal": 400,
-  //     "carbohydrate": 250,
-  //     "protein": 72,
-  //     "fat": 9
-  //   },
-  //   {
-  //     "food_name": "제로콜라",
-  //     "serving_size": 100,
-  //     "kcal": 400,
-  //     "carbohydrate": 250,
-  //     "protein": 72,
-  //     "fat": 9
-  //   },
-  //   {
-  //     "food_name": "제로콜라",
-  //     "serving_size": 100,
-  //     "kcal": 400,
-  //     "carbohydrate": 250,
-  //     "protein": 72,
-  //     "fat": 9
-  //   },
-  //   {
-  //     "food_name": "제로콜라",
-  //     "serving_size": 100,
-  //     "kcal": 400,
-  //     "carbohydrate": 250,
-  //     "protein": 72,
-  //     "fat": 9
-  //   },
-  // ];
+  //let arr;
+  const arr = [
+    {
+      "food_name": "감자",
+      "serving_size": 100.0,
+      "kcal": 80.0,
+      "carbohydrate": 30.0,
+      "protein": 10.0,
+      "fat": 50.0
+    },
+    {
+      "food_name": "고구마",
+      "serving_size": 200.0,
+      "kcal": 20.0,
+      "carbohydrate": 50,
+      "protein": 70,
+      "fat": 90
+    },
+    {
+      "food_name": "고르곤졸라피자",
+      "serving_size": 600,
+      "kcal": 1200,
+      "carbohydrate": 120,
+      "protein": 70,
+      "fat": 100
+    },
+    {
+      "food_name": "제로콜라",
+      "serving_size": 100,
+      "kcal": 400,
+      "carbohydrate": 250,
+      "protein": 72,
+      "fat": 9
+    },
+    {
+      "food_name": "콜라",
+      "serving_size": 100,
+      "kcal": 400,
+      "carbohydrate": 250,
+      "protein": 72,
+      "fat": 9
+    },
+    {
+      "food_name": "제",
+      "serving_size": 100,
+      "kcal": 400,
+      "carbohydrate": 250,
+      "protein": 72,
+      "fat": 9
+    },    {
+      "food_name": "제라",
+      "serving_size": 100,
+      "kcal": 400,
+      "carbohydrate": 250,
+      "protein": 72,
+      "fat": 9
+    },
+    {
+      "food_name": "제로",
+      "serving_size": 100,
+      "kcal": 400,
+      "carbohydrate": 250,
+      "protein": 72,
+      "fat": 9
+    },
+    {
+      "food_name": "홀세일",
+      "serving_size": 100,
+      "kcal": 400,
+      "carbohydrate": 250,
+      "protein": 72,
+      "fat": 9
+    },
+    {
+      "food_name": "얍실이",
+      "serving_size": 100,
+      "kcal": 400,
+      "carbohydrate": 250,
+      "protein": 72,
+      "fat": 9
+    },
+  ];
   
   /** 접속시 데이터 불러오기 */
   useEffect(() => {
@@ -284,20 +284,20 @@ const User = () => {
             flex justify-center items-center">❌</button></div>
           </div>
           <div className="h-[70%] w-full flex flex-col justify-center border-t">
-            <div className="h-[20%] flex justify-between items-center">
-              <span className="text-[70%] whitespace-nowrap w-[20%]">칼로리</span>
+            <div className="h-[20%] flex gap-2 items-center">
+              <span className="text-[80%] whitespace-nowrap w-[20%] text-center">칼로리</span>
               <Bar nutr={+item["kcal"]} color={"#F7CD01"} isKcal={true} unit={"kcal"} />
             </div>
-            <div className="h-[20%] flex justify-between items-center">
-              <span className="text-[70%] whitespace-nowrap w-[20%]">탄수화물</span>
+            <div className="h-[20%] flex gap-2 items-center">
+              <span className="text-[80%] whitespace-nowrap w-[20%] text-center">탄수화물</span>
               <Bar nutr={+item["carbohydrate"]} color={"#88CB53"} unit={"g"} type={"탄"}/>
             </div>
-            <div className="h-[20%] flex justify-between items-center">
-              <span className="text-[70%] whitespace-nowrap w-[20%]">단백질</span>
+            <div className="h-[20%] flex gap-2 items-center">
+              <span className="text-[80%] whitespace-nowrap w-[20%] text-center">단백질</span>
               <Bar nutr={+item["protein"]} color={"#35abf4"} unit={"g"} type={"단"}/>
             </div>
-            <div className="h-[20%] flex justify-between items-center">
-              <span className="text-[70%] whitespace-nowrap w-[20%]">지방</span>
+            <div className="h-[20%] flex gap-2 items-center">
+              <span className="text-[80%] whitespace-nowrap w-[20%] text-center">지방</span>
               <Bar nutr={+item["fat"]} color={"#F54545"} unit={"g"} type={"지"}/>
             </div>
           </div>
@@ -367,7 +367,7 @@ const User = () => {
     }
   }, [selectfood]);
 
-  /** 유저 정보 전달 함수(미완) */
+  /** 유저 정보 전달 함수*/
   const handleUserInfoSaveBt = () => {
     const height = document.querySelector("#height").valueAsNumber;
     const weight = document.querySelector("#weight").valueAsNumber;
@@ -408,17 +408,16 @@ const User = () => {
       setShowwNutr(
 //        Object.entries(sumNutr).map(([key, value]) => console.log(key, value))
         <div className="w-[90%] mt-10 mx-auto flex flex-col justify-center items-center gap-8">
-          <HorizontalBarChart  userData={bmr} recommendData={sumNutr}/>
-          <HorizontalBarChart  userData={bmr} recommendData={sumNutr}/>
-          <HorizontalBarChart  userData={bmr} recommendData={sumNutr}/>
-          <HorizontalBarChart  userData={bmr} recommendData={sumNutr}/>
+          <HorizontalBarChart  userData={sumNutr} recommendData={bmr}/>
+          <HorizontalBarChart  userData={sumNutr} recommendData={bmr}/>
+          <HorizontalBarChart  userData={sumNutr} recommendData={bmr}/>
+          <HorizontalBarChart  userData={sumNutr} recommendData={bmr}/>
         </div>
       );
     }
   }, [sumNutr,bmr])
 
-
-  /** 디테일 버튼(미완)*/
+  /** 디테일 버튼*/
   const handleDetailButton = (e) => {
     const food_nameElem = e.target.parentNode.parentNode.parentNode.innerText;
     const foodNm = food_nameElem.slice(0,food_nameElem.indexOf("\n"));
@@ -440,71 +439,71 @@ const User = () => {
     e.preventDefault();
     const search = document.querySelector("#searchfood").value;
 
-    // setSearchFood(arr.map((item, idx) =>
-    //   <div key={`key${idx}`} className="w-full h-[30%] lg:h-[20%] xl:h-[10%] p-2 border bg-[#efefef] grid grid-cols-2 shadow-inner rounded-lg mb-1">
-    //     <div className="flex flex-col justify-center border h-[90%] bg-white rounded-md p-2">
-    //       <div id="food_name" className="w-[70%] text-ellipsis drop-shadow text-[80%] md:text-[100%] text-gray-700">{item["food_name"]}</div>
-    //       <div className="flex text-sm text-gray-500">
-    //         <div className="text-[75%] md:text-[90%]">{item["serving_size"] + "g"}</div>
-    //         <div className="text-[75%] md:text-[90%]">&nbsp;{item["kcal"] + "kcal"}</div>
-    //       </div>
-    //     </div>
-    //     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center justify-items-end h-full p-2">
-    //       <div className="flex items-center">
-    //         <input type="number" id="foodServeMn" defaultValue={item["serving_size"]}
-    //           className="border max-w-[4rem] shadow-inner p-1 rounded-lg" /><span>g&nbsp;</span>
-    //       </div>
-    //       <div className="flex">
-    //         <button onClick={handleCheckButton}
-    //           className="hover:bg-[#707070] border w-7 h-7 mr-2 text-green-500 shadow-md bg-white rounded-[50%]">✔</button>
-    //         <button onClick={handleDetailButton}
-    //           className="hover:bg-[#707070] border w-7 h-7 bg-white shadow-md  rounded-[50%]">🔍</button>
-    //       </div>
-    //     </div>
-    //   </div>
-    // ));
-
-    fetch("http://10.125.121.212:8080/api/searchFoodList",{
-      method : "POST",
-      headers : {
-        "Authorization" : token
-      },
-      body : JSON.stringify({
-        "foodname" : search
-      })
-    })
-    .then(res => res.json())
-    .then(data => {
-      if(data){
-        arr = data;
-        setSearchFood(arr.map((item,idx) =>
-        <div key={`key${idx}`} className="w-full h-[8rem] p-2 border bg-[#efefef] grid grid-cols-2 shadow-inner rounded-lg mb-1">
-          <div className="flex flex-col justify-center border h-[90%] bg-white rounded-md p-2">
-            <div id="food_name" className="w-[70%] text-ellipsis drop-shadow text-[80%] md:text-[100%] text-gray-700">{item["food_name"]}</div>
-            <div className="flex text-sm text-gray-500">
-                <div className="text-[75%] md:text-[90%]">{item["serving_size"]+"g"}</div>
-                <div className="text-[75%] md:text-[90%]">&nbsp;{item["kcal"]+"kcal"}</div>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center justify-items-end h-full p-2">
-              <div className="flex items-center">
-                <input type="number" id="foodServeMn" defaultValue={item["serving_size"]}
-                className="border max-w-[4rem] shadow-inner p-1 rounded-lg"/><span>g&nbsp;</span>
-              </div>
-              <div className="flex">
-                <button onClick={handleCheckButton} 
-                className="hover:bg-[#707070] border w-7 h-7 mr-2 text-green-500 shadow-md bg-white rounded-[50%]">✔</button>
-                <button onClick={handleDetailButton} 
-                className="hover:bg-[#707070] border w-7 h-7 bg-white shadow-md  rounded-[50%]">🔍</button>
-              </div>
+    setSearchFood(arr.map((item, idx) =>
+      <div key={`key${idx}`} className="w-full h-[30%] lg:h-[20%] xl:h-[10%] p-2 border bg-[#efefef] grid grid-cols-2 shadow-inner rounded-lg mb-1">
+        <div className="flex flex-col justify-center border h-[90%] bg-white rounded-md p-2">
+          <div id="food_name" className="w-[70%] text-ellipsis drop-shadow text-[80%] md:text-[100%] text-gray-700">{item["food_name"]}</div>
+          <div className="flex text-sm text-gray-500">
+            <div className="text-[75%] md:text-[90%]">{item["serving_size"] + "g"}</div>
+            <div className="text-[75%] md:text-[90%]">&nbsp;{item["kcal"] + "kcal"}</div>
           </div>
         </div>
-      ))};
-    })
-    .catch(e => {
-      console.log(e);
-      alert("데이터 조회 중 에러 발생");
-    });
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center justify-items-end h-full p-2">
+          <div className="flex items-center">
+            <input type="number" id="foodServeMn" defaultValue={item["serving_size"]}
+              className="border max-w-[4rem] shadow-inner p-1 rounded-lg" /><span>g&nbsp;</span>
+          </div>
+          <div className="flex">
+            <button onClick={handleCheckButton}
+              className="hover:bg-[#707070] border w-7 h-7 mr-2 text-green-500 shadow-md bg-white rounded-[50%]">✔</button>
+            <button onClick={handleDetailButton}
+              className="hover:bg-[#707070] border w-7 h-7 bg-white shadow-md  rounded-[50%]">🔍</button>
+          </div>
+        </div>
+      </div>
+    ));
+
+    // fetch("http://10.125.121.212:8080/api/searchFoodList",{
+    //   method : "POST",
+    //   headers : {
+    //     "Authorization" : token
+    //   },
+    //   body : JSON.stringify({
+    //     "foodname" : search
+    //   })
+    // })
+    // .then(res => res.json())
+    // .then(data => {
+    //   if(data){
+    //     arr = data;
+    //     setSearchFood(arr.map((item,idx) =>
+    //     <div key={`key${idx}`} className="w-full h-[8rem] p-2 border bg-[#efefef] grid grid-cols-2 shadow-inner rounded-lg mb-1">
+    //       <div className="flex flex-col justify-center border h-[90%] bg-white rounded-md p-2">
+    //         <div id="food_name" className="w-[70%] text-ellipsis drop-shadow text-[80%] md:text-[100%] text-gray-700">{item["food_name"]}</div>
+    //         <div className="flex text-sm text-gray-500">
+    //             <div className="text-[75%] md:text-[90%]">{item["serving_size"]+"g"}</div>
+    //             <div className="text-[75%] md:text-[90%]">&nbsp;{item["kcal"]+"kcal"}</div>
+    //         </div>
+    //       </div>
+    //       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center justify-items-end h-full p-2">
+    //           <div className="flex items-center">
+    //             <input type="number" id="foodServeMn" defaultValue={item["serving_size"]}
+    //             className="border max-w-[4rem] shadow-inner p-1 rounded-lg"/><span>g&nbsp;</span>
+    //           </div>
+    //           <div className="flex">
+    //             <button onClick={handleCheckButton} 
+    //             className="hover:bg-[#707070] border w-7 h-7 mr-2 text-green-500 shadow-md bg-white rounded-[50%]">✔</button>
+    //             <button onClick={handleDetailButton} 
+    //             className="hover:bg-[#707070] border w-7 h-7 bg-white shadow-md  rounded-[50%]">🔍</button>
+    //           </div>
+    //       </div>
+    //     </div>
+    //   ))};
+    // })
+    // .catch(e => {
+    //   console.log(e);
+    //   alert("데이터 조회 중 에러 발생");
+    // });
   }
 
   /** 저장 함수 */
@@ -616,13 +615,13 @@ const User = () => {
               {searchfood}
             </div>
         </div>
-        <div className="border rounded-lg shadow-lg bg-[#EAEAEA] p-2 min-h-min lg:h-[70rem]">
+        <div className="border rounded-lg shadow-lg bg-[#EAEAEA] p-2 lg:h-[70rem]">
           <div className="h-10 flex justify-between items-center border rounded-lg bg-white shadow-inner m-2">
             <img src={leftarrow} alt="leftarrow" onClick={handleSlotLeftButton} className="h-full hover:cursor-pointer drop-shadow-md" />
             <div>{selectSlot}</div>
             <img src={rightarrow} alt="rightarrow" onClick={handleSlotRightButton} className="h-full hover:cursor-pointer drop-shadow-md" />
           </div>
-          <div className="grid grid-cols-1 grid-rows-2 gap-1 md:grid-cols-2 p-4 w-full min-h-min lg:h-[87%]">
+          <div className="grid grid-cols-1 grid-rows-2 gap-1 md:grid-cols-2 p-4 w-full lg:h-[87%]">
             <ImgUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
             <div 
             className="border row-start-2 md:row-start-1 overflow-scroll w-full overflow-x-hidden 

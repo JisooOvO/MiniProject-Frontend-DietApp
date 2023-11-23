@@ -52,8 +52,7 @@ const Login = () => {
     <div className="border-2 w-4/5 min-h-[400px] h-[70%] m-auto shadow-xl flex flex-col items-center rounded-lg relative">
       <FormTitle text1={"로그인이 필요한"} text2={" 서비스입니다."}/>
       <div className="flex flex-col items-center h-[30%]">
-      <div className='w-full'>
-      <div className="mb-4 flex flex-col justify-center items-center">
+      <div className="mb-4 flex flex-col mt-36 justify-center items-center">
           <label htmlFor="id" className="hidden">아이디</label>
             <input id="id" className="md:w-[32rem] h-10 p-1 mb-[8%] border-b" 
             name="id" type="text" placeholder="아이디" required/>
@@ -72,7 +71,6 @@ const Login = () => {
             <img src={googlelogo} alt='googlelogo' className='w-6 h-6'/><span>&nbsp; 구글 로그인</span>
           </div> : ''}
         </div>
-      </div>
       </div>
       </div>
     </div>

@@ -20,6 +20,7 @@ const Bar = ({nutr, color, isKcal=false, unit, type}) => {
     case "비타민B2" : BarWidth = nutr / 1.5 * 100; break;
     case "비타민B12" : BarWidth = nutr / 3 * 100; break;
     case "비타민C" : BarWidth = nutr / 100 * 100; break;
+    default : BarWidth = 0;
   }
   const dynamicStyle = { 
     width: `${BarWidth}%`,
@@ -28,7 +29,7 @@ const Bar = ({nutr, color, isKcal=false, unit, type}) => {
 
   return (
     <div className="border h-[70%] w-[70%] relative rounded-md overflow-hidden">
-        <div className="absolute z-10 right-2 text-[80%] top-[50%] translate-y-[-50%]">{nutr.toFixed(2)}{unit}</div>
+        <div className="absolute z-10 right-2 text-[80%] top-[50%] translate-y-[-50%]">{nutr ? nutr.toFixed(2) : 0}{unit}</div>
         <span className="border absolute h-full left-[5%] w-[0.1rem]"></span>
         <span className="border absolute h-full left-[10%] w-[0.1rem]"></span>
         <span className="border absolute h-full left-[15%] w-[0.1rem]"></span>

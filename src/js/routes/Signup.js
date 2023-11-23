@@ -96,9 +96,13 @@ const Signup = () => {
               required title="아이디는 5자 이상, 20자 이내의 영문과 숫자를 포함하여야합니다." 
               pattern="^[a-zA-Z0-9]{5,20}$"/>
               <div 
-              className="mb-5 mt-1 text-gray-500 text-[30%] w-full 
+              className="mb-5 mt-1 text-gray-500 text-[30%] w-[14rem]
               sm:w-[14rem] lg:text-sm 
-              flex justify-between md:w-96">아이디는 5자 이상, 20자 이내의 영문과 숫자의 조합입니다.
+              flex justify-between md:w-96">
+                <div className="flex flex-col justify-center">
+                  <p>아이디는 5자 이상, 20자 이내의</p>
+                  <p>영문과 숫자의 조합입니다.</p>
+                </div>
               <button onClick={handleIsDuplication} className="flex flex-col
               md:-right-24 h-8 text-white rounded-md whitespace-nowrap
               drop-shadow-lg bg-[#14A8DD] hover:bg-[#3A84F5]
@@ -113,10 +117,10 @@ const Signup = () => {
               required title="비밀먼호는 10자 이상, 20자 이내의 영어 대소문자, 숫자, 특수문자(!,@,#,$)를 포함하여야합니다."
               pattern="^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$]).{10,20}$"/>
               <div 
-              className="mb-5 mt-1 text-gray-500 text-[30%] w-full 
+              className="mb-5 mt-1 text-gray-500 text-[30%] w-[14rem]
               lg:text-sm flex flex-col items-start md:w-96">
-                비밀번호는 10자 이상, 20자 이내의
-                영문과 숫자, 특수문자(!,@,#,$)의 조합입니다.
+                <p>비밀번호는 10자 이상, 20자 이내의</p>
+                <p>영문과 숫자, 특수문자(!,@,#,$)의 조합입니다.</p>
               </div>
               <input id="checkPassword" 
               className="md:w-96 w-[14rem] h-10 p-1 border-b" onChange={handleCheckPassword}
@@ -126,17 +130,16 @@ const Signup = () => {
               <div id="checkMsg" className="mb-10 mt-1 text-[30%] w-[14rem] md:text-sm whitespace-nowrap
               flex flex-col items-start md:w-96">{checkMsg}</div>
             </div>
-          <div className="grid md:grid-cols-2 gap-2 w-[90%] mx-auto">
+          <div className="grid md:grid-cols-2 gap-2 w-[90%] mx-auto justify-center">
             <button onClick={handleGoBack} 
             className='flex flex-col h-10 text-white rounded-md
             drop-shadow-lg bg-[#14A8DD] text-[95%]
-            hover:bg-[#3A84F5] justify-center text-lg w-44 border items-center'>로그인하기</button>
+            hover:bg-[#3A84F5] justify-center text-lg w-44 border items-center'>로그인</button>
             <button id="signUp"
             onClick={handleSubmit}
             className='flex flex-col h-10 text-white rounded-md
             drop-shadow-lg bg-[#14A8DD] text-[95%]
-            hover:bg-[#3A84F5] justify-center text-lg w-44 border items-center'
-            >회원가입</button>
+            hover:bg-[#3A84F5] justify-center text-lg w-44 border items-center'>회원가입</button>
           </div>
         </div>
     </div>
