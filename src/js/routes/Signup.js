@@ -19,7 +19,7 @@ const Signup = () => {
     const username = document.querySelector("#username").value;
     const password = document.querySelector("#password").value;
 
-    fetch("http://10.125.121.212:8080/signUp",{
+    fetch("http://10.125.121.212:8080/api/signUp",{
       method : 'POST',
       body : {
         "username" : username,
@@ -40,7 +40,27 @@ const Signup = () => {
 
   /** 중복 아이디 검증(미완성) */
   const handleIsDuplication = () => {
-    
+    const username = document.querySelector("#username").value;
+    fetch("http://10.125.121.212:8080/api/searchDuplicatedName",{
+      method : "Post",
+      headers : {
+        "Content-Type" : "application/json"
+      },
+      body : JSON.stringify({
+        "username" : username
+      })
+    })
+    .then(res => {
+      if(res.status === 200){
+        alert("사용할 수 있는 아이디입니다.");
+      }else{
+        alert("중복된 아이디입니다.");
+      }
+    })
+    .catch(e => {
+      console.log(e);
+      alert("데이터 전송 중 에러 발생");
+    })
   }
 
   const handleGoBack = () => {
@@ -106,7 +126,7 @@ const Signup = () => {
               <div id="checkMsg" className="mb-10 mt-1 text-[30%] w-[14rem] md:text-sm whitespace-nowrap
               flex flex-col items-start md:w-96">{checkMsg}</div>
             </div>
-          <div className="grid md:grid-cols-2 gap-2">
+          <div className="grid md:grid-cols-2 gap-2 w-[90%] mx-auto">
             <button onClick={handleGoBack} 
             className='flex flex-col h-10 text-white rounded-md
             drop-shadow-lg bg-[#14A8DD] text-[95%]

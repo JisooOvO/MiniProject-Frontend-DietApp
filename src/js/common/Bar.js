@@ -16,7 +16,7 @@ const Bar = ({nutr, color, isKcal=false}) => {
 };
 
   return (
-    <div className="border h-[70%] w-[90%] relative rounded-md overflow-hidden">
+    <div className="border h-[70%] w-[70%] relative rounded-md overflow-hidden">
         <div className="absolute z-10 right-2 text-[80%] top-[50%] translate-y-[-50%]">{nutr.toFixed(2)}{unit}</div>
         <span className="border absolute h-full left-[5%] w-[0.1rem]"></span>
         <span className="border absolute h-full left-[10%] w-[0.1rem]"></span>

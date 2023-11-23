@@ -1,4 +1,3 @@
-import IsLogin from "../common/IsLogin";
 import leftarrow from "../../images/left_arrow.png";
 import rightarrow from "../../images/right_arrow.png";
 import { useNavigate, useParams } from "react-router-dom";
@@ -14,8 +13,6 @@ import CursorInfo from "../common/CursorInfo.js";
 import FoodDetailInfo from "../common/FoodDetailInfo.js";
 
 const User = () => {
-  //IsLogin();
-
   const [searchfood, setSearchFood] = useState();
   const [selectfood, setSelectFood] = useState([]);
   const [selectfoodView, setSelectFoodView] = useState();
@@ -31,72 +28,157 @@ const User = () => {
   const [sumNutr, setSumwNutr] = useState('');
   const [showNutr, setShowwNutr] = useState('');
   const [bmr,setBmr] = useState(0);
-  const [userInfo, setUserInfo] = useState('');
+  const [d,setD] = useState(day);
+  const [s,setS] = useState(slot);
+  const [userInfoView, setUserInfoView] = useState('');
   const [cursorInfo, setCursorInfo] = useState('');
   const [foodDetailInfo, setFoodDetailInfo] = useState('');
 
-  //let arr;
-  const arr = [
-    {
-      "food_name": "감자",
-      "serving_size": 100,
-      "kcal": 80,
-      "carbohydrate": 30,
-      "protein": 10,
-      "fat": 50
-    },
-    {
-      "food_name": "고구마",
-      "serving_size": 200,
-      "kcal": 20,
-      "carbohydrate": 50,
-      "protein": 70,
-      "fat": 90
-    },
-    {
-      "food_name": "고르곤졸라피자",
-      "serving_size": 600,
-      "kcal": 1200,
-      "carbohydrate": 120,
-      "protein": 70,
-      "fat": 100
-    },
-    {
-      "food_name": "제로콜라",
-      "serving_size": 100,
-      "kcal": 400,
-      "carbohydrate": 250,
-      "protein": 72,
-      "fat": 9
-    }
-  ];
+  let arr;
+  // const arr = [
+  //   {
+  //     "food_name": "감자",
+  //     "serving_size": 100,
+  //     "kcal": 80,
+  //     "carbohydrate": 30,
+  //     "protein": 10,
+  //     "fat": 50
+  //   },
+  //   {
+  //     "food_name": "고구마",
+  //     "serving_size": 200,
+  //     "kcal": 20,
+  //     "carbohydrate": 50,
+  //     "protein": 70,
+  //     "fat": 90
+  //   },
+  //   {
+  //     "food_name": "고르곤졸라피자",
+  //     "serving_size": 600,
+  //     "kcal": 1200,
+  //     "carbohydrate": 120,
+  //     "protein": 70,
+  //     "fat": 100
+  //   },
+  //   {
+  //     "food_name": "제로콜라",
+  //     "serving_size": 100,
+  //     "kcal": 400,
+  //     "carbohydrate": 250,
+  //     "protein": 72,
+  //     "fat": 9
+  //   },
+  //   {
+  //     "food_name": "제로콜라",
+  //     "serving_size": 100,
+  //     "kcal": 400,
+  //     "carbohydrate": 250,
+  //     "protein": 72,
+  //     "fat": 9
+  //   },
+  //   {
+  //     "food_name": "제로콜라",
+  //     "serving_size": 100,
+  //     "kcal": 400,
+  //     "carbohydrate": 250,
+  //     "protein": 72,
+  //     "fat": 9
+  //   },    {
+  //     "food_name": "제로콜라",
+  //     "serving_size": 100,
+  //     "kcal": 400,
+  //     "carbohydrate": 250,
+  //     "protein": 72,
+  //     "fat": 9
+  //   },
+  //   {
+  //     "food_name": "제로콜라",
+  //     "serving_size": 100,
+  //     "kcal": 400,
+  //     "carbohydrate": 250,
+  //     "protein": 72,
+  //     "fat": 9
+  //   },
+  //   {
+  //     "food_name": "제로콜라",
+  //     "serving_size": 100,
+  //     "kcal": 400,
+  //     "carbohydrate": 250,
+  //     "protein": 72,
+  //     "fat": 9
+  //   },
+  //   {
+  //     "food_name": "제로콜라",
+  //     "serving_size": 100,
+  //     "kcal": 400,
+  //     "carbohydrate": 250,
+  //     "protein": 72,
+  //     "fat": 9
+  //   },
+  // ];
   
   /** 접속시 데이터 불러오기 */
   useEffect(() => {
-    // fetch("http://10.125.121.212:8080/getFoodList", {
-    //   method: "post",
-    //   headers: {
-    //     "Authorization": token
-    //   },
-    //   body: JSON.stringify({
-    //     "date": day,
-    //     "slot": slot
-    //   })
-    // })
-    //   .then(res => res.json())
-    //   .then(data => {
-    //     console.log(data);
-    //     setSelectFood(data.history.diets);
-    //     setImageUrl(data.history.img);
-    //     setUserInfo(data.HI);
-    //   })
-    //   .catch(e => {
-    //     console.log(e);
-    //     alert("데이터 수신 중 에러 발생");
-    //   });
+    handleResize();
+
+    fetch("http://10.125.121.212:8080/api/getUserInformation", {
+      method: "post",
+      headers: {
+        "Authorization": token
+      },
+      body: JSON.stringify({
+        "date": day,
+        "slot": slot
+      })
+    })
+      .then(res => {
+        if(res.status === 200){
+          return res.json();
+        }else if(res.status === 403){
+          alert("로그인이 필요한 서비스입니다. 로그인 페이지로 이동합니다.");
+          navigate("/login");
+        }else{
+          alert("데이터 수신 중 에러 발생");
+        }
+      })
+      .then(data => {
+        console.log(data);
+        if(data.history !== null){
+          setSelectFood(data.history.diets);
+          setImageUrl(data.history.img);          
+        }else{
+          handleCancelButton();
+        }
+
+        if(data.HI !== null){
+          setUserInfoView(
+            <Statistics
+            height={+data.HI["height"]}
+            weight={+data.HI["weight"]}
+            age={+data.HI["age"]}
+            gender={+data.HI["gender"]}
+            activityFactor={+data.HI["activityFactor"]}
+            func={handleUserInfoSaveBt}
+          />
+        )}else{
+          setUserInfoView(
+            <Statistics
+            height={0}
+            weight={0}
+            age={0}
+            gender={1}
+            activityFactor={1}
+            func={handleUserInfoSaveBt}
+          />
+        )
+        };
+      })
+      .catch(e => {
+        console.log(e)
+      });
 
     // eslint-disable-next-line
-  }, [])
+  }, [day,slot])
 
   /** 삭제 함수 */
   const handleDeleteButton = (e) => {
@@ -108,12 +190,14 @@ const User = () => {
   /** 날짜 이동 함수 */
   const handleLeftButton = () => {
     const yesterday = CalYesterday(day.replaceAll("-",""));
+    setS(yesterday);
     navigate(`/user/${yesterday}/${slot}`)
   }
 
   /** 날짜 이동 함수 */
   const handleRightButton = () => {
     const tomorrow = CalTomorrow(day.replaceAll("-",""));
+    setS(tomorrow);
     navigate(`/user/${tomorrow}/${slot}`)
   }
 
@@ -145,7 +229,7 @@ const User = () => {
   /** 추가된 음식 리스트 */
   useEffect(() => {
     if (selectfood) {
-
+      
       loop1:
       for (let idx = 0; idx < selectfood.length; idx++) {
         const foodNm = selectfood[idx]["food_name"];
@@ -159,30 +243,32 @@ const User = () => {
       }
 
       setSelectFoodView(selectfood.map((item, idx) =>
-        <div key={`key${idx}`} className="h-[80%] md:h-[35%] w-[95%] p-2 border m-2 rounded-md shadow-md">
-          <div className="flex justify-between mb-1 h-[28%] w-[95%]">
+        <div key={`key${idx}`} className="h-[60%] md:h-[50%] w-[95%] p-2 border my-2 mx-auto rounded-md shadow-md">
+          <div className="flex justify-between mb-1 h-[20%] w-[95%]">
             <div className="flex gap-2 border rounded-md w-[80%] mb-1 shadow-inner bg-[#EFEFEF] p-2 text-gray-700">
               <div className="flex items-center text-[80%]">{item["food_name"]}</div>
               <div className="flex items-center text-[80%]">
                 <div>{item["intake_size"] + "g"}</div>
               </div>
             </div>
-            <div className="flex items-center mb-1"><button onClick={handleDeleteButton} className="hover:bg-[#707070] border w-7 h-7 shadow-md bg-white rounded-[50%] flex justify-center items-center">❌</button></div>
+            <div className="flex items-center mb-1"><button onClick={handleDeleteButton} 
+            className="hover:bg-[#707070] border w-7 h-7 shadow-md bg-white rounded-[50%] 
+            flex justify-center items-center">❌</button></div>
           </div>
-          <div className="h-[80%] w-[95%] flex flex-col justify-center border-t">
-            <div className="h-[20%] flex justify-center items-center">
+          <div className="h-[70%] w-full flex flex-col justify-center border-t">
+            <div className="h-[20%] flex justify-between items-center">
               <span className="text-[70%] whitespace-nowrap w-[20%]">칼로리</span>
               <Bar nutr={+item["kcal"]} color={"#F7CD01"} isKcal={true} />
             </div>
-            <div className="h-[20%] flex justify-center items-center">
+            <div className="h-[20%] flex justify-between items-center">
               <span className="text-[70%] whitespace-nowrap w-[20%]">탄수화물</span>
               <Bar nutr={+item["carbohydrate"]} color={"#88CB53"} />
             </div>
-            <div className="h-[20%] flex justify-center items-center">
+            <div className="h-[20%] flex justify-between items-center">
               <span className="text-[70%] whitespace-nowrap w-[20%]">단백질</span>
               <Bar nutr={+item["protein"]} color={"#35abf4"} />
             </div>
-            <div className="h-[20%] flex justify-center items-center">
+            <div className="h-[20%] flex justify-between items-center">
               <span className="text-[70%] whitespace-nowrap w-[20%]">지방</span>
               <Bar nutr={+item["fat"]} color={"#F54545"} />
             </div>
@@ -209,7 +295,6 @@ const User = () => {
       let totalTrans = 0;
 
       selectfood.forEach(item => {
-        console.log(item);
         totalKcal = totalKcal + +item["kcal"];
         totalWater = totalWater + +item["water"];
         totalProtein = totalProtein + +item["protein"];
@@ -249,6 +334,8 @@ const User = () => {
         "총 trans_fat": totalTrans
       });
 
+    }else{
+      setSelectFoodView('');
     }
   }, [selectfood]);
 
@@ -262,7 +349,7 @@ const User = () => {
 
     setBmr(CalBMR(height, weight, gender, age, activityFactor));
 
-    fetch("http://10.125.121.212:8080/health/add",{
+    fetch("http://10.125.121.212:8080/api/addUserInformation",{
       method : "post",
       headers : {
         "Content-Type" :"application/json",
@@ -276,7 +363,11 @@ const User = () => {
         "activityFactor" : activityFactor
       })
     })
-    .then(res => console.log(res))
+    .then(res => {
+      if(res.status === 200){
+        alert("저장되었습니다.");
+      }
+    })
     .catch(e => {
       console.log(e);
       alert("유저 정보 저장 중 에러 발생");
@@ -317,75 +408,81 @@ const User = () => {
     e.preventDefault();
     const search = document.querySelector("#searchfood").value;
 
-    setSearchFood(arr.map((item, idx) =>
-      <div key={`key${idx}`} className="w-full h-[10%] xl:h-[10%] p-2 border bg-[#efefef] grid grid-cols-2 shadow-inner rounded-lg mb-1">
-        <div className="flex flex-col justify-center border h-[90%] bg-white rounded-md p-2">
-          <div id="food_name" className="w-[70%] text-ellipsis drop-shadow text-[80%] md:text-[100%] text-gray-700">{item["food_name"]}</div>
-          <div className="flex text-sm text-gray-500">
-            <div className="text-[75%] md:text-[90%]">{item["serving_size"] + "g"}</div>
-            <div className="text-[75%] md:text-[90%]">&nbsp;{item["kcal"] + "kcal"}</div>
-          </div>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center justify-items-end h-full p-2">
-          <div className="flex items-center">
-            <input type="number" id="foodServeMn" defaultValue={item["serving_size"]}
-              className="border max-w-[4rem] shadow-inner p-1 rounded-lg" /><span>g&nbsp;</span>
-          </div>
-          <div className="flex">
-            <button onClick={handleCheckButton}
-              className="hover:bg-[#707070] border w-7 h-7 mr-2 text-green-500 shadow-md bg-white rounded-[50%]">✔</button>
-            <button onClick={handleDetailButton}
-              className="hover:bg-[#707070] border w-7 h-7 bg-white shadow-md  rounded-[50%]">🔍</button>
-          </div>
-        </div>
-      </div>
-    ));
-
-    // fetch("http://10.125.121.212:8080/searchFoodList",{
-    //   method : "POST",
-    //   body : JSON.stringify({
-    //     "foodname" : search
-    //   })
-    // })
-    // .then(res => res.json())
-    // .then(data => {
-    //   arr = data;
-    //   setSearchFood(arr.map((item,idx) =>
-    //   <div key={`key${idx}`} className="w-full h-[10%] xl:h-[10%] p-2 border bg-[#efefef] grid grid-cols-2 shadow-inner rounded-lg mb-1">
+    // setSearchFood(arr.map((item, idx) =>
+    //   <div key={`key${idx}`} className="w-full h-[30%] lg:h-[20%] xl:h-[10%] p-2 border bg-[#efefef] grid grid-cols-2 shadow-inner rounded-lg mb-1">
     //     <div className="flex flex-col justify-center border h-[90%] bg-white rounded-md p-2">
     //       <div id="food_name" className="w-[70%] text-ellipsis drop-shadow text-[80%] md:text-[100%] text-gray-700">{item["food_name"]}</div>
     //       <div className="flex text-sm text-gray-500">
-    //           <div className="text-[75%] md:text-[90%]">{item["serving_size"]+"g"}</div>
-    //           <div className="text-[75%] md:text-[90%]">&nbsp;{item["kcal"]+"kcal"}</div>
+    //         <div className="text-[75%] md:text-[90%]">{item["serving_size"] + "g"}</div>
+    //         <div className="text-[75%] md:text-[90%]">&nbsp;{item["kcal"] + "kcal"}</div>
     //       </div>
     //     </div>
     //     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center justify-items-end h-full p-2">
-    //         <div className="flex items-center">
-    //           <input type="number" id="foodServeMn" defaultValue={item["serving_size"]}
-    //            className="border max-w-[4rem] shadow-inner p-1 rounded-lg"/><span>g&nbsp;</span>
-    //         </div>
-    //         <div className="flex">
-    //           <button onClick={handleCheckButton} 
+    //       <div className="flex items-center">
+    //         <input type="number" id="foodServeMn" defaultValue={item["serving_size"]}
+    //           className="border max-w-[4rem] shadow-inner p-1 rounded-lg" /><span>g&nbsp;</span>
+    //       </div>
+    //       <div className="flex">
+    //         <button onClick={handleCheckButton}
     //           className="hover:bg-[#707070] border w-7 h-7 mr-2 text-green-500 shadow-md bg-white rounded-[50%]">✔</button>
-    //           <button onClick={handleDetailButton} 
+    //         <button onClick={handleDetailButton}
     //           className="hover:bg-[#707070] border w-7 h-7 bg-white shadow-md  rounded-[50%]">🔍</button>
-    //         </div>
+    //       </div>
     //     </div>
     //   </div>
-    //  ));
-    // })
-    // .catch(e => {
-    //   console.log(e);
-    //   alert("데이터 조회 중 에러 발생");
-    // });
+    // ));
+
+    fetch("http://10.125.121.212:8080/api/searchFoodList",{
+      method : "POST",
+      headers : {
+        "Authorization" : token
+      },
+      body : JSON.stringify({
+        "foodname" : search
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if(data){
+        arr = data;
+        setSearchFood(arr.map((item,idx) =>
+        <div key={`key${idx}`} className="w-full h-[8rem] p-2 border bg-[#efefef] grid grid-cols-2 shadow-inner rounded-lg mb-1">
+          <div className="flex flex-col justify-center border h-[90%] bg-white rounded-md p-2">
+            <div id="food_name" className="w-[70%] text-ellipsis drop-shadow text-[80%] md:text-[100%] text-gray-700">{item["food_name"]}</div>
+            <div className="flex text-sm text-gray-500">
+                <div className="text-[75%] md:text-[90%]">{item["serving_size"]+"g"}</div>
+                <div className="text-[75%] md:text-[90%]">&nbsp;{item["kcal"]+"kcal"}</div>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center justify-items-end h-full p-2">
+              <div className="flex items-center">
+                <input type="number" id="foodServeMn" defaultValue={item["serving_size"]}
+                className="border max-w-[4rem] shadow-inner p-1 rounded-lg"/><span>g&nbsp;</span>
+              </div>
+              <div className="flex">
+                <button onClick={handleCheckButton} 
+                className="hover:bg-[#707070] border w-7 h-7 mr-2 text-green-500 shadow-md bg-white rounded-[50%]">✔</button>
+                <button onClick={handleDetailButton} 
+                className="hover:bg-[#707070] border w-7 h-7 bg-white shadow-md  rounded-[50%]">🔍</button>
+              </div>
+          </div>
+        </div>
+      ))};
+    })
+    .catch(e => {
+      console.log(e);
+      alert("데이터 조회 중 에러 발생");
+    });
   }
 
   /** 저장 함수 */
   const handleSaveButton = () => {
-    fetch("http://10.125.121.212:8080/addFood", {
+    console.log(selectfood);
+    fetch("http://10.125.121.212:8080/api/addFoodList", {
       method: "POST",
       headers: {
-        "Authorization": token
+        "Authorization": token,
+        "Content-Type" : "application/json"
       },
       body: JSON.stringify({
         "date": day,
@@ -398,6 +495,8 @@ const User = () => {
         if (res.status === 200) {
           alert("저장되었습니다.");
           window.location.reload();
+        }else if(res.status === 400){
+          alert("")
         }
       })
       .catch(e => {
@@ -413,9 +512,10 @@ const User = () => {
     const input = document.getElementById('image');
     input.value = ''
     setImageUrl("");
+    setSelectFood("");
     img.classList.add('myhidden');
     preview.classList.remove("hidden");
-    if (selectfood) setSelectFood("");
+    
   }
 
   const today = CalToday();
@@ -438,7 +538,8 @@ const User = () => {
   }, [selectSlotIndex]);
 
   useEffect(() => {
-    if (isClickSlotButton) navigate(`/user/${today}/${selectSlot}`);
+    if (isClickSlotButton) navigate(`/user/${day}/${selectSlot}`);
+    setD(selectSlot);
     setIsClickSlotButton(false);
   }, [selectSlot])
 
@@ -461,10 +562,6 @@ const User = () => {
     handleResize();
   });
 
-  window.addEventListener('load', () => {
-    handleResize();
-  })
-
   const handleToggleContainer = () => {
     toggleContainer.classList.toggle("hidden");
   }
@@ -479,7 +576,7 @@ const User = () => {
   }
 
   return (
-    <div id="container" className="flex flex-col m-auto items-center w-[95%] h-[70rem] relative">
+    <div id="container" className="flex flex-col m-auto items-center w-[95%] relative">
       <div id="detailContainer">{foodDetailInfo}</div>
       <div className="w-full text-2xl sm:text-3xl h-20 flex justify-center items-center">
         <img src={leftarrow} alt="leftarrow" onClick={handleLeftButton} className="h-1/2 sm:h-full hover:cursor-pointer drop-shadow-md" />
@@ -488,17 +585,16 @@ const User = () => {
       </div>
       <div className="flex gap-1 justify-between w-full">
         <button id="hiddenBt" onClick={handleToggleContainer}
-          className="border hidden rounded-lg whitespace-nowrap text-[60%] 
-        sm:text-[100%] shadow-lg w-48 h-8 mb-2 
+          className="border hidden rounded-lg whitespace-nowrap text-[60%] sm:text-[100%] shadow-lg w-48 h-8 mb-2 
         bg-[#14A8DD] hover:bg-[#3A84F5] text-white">음식 검색하기 🔻</button>
         <div className="flex gap-1 justify-end w-full">
           <button onClick={handleCancelButton} className="border rounded-lg shadow-lg w-24 h-8 mb-2 text-[60%] sm:text-[100%]  bg-[#14A8DD] hover:bg-[#3A84F5] text-white">초기화</button>
           <button onClick={handleSaveButton} className="border rounded-lg shadow-lg w-24 h-8 mb-2 text-[60%] sm:text-[100%]  bg-[#14A8DD] hover:bg-[#3A84F5] text-white">저장하기</button>
         </div>
       </div>
-      <div className="grid grid-cols-1 gap-2 xl:grid-cols-2 w-full h-[65rem]">
-        <div id="toggleContainer" className="border rounded-lg p-2 shadow-lg bg-[#EAEAEA] h-full">
-          <nav className="h-[65rem] overflow-hidden">
+      <div className="grid grid-cols-1 gap-2 xl:grid-cols-2 w-full">
+        <div id="toggleContainer" 
+        className="border rounded-lg p-2 shadow-lg bg-[#EAEAEA] h-[30rem] lg:h-[70rem]">
             <div className="mb-2 w-full relative flex items-center gap-2">
               <input id="searchfood" type="text" name="food"
                 className="w-[98%] p-2 shadow-inner rounded-lg border-b-2" onKeyDown={handleSearchFood} placeholder="음식을 검색하세요" />
@@ -507,27 +603,29 @@ const User = () => {
               className="hover:cursor-pointer p-1 w-7 h-7 hover:bg-[#707070] shadow-md bg-white 
               rounded-[50%] border flex flex-col justify-center items-center">🔍</button>
             </div>
-            <div className="border m-1 lg:h-[95%] h-[85%] overflow-scroll overflow-x-hidden bg-white rounded-xl shadow-inner p-2">
+            <div className="border m-1 lg:h-[95%] h-[90%] bg-white rounded-xl shadow-inner p-2 overflow-scroll overflow-x-hidden">
               {searchfood}
             </div>
-          </nav>
         </div>
-        <div className="border h-[65rem] rounded-lg shadow-lg bg-[#EAEAEA] overflow-scroll overflow-x-hidden p-2">
+        <div className="border rounded-lg shadow-lg bg-[#EAEAEA] p-2 min-h-min lg:h-[70rem]">
           <div className="h-10 flex justify-between items-center border rounded-lg bg-white shadow-inner m-2">
             <img src={leftarrow} alt="leftarrow" onClick={handleSlotLeftButton} className="h-full hover:cursor-pointer drop-shadow-md" />
             <div>{selectSlot}</div>
             <img src={rightarrow} alt="rightarrow" onClick={handleSlotRightButton} className="h-full hover:cursor-pointer drop-shadow-md" />
           </div>
-          <div className="grid grid-cols-1 grid-rows-2 gap-1 md:grid-cols-2 p-4 w-full h-full">
-            <div>
-              <ImgUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
-            </div>
-            <div className="border row-start-2 md:row-start-1 overflow-scroll w-full overflow-x-hidden bg-white rounded-lg shadow-inner">
+          <div className="grid grid-cols-1 grid-rows-2 gap-1 md:grid-cols-2 p-4 w-full min-h-min lg:h-[87%]">
+            <ImgUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
+            <div 
+            className="border row-start-2 md:row-start-1 overflow-scroll w-full overflow-x-hidden 
+            bg-white rounded-lg shadow-inner">
               <div className="my-5 w-[90%] mx-auto h-10 border rounded-lg shadow-inner drop-shadow flex justify-center items-center">식단</div>
               {selectfoodView}
             </div>
-            <div className="border col-span-2 bg-white shadow-inner rounded-lg h-[35rem] overflow-scroll overflow-x-hidden p-2">
-              <div className="my-5 w-[90%] mx-auto h-10 border rounded-lg shadow-inner flex justify-center drop-shadow relative items-center">
+            <div 
+            className="border col-span-2 bg-white shadow-inner rounded-lg h-min sm:h-[32rem]
+            sm:overflow-scroll sm:overflow-x-hidden p-2">
+              <div className="my-5 w-[90%] mx-auto h-10 border rounded-lg shadow-inner 
+              flex justify-center drop-shadow relative items-center">
                 <p>식단 분석 🕵️‍♂️</p>
                 <button onMouseEnter={handleCursorInformation}
                 onMouseLeave={hadleCursorOut} 
@@ -536,14 +634,7 @@ const User = () => {
                 hover:cursor-pointer p-1 flex justify-center items-center">❕</button>
               </div>
               <div>{cursorInfo}</div>
-              { userInfo && <Statistics
-                height={+userInfo["height"]}
-                weight={+userInfo["weight"]}
-                age={+userInfo["age"]}
-                gender={+userInfo["gender"]}
-                activityFactor={+userInfo["activityFactor"]}
-                func={handleUserInfoSaveBt}
-              /> }
+              {userInfoView}
               {showNutr}
             </div>
           </div>
