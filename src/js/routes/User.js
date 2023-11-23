@@ -178,6 +178,34 @@ const User = () => {
       });
 
     // eslint-disable-next-line
+  }, [])
+
+  /** 화면 사이즈에따른 음식 검색 창 반응형 디자인 */
+  const toggleContainer = document.querySelector("#toggleContainer");
+  const hiddenBt = document.querySelector("#hiddenBt");
+
+  const handleResize = () => {
+    let width = window.innerWidth;
+    if (width < 1277) {
+      if (toggleContainer) toggleContainer.classList.add("hidden");
+      if (hiddenBt) hiddenBt.classList.remove("hidden");
+    } else {
+      if (toggleContainer) toggleContainer.classList.remove("hidden");
+      if (hiddenBt) hiddenBt.classList.add("hidden");
+    }
+  }
+
+  window.addEventListener('resize', () => {
+    handleResize();
+  });
+
+  window.addEventListener('load', () => {
+    handleResize();
+  })
+
+  const handleToggleContainer = () => {
+    toggleContainer.classList.toggle("hidden");
+  }
   }, [day,slot])
 
   /** 삭제 함수 */
@@ -546,29 +574,6 @@ const User = () => {
     setD(selectSlot);
     setIsClickSlotButton(false);
   }, [selectSlot])
-
-  /** 화면 사이즈에따른 음식 검색 창 반응형 디자인 */
-  const toggleContainer = document.querySelector("#toggleContainer");
-  const hiddenBt = document.querySelector("#hiddenBt");
-
-  const handleResize = () => {
-    let width = window.innerWidth;
-    if (width < 1277) {
-      if (toggleContainer) toggleContainer.classList.add("hidden");
-      if (hiddenBt) hiddenBt.classList.remove("hidden");
-    } else {
-      if (toggleContainer) toggleContainer.classList.remove("hidden");
-      if (hiddenBt) hiddenBt.classList.add("hidden");
-    }
-  }
-
-  window.addEventListener('resize', () => {
-    handleResize();
-  });
-
-  const handleToggleContainer = () => {
-    toggleContainer.classList.toggle("hidden");
-  }
 
   /** 커서 대면 통계 관련된 정보나오는 함수 */
   const handleCursorInformation = () => {

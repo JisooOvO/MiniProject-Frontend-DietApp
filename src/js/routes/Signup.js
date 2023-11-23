@@ -84,8 +84,8 @@ const Signup = () => {
   }
 
   return (
-    <div className="border-2 w-4/5 h-[70%] m-auto shadow-xl
-    flex flex-col items-center rounded-lg">
+    <div className="border-2 w-4/5 h-[70%] m-auto shadow-xl 
+    flex flex-col items-center rounded-lg relative">
       <FormTitle text1={"회원가입시 다양한 서비스를"} text2={"이용하실 수 있습니다"}/>
         <div className="mt-8 h-[50%] flex flex-col justify-center items-center">
             <div className="w-[90%]">
