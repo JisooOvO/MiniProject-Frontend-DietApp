@@ -206,7 +206,6 @@ const User = () => {
   const handleToggleContainer = () => {
     toggleContainer.classList.toggle("hidden");
   }
-  }, [day,slot])
 
   /** 삭제 함수 */
   const handleDeleteButton = (e) => {
