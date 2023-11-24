@@ -11,7 +11,7 @@ function App() {
   return (
       <BrowserRouter>
         <Header/>
-        <div className="w-screen flex flex-col grow">
+        <div id="container" className="w-screen flex flex-col grow">
           <Routes>
             <Route path="/" element={<Main/>}></Route>
             <Route path="/login" element={<Login/>}></Route>
