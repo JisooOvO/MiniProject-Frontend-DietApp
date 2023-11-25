@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import FoodDetailBar from "./FoodDetailBar";
 
 const FoodDetailInfo = ({targetFood}) => {
-
   const [servingSize,setServingSize] = useState('');
   const [showServingSize, setShowServingSize] = useState();
   const [{ x, y }, setPosition] = useState({
@@ -21,7 +20,7 @@ const FoodDetailInfo = ({targetFood}) => {
       });
     };
 
-    const mouseUpHandler = (e) => {
+    const mouseUpHandler = () => {
       document.removeEventListener('mousemove', mouseMoveHandler);
     };
 
@@ -57,8 +56,8 @@ const FoodDetailInfo = ({targetFood}) => {
     style={{ 
       transform: `translateX(${x}px) translateY(${y}px)`,
     }}
-    className="absolute lg:top-[40rem] top-48 left-[30%] z-50 rounded-lg shadow-lg p-2
-     border w-[18rem] h-[25rem] sm:w-[35rem] sm:h-[40rem] bg-[#14A8DD]">
+    className="absolute lg:top-[20rem] top-48 left-[2rem] z-50 rounded-lg shadow-lg p-2
+     border w-[16rem] h-[25rem] sm:w-[25rem] sm:h-[40rem] bg-[#14A8DD]">
         <div className="flex justify-between h-[10%]">
             <div className="border flex justify-between items-center h-full whitespace-nowrap
              bg-white shadow-inner w-[80%] rounded-md text-[50%] sm:text-[100%] p-2">
