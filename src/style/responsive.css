@@ -1,7 +1,6 @@
 @media (max-width:760px) {
     #mainTitle{
         font-size: 200%;
-        height: 40%;
     }
     #logo{
         margin-right: 30%;
@@ -27,7 +26,6 @@
 @media (max-width:450px) {
     #mainTitle{
         font-size: 130%;
-        height: 40%;
     }
     #logo{
         margin-right: 30%;

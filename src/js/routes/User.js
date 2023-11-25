@@ -1,7 +1,7 @@
 import leftarrow from "../../images/left_arrow.png";
 import rightarrow from "../../images/right_arrow.png";
 import { useNavigate, useParams } from "react-router-dom";
-import { CalToday, CalTomorrow, CalYesterday } from "../common/Calday"
+import { CalTomorrow, CalYesterday } from "../common/Calday"
 import { useEffect, useState } from "react";
 import Bar from "../common/Bar";
 import ImgUpload from "../common/ImgUpload";
@@ -58,10 +58,27 @@ const User = () => {
     }
   ]
 
+  const isValidDateFormat = (inputDate) => {
+    const dateObject = new Date(inputDate);
+    return (
+      dateObject instanceof Date && !isNaN(dateObject) &&
+      inputDate === dateObject.toISOString().split('T')[0]
+    );
+  };
 
   /** 접속시 데이터 불러오기 */
   useEffect(() => {
+
+    const isValidDate = isValidDateFormat(day);
+    const isValidSlot = slotList.includes(slot);
+
     handleResize();
+
+    console.log(isValidDate);
+
+    if (!isValidDate || !isValidSlot) {
+      navigate('/NotFound');
+    }
 
     //TEST
     setUserInfoView(
@@ -142,7 +159,7 @@ const User = () => {
       });
 
     // eslint-disable-next-line
-  }, [day,slot]);
+  }, [day,slot,navigate]);
 
   
   /** 화면 사이즈에따른 음식 검색 창 반응형 디자인 */
@@ -375,7 +392,7 @@ const User = () => {
         <div className="w-[90%] mt-10 mx-auto flex flex-col justify-center items-center gap-8">
           <HorizontalBarChart title={"칼로리"} unit={"kcal"}  userData={sumNutr["총 kcal"]} recommendData={bmr}/>
           <HorizontalBarChart title={"탄수화물"} unit={"g"}  userData={sumNutr["총 carbohydrate"]} recommendData={bmr/ (2 * 4)}/>
-          <HorizontalBarChart title={"단백질"} unit={"g"}  userData={sumNutr["총 protein"]} recommendData={userInfo["weight"] ? userInfo["weight"] : 0 }/>
+          <HorizontalBarChart title={"단백질"} unit={"g"}  userData={sumNutr["총 protein"]} recommendData={userInfo["weight"] ? userInfo["weight"] * 1.2 : bmr / (4 * 4) }/>
           <HorizontalBarChart title={"물"} unit={"mL"}  userData={sumNutr["총 water"]} recommendData={2000}/>
           <HorizontalBarChart title={"지방"} unit={"g"}  userData={sumNutr["총 fat"]} recommendData={bmr/(5 * 9)}/>
           <HorizontalBarChart title={"당류"} unit={"g"}  userData={sumNutr["총 sugars"]} recommendData={userInfo["gender"] === "1" ? 36 : 24 }/>
@@ -393,7 +410,7 @@ const User = () => {
         </div>
       );
     }
-  }, [sumNutr,userInfo])
+  }, [sumNutr,userInfo,bmr])
 
   /** 디테일 버튼*/
   const handleDetailButton = (e) => {
@@ -565,8 +582,6 @@ const User = () => {
     
   }
 
-  const today = CalToday();
-
   /** 시간대 이동 함수 */
   const handleSlotLeftButton = () => {
     setSelectSlotIndex(i => i + 2);
@@ -586,8 +601,8 @@ const User = () => {
 
   useEffect(() => {
     if (isClickSlotButton) navigate(`/user/${day}/${selectSlot}`);
-
     setIsClickSlotButton(false);
+    // eslint-disable-next-line
   }, [selectSlot])
 
   /** 커서 대면 통계 관련된 정보나오는 함수 */

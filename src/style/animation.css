@@ -1,0 +1,49 @@
+@keyframes shake {
+    0% {
+        transform: rotate(0) translateY(0);
+    }
+    25% {
+        transform: rotate(5deg) translateY(-5px);
+    }
+    50% {
+        transform: rotate(0);
+    }
+    75% {
+        transform: rotate(-5deg) translateY(-5px);
+    }
+    100% {
+        transform: rotate(0);
+    }
+}
+
+@keyframes shake2 {
+    0% {
+        transform: rotate(0) translateY(0);
+    }
+    25% {
+        transform: rotate(-10deg) translateY(-10px);
+    }
+    50% {
+        transform: rotate(0);
+    }
+    75% {
+        transform: rotate(10deg) translateY(-10px);
+    }
+    100% {
+        transform: rotate(0);
+    }
+}
+
+@keyframes typing {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+
+.typing-text {
+    overflow: hidden;
+    animation: typing 3s steps(100, end);
+}

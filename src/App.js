@@ -5,6 +5,7 @@ import Header from "./js/common/Header.js";
 import Signup from "./js/routes/Signup.js";
 import Main from "./js/routes/Main.js";
 import User from "./js/routes/User.js";
+import NotFound from "./js/routes/NotFound.js";
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
             <Route path="/login" element={<Login/>}></Route>
             <Route path="/signUp" element={<Signup/>}></Route>
             <Route path="/user/:date/:slot" element={<User/>}></Route>
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
       </BrowserRouter>
