@@ -62,7 +62,7 @@ const FoodDetailInfo = ({targetFood}) => {
             <div className="border flex justify-between items-center h-full whitespace-nowrap
              bg-white shadow-inner w-[80%] rounded-md text-[50%] sm:text-[100%] p-2">
               <p className="drop-shadow-md">
-                {targetFood[0]["food_name"]}
+                {targetFood[0]["foodname"]}
                 &nbsp;
                 { servingSize !== '' ? (targetFood[0]["kcal"]* (+servingSize/targetFood[0]["serving_size"])).toFixed(2) : 0 }
                 kcal

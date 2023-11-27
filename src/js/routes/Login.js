@@ -8,7 +8,7 @@ import { CalToday } from '../common/Calday';
 const Login = () => {
   const navigate = useNavigate();
   const today = CalToday();
-  const auth = localStorage.getItem("token");
+  const auth = sessionStorage.getItem("token");
   const isOauth2 = false;
   
   useEffect(()=>{
@@ -30,7 +30,7 @@ const Login = () => {
     .then(res => {
       const auth = res.headers.get("Authorization");
       if (auth) {
-        localStorage.setItem("token",auth);
+        sessionStorage.setItem("token",auth);
         alert("로그인에 성공했습니다. 유저 페이지로 이동합니다.");
         navigate(`/user/${today}/아침`);
       }else{

@@ -7,7 +7,7 @@ import { CalToday } from "../common/Calday";
 const Signup = () => {
   const navigate = useNavigate();
   const today = CalToday();
-  const auth = localStorage.getItem("token");
+  const auth = sessionStorage.getItem("token");
   const [checkMsg, setCheckMsg] = useState('');
 
   useEffect(()=>{

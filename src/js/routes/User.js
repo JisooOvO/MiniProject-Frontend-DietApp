@@ -11,6 +11,7 @@ import CalBMR from "../common/CalBMR.js";
 import HorizontalBarChart from "../common/HorizontalBarChart.js";
 import CursorInfo from "../common/CursorInfo.js";
 import FoodDetailInfo from "../common/FoodDetailInfo.js";
+import SearchFoodList from "../common/SearchFoodList.js";
 
 const User = () => {
   const [searchfood, setSearchFood] = useState();
@@ -23,7 +24,7 @@ const User = () => {
   const [selectSlotIndex, setSelectSlotIndex] = useState(slotList.indexOf(slot));
   const [selectSlot, setSelectSlot] = useState(slot);
   const [imageUrl, setImageUrl] = useState('');
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   const [isClickSlotButton, setIsClickSlotButton] = useState(false);
   const [sumNutr, setSumwNutr] = useState('');
   const [showNutr, setShowwNutr] = useState('');
@@ -32,31 +33,33 @@ const User = () => {
   const [userInfo, setUserInfo] = useState('');
   const [cursorInfo, setCursorInfo] = useState('');
   const [foodDetailInfo, setFoodDetailInfo] = useState('');
+  const [fastSearch, setFastSearch] = useState('');
+  const [favoriteList, setFavoriteList] = useState('');
 
-  //let arr;
-  const arr = [
-    {
-      "food_name" : "명란젓",
-      "kcal" : 200,
-      "serving_size" : 100,
-      "carbohydrate" : 50,
-      "protein" : 25,
-      "fat" : 10,
-      "sugars" : 5,
-      "fiber" : 8,
-      "sodium" : 580,
-      "cholesterol" : 180,
-      "trans_fat" : 0.18,
-      "saturated_fat" : 0.15,
-      "magnesium" : 12,
-      "calcium" : 250,
-      "vita_b1" : 0.12,
-      "vita_b2" : 0.24,
-      "vita_b12" : 0.17,
-      "vita_c" : 140,
-      "water" : 70
-    }
-  ]
+  let arr;
+  // const arr = [
+  //   {
+  //     "food_name" : "명란젓",
+  //     "kcal" : 200,
+  //     "serving_size" : 100,
+  //     "carbohydrate" : 50,
+  //     "protein" : 25,
+  //     "fat" : 10,
+  //     "sugars" : 5,
+  //     "fiber" : 8,
+  //     "sodium" : 580,
+  //     "cholesterol" : 180,
+  //     "trans_fat" : 0.18,
+  //     "saturated_fat" : 0.15,
+  //     "magnesium" : 12,
+  //     "calcium" : 250,
+  //     "vita_b1" : 0.12,
+  //     "vita_b2" : 0.24,
+  //     "vita_b12" : 0.17,
+  //     "vita_c" : 140,
+  //     "water" : 70
+  //   }
+  // ]
 
   const isValidDateFormat = (inputDate) => {
     const dateObject = new Date(inputDate);
@@ -74,25 +77,24 @@ const User = () => {
 
     handleResize();
 
-    console.log(isValidDate);
 
     if (!isValidDate || !isValidSlot) {
       navigate('/NotFound');
     }
 
     //TEST
-    setUserInfoView(
-      <Statistics
-      height={0}
-      weight={0}
-      age={0}
-      gender={1}
-      activityFactor={1}
-      func={handleUserInfoSaveBt}
-    />
-    )
+    // setUserInfoView(
+    //   <Statistics
+    //   height={0}
+    //   weight={0}
+    //   age={0}
+    //   gender={1}
+    //   activityFactor={1}
+    //   func={handleUserInfoSaveBt}
+    // />
+    // )
 
-    fetch("http://10.125.121.212:8080/api/getUserInformation", {
+    fetch("http://10.125.121.212:8080/api/private/getUserInformation", {
       method: "post",
       headers: {
         "Authorization": token
@@ -114,6 +116,13 @@ const User = () => {
       })
       .then(data => {
         //console.log(data);
+
+        if(data.Favor !== null){
+          setFavoriteList(data.Favor.map(item =>
+            item["foodname"]
+          ))
+        }
+
         if(data.history !== null){
           setSelectFood(data.history.diets);
           setImageUrl(data.history.img);          
@@ -159,7 +168,7 @@ const User = () => {
       });
 
     // eslint-disable-next-line
-  }, [day,slot,navigate]);
+  }, [day,slot]);
 
   
   /** 화면 사이즈에따른 음식 검색 창 반응형 디자인 */
@@ -189,7 +198,7 @@ const User = () => {
   const handleDeleteButton = (e) => {
     const foodNm = e.target.parentNode.parentNode.innerText;
     const searchfoodNm = foodNm.slice(0, foodNm.indexOf("\n"));
-    setSelectFood((prevItem => prevItem.filter((item) => item["food_name"] !== searchfoodNm)));
+    setSelectFood((prevItem => prevItem.filter((item) => item["foodname"] !== searchfoodNm)));
   }
 
   /** 날짜 이동 함수 */
@@ -207,10 +216,10 @@ const User = () => {
   /** 음식 추가 버튼 */
   const handleCheckButton = (e) => {
     const foodNm = e.target.parentNode.parentNode.parentNode.parentNode.innerText;
-    console.log(foodNm);
     const foodServeMn = foodNm.split("\n");
+
     let temp = JSON.parse(JSON.stringify(arr.filter((item) =>
-      item["food_name"] === foodServeMn[0]
+      item["foodname"] === foodServeMn[0]
     )));
 
     temp[0]["intake_size"] = e.target.parentNode.parentNode.parentNode.firstChild.firstChild.valueAsNumber
@@ -218,9 +227,8 @@ const User = () => {
     let gram = +temp[0]["intake_size"];
     let oriGram = +temp[0]["serving_size"];
 
-
     Object.entries(temp[0]).forEach(([key, value]) => {
-      if (key === "food_name" || key === "intake_size" || key === "serving_size") {
+      if (key === "foodname" || key === "intake_size" || key === "serving_size") {
         temp[0][key] = value;
       } else {
         temp[0][key] = String((+value * (gram / oriGram)).toFixed(2));
@@ -236,9 +244,9 @@ const User = () => {
       
       loop1:
       for (let idx = 0; idx < selectfood.length; idx++) {
-        const foodNm = selectfood[idx]["food_name"];
+        const foodNm = selectfood[idx]["foodname"];
         for (let i = selectfood.length - 1; i > idx; i--) {
-          const compareNm = selectfood[i]["food_name"];
+          const compareNm = selectfood[i]["foodname"];
           if (foodNm === compareNm) {
             selectfood.splice(idx, 1);
             break loop1;
@@ -250,7 +258,7 @@ const User = () => {
         <div key={`key${idx}`} className="h-[60%] md:h-[50%] w-[95%] p-2 border my-2 mx-auto rounded-md shadow-md">
           <div className="flex justify-between mb-1 h-[20%] w-[95%]">
             <div className="flex gap-2 border rounded-md w-[80%] mb-1 shadow-inner bg-[#EFEFEF] p-2 text-gray-700">
-              <div className="flex items-center text-[80%]">{item["food_name"]}</div>
+              <div className="flex items-center text-[80%]">{item["foodname"]}</div>
               <div className="flex items-center text-[80%]">
                 <div>{item["intake_size"] + "g"}</div>
               </div>
@@ -353,7 +361,7 @@ const User = () => {
 
     setBmr(CalBMR(height, weight, gender, age, activityFactor));
 
-    fetch("http://10.125.121.212:8080/api/addUserInformation",{
+    fetch("http://10.125.121.212:8080/api/private/addUserInformation",{
       method : "post",
       headers : {
         "Content-Type" :"application/json",
@@ -417,17 +425,60 @@ const User = () => {
     const food_nameElem = e.target.parentNode.parentNode.parentNode.parentNode.innerText;
     const foodNm = food_nameElem.slice(0,food_nameElem.indexOf("\n"));
 
-    const targetFood = arr.filter((item)=> item["food_name"] === foodNm);
+    const targetFood = arr.filter((item)=> item["foodname"] === foodNm);
 
     const detailContainer = document.querySelector("#detailContainer");
     detailContainer.classList.remove("hidden");
     setFoodDetailInfo(<FoodDetailInfo targetFood={targetFood}/>)
   }
 
+  function isInitialConsonant(char) {
+    const initialConsonants = /ㄱ|ㄲ|ㄴ|ㄷ|ㄸ|ㄹ|ㅁ|ㅂ|ㅃ|ㅅ|ㅆ|ㅇ|ㅈ|ㅉ|ㅊ|ㅋ|ㅌ|ㅍ|ㅎ/;
+    return initialConsonants.test(char);
+  }
+
   /** 자동완성 함수(미완) */
   const handleSearchFood = (e) => {
-    //console.dir(e);
+    const targetNm = e.target.value;
+
+    if(isInitialConsonant(targetNm)) return;
+    if(targetNm === '') return;
+
+    fetch("http://10.125.121.212:8080/api/private/fastSearch2",{
+      method : 'post',
+      headers : {
+        "Authorization" : token,
+        "Content-Type" : "application/json"
+      },
+      body : JSON.stringify({
+        "foodname" : targetNm
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      const target = data.map(item => item["foodname"]).slice();
+      console.log(target);
+      if(target.length > 0){
+        setFastSearch(target.map((item,idx)=>
+          <div key={`key${idx}`} tabIndex={1} 
+          className="border z-50 p-1 hover:bg-[#EAEAEA]"
+          onClick={(e)=>{
+            const searchfood = document.querySelector("#searchfood");
+            searchfood.value = e.target.innerText;
+            handleSearch(e);
+          }}>{item}</div>
+        ))
+      }
+      
+      if(target.length === 0){
+        setFastSearch(
+          <div>검색 조건에 해당하는 음식이 존재하지 않습니다.</div>
+        )
+      }
+    })
+    .catch(e => console.log(e));
   }
+
 
   /** 검색 함수 */
   const handleSearch = (e) => {
@@ -436,113 +487,40 @@ const User = () => {
 
     setSearchFood('');
 
-    setSearchFood(arr.map((item, idx) =>
-      <div key={`key${idx}`} className="w-full h-[30%] lg:h-[20%] xl:h-[10%] p-2 border bg-[#efefef] grid grid-cols-2 shadow-inner rounded-lg mb-1">
-        <div className="flex flex-col justify-center border h-[90%] bg-white rounded-md p-2">
-          <div id="food_name" className="w-[70%] text-ellipsis drop-shadow text-[80%] md:text-[100%] text-gray-700">{item["food_name"]}</div>
-          <div className="flex text-sm text-gray-500">
-            <div className="text-[75%] md:text-[90%]">{item["serving_size"] + "g"}</div>
-            <div className="text-[75%] md:text-[90%]">&nbsp;{item["kcal"] + "kcal"}</div>
-          </div>
+    fetch("http://10.125.121.212:8080/api/private/searchFoodList",{
+      method : "POST",
+      headers : {
+        "Authorization" : token
+      },
+      body : JSON.stringify({
+        "foodname" : search
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+     arr = data;
+     if(data.length === 0){
+      setSearchFood(
+        <div className="w-full h-[30%] lg:h-[20%] xl:h-[10%] p-2 border bg-[#efefef] grid grid-cols-2 items-center justify-center shadow-inner rounded-lg mb-1">
+          검색 조건에 해당하는 음식이 존재하지 않습니다.
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center justify-items-end h-full p-2">
-          <div className="flex items-center">
-            <input type="number" id="foodServeMn" defaultValue={item["serving_size"]}
-              className="border max-w-[4rem] shadow-inner p-1 rounded-lg" /><span>g&nbsp;</span>
-          </div>
-          <div className="flex">
-             <div className="relative">
-              <span id="favoriteBtt" className="text-sm hidden absolute -top-4 -left-2 whitespace-nowrap">즐겨찾기</span>
-              <button onClick={handleAddFavoritesButton}
-                onMouseEnter={()=>{
-                  const favoriteBtt = document.querySelector("#favoriteBtt");
-                  favoriteBtt.classList.remove("hidden");
-                }}
-                onMouseLeave={()=>{
-                  const favoriteBtt = document.querySelector("#favoriteBtt");
-                  favoriteBtt.classList.add("hidden");
-                }}
-                className="hover:bg-[#707070] border w-7 h-7 mr-2 shadow-md bg-white rounded-[50%] text-yellow-300">★</button>
-            </div>
-            <div className="relative">
-              <span id="addBt" className="text-sm hidden absolute -top-4 -left-2 whitespace-nowrap">추가하기</span>
-              <button onClick={handleCheckButton}
-                onMouseEnter={()=>{
-                  const addBt = document.querySelector("#addBt");
-                  addBt.classList.remove("hidden");
-                }}
-                onMouseLeave={()=>{
-                  const addBt = document.querySelector("#addBt");
-                  addBt.classList.add("hidden");
-                }}
-                className="hover:bg-[#707070] border w-7 h-7 mr-2 text-green-500 shadow-md bg-white rounded-[50%]">✔</button>
-            </div>
-            <div className="relative">
-              <span id="detailBt" className="text-sm hidden absolute -top-4 -left-2 whitespace-nowrap">상세보기</span>
-              <button onClick={handleDetailButton}
-                onMouseEnter={()=>{
-                  const detailBt = document.querySelector("#detailBt");
-                  detailBt.classList.remove("hidden");
-                }}
-                onMouseLeave={()=>{
-                  const detailBt = document.querySelector("#detailBt");
-                  detailBt.classList.add("hidden");
-                }}
-                className="hover:bg-[#707070] border w-7 h-7 bg-white shadow-md  rounded-[50%]">🔍</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    ));
-
-  //   fetch("http://10.125.121.212:8080/api/searchFoodList",{
-  //     method : "POST",
-  //     headers : {
-  //       "Authorization" : token
-  //     },
-  //     body : JSON.stringify({
-  //       "foodname" : search
-  //     })
-  //   })
-  //   .then(res => res.json())
-  //   .then(data => {
-  //     if(data){
-  //       arr = data;
-
-  //     setSearchFood(arr.map((item,idx) =>
-  //       <div key={`key${idx}`} className="w-full h-[8rem] p-2 border bg-[#efefef] grid grid-cols-2 shadow-inner rounded-lg mb-1">
-  //         <div className="flex flex-col justify-center border h-[90%] bg-white rounded-md p-2">
-  //           <div id="food_name" className="w-[70%] text-ellipsis drop-shadow text-[80%] md:text-[100%] text-gray-700">{item["food_name"]}</div>
-  //           <div className="flex text-sm text-gray-500">
-  //               <div className="text-[75%] md:text-[90%]">{item["serving_size"]+"g"}</div>
-  //               <div className="text-[75%] md:text-[90%]">&nbsp;{item["kcal"]+"kcal"}</div>
-  //           </div>
-  //         </div>
-  //         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center justify-items-end h-full p-2">  
-  //             <div className="flex items-center">
-  //               <input type="number" id="foodServeMn" defaultValue={item["serving_size"]}
-  //               className="border max-w-[4rem] shadow-inner p-1 rounded-lg"/><span>g&nbsp;</span>
-  //             </div>
-  //             <div className="flex">
-  //               <button onClick={handleCheckButton} 
-  //               className="hover:bg-[#707070] border w-7 h-7 mr-2 text-green-500 shadow-md bg-white rounded-[50%]">✔</button>
-  //               <button onClick={handleDetailButton}
-  //               className="hover:bg-[#707070] border w-7 h-7 bg-white shadow-md  rounded-[50%]">🔎</button>
-  //             </div>
-  //         </div>
-  //       </div>
-  //     ))};
-  //   })
-  //   .catch(e => {
-  //     console.log(e);
-  //     alert("데이터 조회 중 에러 발생");
-  //   });
+      )
+     }
+     if(data.length > 0){
+      setSearchFood(arr.map((item,idx) =>
+        <SearchFoodList item={item} idx={idx} handleAddFavoritesButton={handleAddFavoritesButton} handleCheckButton={handleCheckButton} handleDetailButton={handleDetailButton}/>
+      ))};
+    })
+    .catch(e => {
+      console.log(e);
+      alert("데이터 조회 중 에러 발생");
+    });
   }
 
   /** 저장 함수 */
   const handleSaveButton = () => {
     console.log(selectfood);
-    fetch("http://10.125.121.212:8080/api/addFoodList", {
+    fetch("http://10.125.121.212:8080/api/private/addFoodList", {
       method: "POST",
       headers: {
         "Authorization": token,
@@ -616,12 +594,66 @@ const User = () => {
 
   /** 즐겨찾기 함수 (미완) */
   const handleFavorites = () => {
-
+    setSearchFood('');
+    fetch("http://10.125.121.212:8080/api/private/searchFavoriteFoods",{
+      method : "post",
+      headers : {
+        "Authorization" : token,
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
+      arr = data;
+      console.log(arr);
+      if(data.length > 0){
+        setSearchFood(arr.map((item,idx) =>
+          <SearchFoodList item={item} idx={idx} 
+          handleAddFavoritesButton={handleAddFavoritesButton} 
+          handleCheckButton={handleCheckButton} 
+          handleDetailButton={handleDetailButton}/>
+        ))};
+    })
+    .catch(e => console.log(e));
   }
 
   /** 즐거찾기 등록 함수(미완) */
-  const handleAddFavoritesButton = () => {
+  const handleAddFavoritesButton = (e) => {
+    const target = e.target.parentNode.parentNode.parentNode.parentNode.innerText;
+    const targetName = target.slice(0,target.indexOf("\n"));
 
+    if(!favoriteList.includes(targetName)){
+      fetch("http://10.125.121.212:8080/api/private/addFavoriteFood",{
+        method : "post",
+        headers : {
+          "Authorization" : token,
+          "Content-Type" : "application/json"
+        },
+        body : JSON.stringify({
+          "foodname" : targetName
+        })
+      })
+      .then(res => {
+        if(res.status === 200){
+          setFavoriteList(prevItem => [...prevItem, targetName])
+          alert("즐겨찾기에 추가되었습니다");
+        }else{
+          alert("데이터 전송 중 에러 발생");
+        }
+      })
+      .catch(e => console.log(e))}
+    else{
+      // 여기다가 즐겨찾기 삭제 구현
+    };
+  }
+
+  useEffect(()=>{
+    console.log(arr);
+  },[favoriteList])
+
+  /** 달력 날짜 이동 함수 */
+  const handleChangeDate = (e) => {
+    const targetDate = e.target.value
+    navigate(`/user/${targetDate}/${slot}`)
   }
 
   return (
@@ -629,7 +661,8 @@ const User = () => {
       <div id="detailContainer">{foodDetailInfo}</div>
       <div className="w-full text-2xl sm:text-3xl mt-2 h-20 flex justify-center items-center">
         <img src={leftarrow} alt="leftarrow" onClick={handleLeftButton} className="h-1/2 sm:h-full hover:cursor-pointer drop-shadow-md" />
-        <span className="text-[70%] sm:text-[100%] drop-shadow">{day.slice(0, 4) + "년 " + day.slice(5, 7) + "월 " + day.slice(8, 10) + "일"}</span>
+        <label htmlFor="date1" className="text-[70%] sm:text-[100%] drop-shadow">{day.slice(0, 4) + "년 " + day.slice(5, 7) + "월 " + day.slice(8, 10) + "일"}</label>
+        <input type="date" onChange={handleChangeDate} id="date1" name="date1" className="w-10" defaultValue={day}/>
         <img src={rightarrow} alt="rightarrow" onClick={handleRightButton} className="h-1/2 sm:h-full hover:cursor-pointer drop-shadow-md" />
       </div>
       <div className="flex gap-1 justify-between w-full">
@@ -642,28 +675,16 @@ const User = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 gap-2 xl:grid-cols-2 w-full">
-        <div id="toggleContainer" 
+        <div id="toggleContainer"
         className="border rounded-lg p-2 shadow-lg bg-[#EAEAEA] h-[30rem] xl:h-[70rem]">
             <div className="mb-2 w-full relative flex items-center gap-2">
-              <input id="searchfood" type="text" name="food"
-                className="w-[94%] p-2 shadow-inner rounded-lg border-b-2" onKeyDown={handleSearchFood} placeholder="음식을 검색하세요" />
-              <div className="relative">
-                <span id="favoritesBt" className="text-sm hidden absolute -top-4 -left-2 whitespace-nowrap">즐겨찾기</span>
-                <button
-                onClick={handleFavorites}
-                onMouseEnter={()=>{
-                  const favoritesBt = document.querySelector("#favoritesBt");
-                  favoritesBt.classList.remove("hidden");
-                }}
-                onMouseLeave={()=>{
-                  const favoritesBt = document.querySelector("#favoritesBt");
-                  favoritesBt.classList.add("hidden");
-                }}
-                className="hover:cursor-pointer p-1 w-7 h-7 hover:bg-[#707070] shadow-md bg-white text-yellow-300
-                rounded-[50%] border flex flex-col justify-center items-center">
-                  ★
-                </button>
-              </div>
+                <input id="searchfood" type="text" name="food"
+                  className="w-[94%] p-2 shadow-inner rounded-lg border-b-2"
+                  onChange={handleSearchFood}
+                  placeholder="음식을 검색하세요" />
+                { fastSearch ?
+                <div id="fastSearch" onMouseLeave={()=>{setFastSearch('')}} 
+                className="absolute top-[100%] bg-white border-2 border-gray-700 rounded-md w-[92%] mt-1 z-50">{fastSearch}</div> : '' }
               <div className="relative">
                 <span id="searchBt" className="text-sm hidden absolute -top-4 -left-3 whitespace-nowrap">검색하기</span>
                 <button
@@ -679,6 +700,23 @@ const User = () => {
                 className="hover:cursor-pointer p-1 w-7 h-7 hover:bg-[#707070] shadow-md bg-white
                 rounded-[50%] border flex flex-col justify-center items-center">
                   🔍
+                </button>
+              </div> 
+              <div className="relative">
+                <span id="favoritesBt" className="text-sm hidden absolute -top-4 -left-2 whitespace-nowrap">즐겨찾기</span>
+                <button
+                onClick={handleFavorites}
+                onMouseEnter={()=>{
+                  const favoritesBt = document.querySelector("#favoritesBt");
+                  favoritesBt.classList.remove("hidden");
+                }}
+                onMouseLeave={()=>{
+                  const favoritesBt = document.querySelector("#favoritesBt");
+                  favoritesBt.classList.add("hidden");
+                }}
+                className="hover:cursor-pointer p-1 w-7 h-7 hover:bg-[#707070] shadow-md bg-white text-yellow-300
+                rounded-[50%] border flex flex-col justify-center items-center">
+                  ★
                 </button>
               </div>
             </div>
