@@ -49,7 +49,7 @@ const Login = () => {
   };
 
   return (
-    <div className="border-2 w-4/5 min-h-[400px] h-[70%] m-auto shadow-xl flex flex-col items-center rounded-lg relative">
+    <div className="border-2 w-4/5 min-h-[40rem] h-[70%] m-auto shadow-xl flex flex-col items-center rounded-lg relative">
       <FormTitle text1={"로그인이 필요한"} text2={" 서비스입니다."}/>
       <div className="flex flex-col items-center h-[30%]">
       <div className="mb-4 flex flex-col mt-36 justify-center items-center">

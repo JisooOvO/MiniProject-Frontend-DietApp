@@ -84,7 +84,7 @@ const Signup = () => {
   }
 
   return (
-    <div className="border-2 w-4/5 h-[70%] m-auto shadow-xl 
+    <div className="border-2 w-4/5 h-[70%] min-h-[40rem] m-auto shadow-xl 
     flex flex-col items-center rounded-lg relative">
       <FormTitle text1={"회원가입시 다양한 서비스를"} text2={"이용하실 수 있습니다"}/>
         <div className="mt-8 h-[50%] flex flex-col justify-center items-center">
@@ -130,9 +130,9 @@ const Signup = () => {
               <div id="checkMsg" className="mb-10 mt-1 text-[30%] w-[14rem] md:text-sm whitespace-nowrap
               flex flex-col items-start md:w-96">{checkMsg}</div>
             </div>
-          <div className="grid md:grid-cols-2 gap-2 w-[90%] mx-auto justify-center">
+          <div className="grid md:grid-cols-2 gap-4 w-[90%] mx-auto justify-center">
             <button onClick={handleGoBack} 
-            className='flex flex-col h-10 text-white rounded-md
+            className='flex flex-col h-10 text-white rounded-md 
             drop-shadow-lg bg-[#14A8DD] text-[95%]
             hover:bg-[#3A84F5] justify-center text-lg w-44 border items-center'>로그인</button>
             <button id="signUp"
