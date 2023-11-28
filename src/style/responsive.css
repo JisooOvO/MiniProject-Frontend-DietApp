@@ -1,6 +1,6 @@
 @media (max-width:760px) {
     #mainTitle{
-        font-size: 200%;
+        font-size: 180%;
     }
     #logo{
         margin-right: 30%;
@@ -14,12 +14,6 @@
     }
     input{
         font-size: 80%;
-    }
-    #signUp{
-        grid-row: 2;
-    }
-    #loginButtonContainer{
-        gap: 0;
     }
 }
 
@@ -43,17 +37,8 @@
     #googleLogin{
         font-size: 95%;
     }
-    #signUp{
-        margin-top: 0.5rem;
-        font-size: 95%;
-        grid-row: 2;
-    }
-    #loginSubmit{
-        width: 11rem;
-        font-size: 95%;
-    }
     a{
-        margin: 0 !important; 
+        margin-top: 0 !important; 
     }
 }
 

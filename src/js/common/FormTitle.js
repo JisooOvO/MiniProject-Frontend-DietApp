@@ -1,10 +1,9 @@
 import "../../style/responsive.css"
 
-const FormTitle = ({text1,text2}) => {
+const FormTitle = ({text1}) => {
   return (
-    <div id="loginTitle" className="font-bold flex flex-col items-center 
-    justify-center text-[#07B5D5] h-[5%]  md:text-[150%] mt-12 mb-14">
-      <div>{text1}</div><div>{text2}</div>
+    <div id="loginTitle" className="font-bold flex flex-col items-center justify-center text-[#07B5D5] whitespace-nowrap text-[100%] sm:text-[150%]">
+      <span>{text1}</span>
     </div>
   )
 }

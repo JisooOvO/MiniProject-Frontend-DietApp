@@ -1,10 +1,31 @@
-#loginSubmit{
-    text-align: center;
-    height: 2.5rem;
-    font-size: large;
-}
-
 form.was-validated input:invalid {
     border: 1px solid red;
     border-radius: 0.250rem;
+}
+
+@media (max-width:500px){
+    input{
+        width: 100% !important;
+    }
+    input::placeholder{
+        font-size: 0.6rem;
+    }
+}
+
+@media (max-width:424px){
+    #loginTitle{
+        font-size: 85%;
+    }
+    input{
+        width: 100% !important;
+    }
+    input::placeholder{
+        font-size: 0.4rem;
+    }
+    #duplicationBt{
+        top: 2rem;
+        right: 0.8rem;
+        width: 3rem;
+        font-size: 60%;
+    }
 }
