@@ -15,10 +15,10 @@ const Statistics = ({ height, weight, gender, age, activityFactor, func }) => {
         let width = window.innerWidth;
         if (width < 765) {
             if (NutrToggleHidden) NutrToggleHidden.classList.add("hidden");
-            NutrToggleBt.classList.remove("hidden");
+            if(NutrToggleBt) NutrToggleBt.classList.remove("hidden");
         } else {
             if (NutrToggleHidden) NutrToggleHidden.classList.remove("hidden");
-            NutrToggleBt.classList.add("hidden");
+            if(NutrToggleBt) NutrToggleBt.classList.add("hidden");
         }
     }
 

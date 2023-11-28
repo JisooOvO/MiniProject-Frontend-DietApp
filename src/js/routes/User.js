@@ -35,64 +35,25 @@ const User = () => {
   const [foodDetailInfo, setFoodDetailInfo] = useState('');
   const [fastSearch, setFastSearch] = useState('');
   const [favoriteList, setFavoriteList] = useState('');
-
-  let arr;
-  // const arr = [
-  //   {
-  //     "food_name" : "명란젓",
-  //     "kcal" : 200,
-  //     "serving_size" : 100,
-  //     "carbohydrate" : 50,
-  //     "protein" : 25,
-  //     "fat" : 10,
-  //     "sugars" : 5,
-  //     "fiber" : 8,
-  //     "sodium" : 580,
-  //     "cholesterol" : 180,
-  //     "trans_fat" : 0.18,
-  //     "saturated_fat" : 0.15,
-  //     "magnesium" : 12,
-  //     "calcium" : 250,
-  //     "vita_b1" : 0.12,
-  //     "vita_b2" : 0.24,
-  //     "vita_b12" : 0.17,
-  //     "vita_c" : 140,
-  //     "water" : 70
-  //   }
-  // ]
+  const [searchFoodList, setSearchFoodList] = useState('');
 
   const isValidDateFormat = (inputDate) => {
     const dateObject = new Date(inputDate);
     return (
-      dateObject instanceof Date && !isNaN(dateObject) &&
-      inputDate === dateObject.toISOString().split('T')[0]
+      dateObject instanceof Date && !isNaN(dateObject) && inputDate === dateObject.toISOString().split('T')[0]
     );
   };
 
   /** 접속시 데이터 불러오기 */
   useEffect(() => {
-
     const isValidDate = isValidDateFormat(day);
     const isValidSlot = slotList.includes(slot);
 
     handleResize();
 
-
     if (!isValidDate || !isValidSlot) {
       navigate('/NotFound');
     }
-
-    //TEST
-    // setUserInfoView(
-    //   <Statistics
-    //   height={0}
-    //   weight={0}
-    //   age={0}
-    //   gender={1}
-    //   activityFactor={1}
-    //   func={handleUserInfoSaveBt}
-    // />
-    // )
 
     fetch("http://10.125.121.212:8080/api/private/getUserInformation", {
       method: "post",
@@ -104,69 +65,64 @@ const User = () => {
         "slot": slot
       })
     })
-      .then(res => {
-        if(res.status === 200){
-          return res.json();
-        }else if(res.status === 403){
-          alert("로그인이 필요한 서비스입니다. 로그인 페이지로 이동합니다.");
-          navigate("/login");
-        }else{
-          alert("데이터 수신 중 에러 발생");
-        }
+    .then(res => {
+      if(res.status === 200){
+        return res.json();
+      }else if(res.status === 403){
+        alert("로그인이 필요한 서비스입니다. 로그인 페이지로 이동합니다.");
+        navigate("/login");
+      }else{
+        alert("데이터 수신 중 에러 발생");
+      }
       })
-      .then(data => {
-        //console.log(data);
+    .then(data => {
+      if(data.Favor !== null){
+        setFavoriteList(data.Favor.map(item => item["foodname"]))
+      }
 
-        if(data.Favor !== null){
-          setFavoriteList(data.Favor.map(item =>
-            item["foodname"]
-          ))
-        }
+      if(data.history !== null){
+        setSelectFood(data.history.diets);
+        setImageUrl(data.history.img);          
+      }else{
+        handleCancelButton();
+      }
 
-        if(data.history !== null){
-          setSelectFood(data.history.diets);
-          setImageUrl(data.history.img);          
-        }else{
-          handleCancelButton();
-        }
-
-        if(data.HI !== null){
-          setUserInfo(data.HI);
-          setBmr(
-            CalBMR(
-              data.HI["height"], 
-              data.HI["weight"], 
-              data.HI["gender"], 
-              data.HI["age"], 
-              data.HI["activityFactor"]
-            )
+      if(data.HI !== null){
+        setUserInfo(data.HI);
+        setBmr(
+          CalBMR(
+            data.HI["height"], 
+            data.HI["weight"], 
+            data.HI["gender"], 
+            data.HI["age"], 
+            data.HI["activityFactor"]
           )
-          setUserInfoView(
-            <Statistics
-            height={+data.HI["height"]}
-            weight={+data.HI["weight"]}
-            age={+data.HI["age"]}
-            gender={+data.HI["gender"]}
-            activityFactor={+data.HI["activityFactor"]}
-            func={handleUserInfoSaveBt}
-          />
-        )}else{
-          setUserInfoView(
-            <Statistics
-            height={0}
-            weight={0}
-            age={0}
-            gender={1}
-            activityFactor={1}
-            func={handleUserInfoSaveBt}
-          />
         )
-        };
-      })
-      .catch(e => {
-        console.log(e)
-      });
-
+        setUserInfoView(
+          <Statistics
+          height={+data.HI["height"]}
+          weight={+data.HI["weight"]}
+          age={+data.HI["age"]}
+          gender={+data.HI["gender"]}
+          activityFactor={+data.HI["activityFactor"]}
+          func={handleUserInfoSaveBt}
+        />
+      )}else{
+        setUserInfoView(
+          <Statistics
+          height={0}
+          weight={0}
+          age={0}
+          gender={1}
+          activityFactor={1}
+          func={handleUserInfoSaveBt}
+        />
+      )
+      };
+    })
+    .catch(e => {
+      console.log(e)
+    });
     // eslint-disable-next-line
   }, [day,slot]);
 
@@ -218,7 +174,7 @@ const User = () => {
     const foodNm = e.target.parentNode.parentNode.parentNode.parentNode.innerText;
     const foodServeMn = foodNm.split("\n");
 
-    let temp = JSON.parse(JSON.stringify(arr.filter((item) =>
+    let temp = JSON.parse(JSON.stringify(searchFoodList.filter((item) =>
       item["foodname"] === foodServeMn[0]
     )));
 
@@ -425,7 +381,7 @@ const User = () => {
     const food_nameElem = e.target.parentNode.parentNode.parentNode.parentNode.innerText;
     const foodNm = food_nameElem.slice(0,food_nameElem.indexOf("\n"));
 
-    const targetFood = arr.filter((item)=> item["foodname"] === foodNm);
+    const targetFood = searchFoodList.filter((item)=> item["foodname"] === foodNm);
 
     const detailContainer = document.querySelector("#detailContainer");
     detailContainer.classList.remove("hidden");
@@ -437,7 +393,7 @@ const User = () => {
     return initialConsonants.test(char);
   }
 
-  /** 자동완성 함수(미완) */
+  /** 자동완성 함수 */
   const handleSearchFood = (e) => {
     const targetNm = e.target.value;
 
@@ -457,16 +413,37 @@ const User = () => {
     .then(res => res.json())
     .then(data => {
       const target = data.map(item => item["foodname"]).slice();
-      console.log(target);
       if(target.length > 0){
         setFastSearch(target.map((item,idx)=>
-          <div key={`key${idx}`} tabIndex={1} 
-          className="border z-50 p-1 hover:bg-[#EAEAEA]"
+          <div key={`key${idx}`} tabIndex={1}  id="fastSearchItem"
+          className="border z-50 p-1 hover:bg-[#EAEAEA] focus:bg-[#EAEAEA]"
+          onKeyDown={(e)=>{
+            const searchfood = document.querySelector("#searchfood");
+            if(e.key === "Enter") {
+              searchfood.value = e.target.innerText;
+              handleSearch(e);
+              setFastSearch('');
+            }
+            if(e.key === "ArrowDown"){
+              e.preventDefault();
+              const next = e.target.nextSibling;
+              if(next) next.focus();
+              else searchfood.focus();
+            }
+            if(e.key === "ArrowUp"){
+              e.preventDefault();
+              const prev = e.target.previousSibling;
+              if(prev) prev.focus();
+              else searchfood.focus();
+            }
+          }}
           onClick={(e)=>{
             const searchfood = document.querySelector("#searchfood");
             searchfood.value = e.target.innerText;
             handleSearch(e);
-          }}>{item}</div>
+            setFastSearch('');
+          }}
+          >{item}</div>
         ))
       }
       
@@ -498,18 +475,7 @@ const User = () => {
     })
     .then(res => res.json())
     .then(data => {
-     arr = data;
-     if(data.length === 0){
-      setSearchFood(
-        <div className="w-full h-[30%] lg:h-[20%] xl:h-[10%] p-2 border bg-[#efefef] grid grid-cols-2 items-center justify-center shadow-inner rounded-lg mb-1">
-          검색 조건에 해당하는 음식이 존재하지 않습니다.
-        </div>
-      )
-     }
-     if(data.length > 0){
-      setSearchFood(arr.map((item,idx) =>
-        <SearchFoodList item={item} idx={idx} handleAddFavoritesButton={handleAddFavoritesButton} handleCheckButton={handleCheckButton} handleDetailButton={handleDetailButton}/>
-      ))};
+     setSearchFoodList(data);
     })
     .catch(e => {
       console.log(e);
@@ -517,9 +483,23 @@ const User = () => {
     });
   }
 
+  useEffect(()=>{
+    if(!searchFoodList) return;
+    if(searchFoodList.length === 0){
+      setSearchFood(
+        <div className="w-full h-[30%] lg:h-[20%] xl:h-[10%] p-2 border bg-[#efefef] grid grid-cols-2 items-center justify-center shadow-inner rounded-lg mb-1">
+          검색 조건에 해당하는 음식이 존재하지 않습니다.
+        </div>
+      )
+    }else{
+      setSearchFood(searchFoodList.map((item,idx) =>
+        <SearchFoodList key={`key${idx}`} item={item} idx={idx} favoriteList={favoriteList} handleAddFavoritesButton={handleAddFavoritesButton} handleCheckButton={handleCheckButton} handleDetailButton={handleDetailButton}/>
+      ))
+    };
+  },[searchFoodList,favoriteList])
+
   /** 저장 함수 */
   const handleSaveButton = () => {
-    console.log(selectfood);
     fetch("http://10.125.121.212:8080/api/private/addFoodList", {
       method: "POST",
       headers: {
@@ -592,8 +572,9 @@ const User = () => {
     setCursorInfo('')
   }
 
-  /** 즐겨찾기 함수 (미완) */
-  const handleFavorites = () => {
+  /** 즐겨찾기 검색 함수 */
+  const handleFavorites = (e) => {
+    e.preventDefault();
     setSearchFood('');
     fetch("http://10.125.121.212:8080/api/private/searchFavoriteFoods",{
       method : "post",
@@ -603,15 +584,7 @@ const User = () => {
     })
     .then(res => res.json())
     .then(data => {
-      arr = data;
-      console.log(arr);
-      if(data.length > 0){
-        setSearchFood(arr.map((item,idx) =>
-          <SearchFoodList item={item} idx={idx} 
-          handleAddFavoritesButton={handleAddFavoritesButton} 
-          handleCheckButton={handleCheckButton} 
-          handleDetailButton={handleDetailButton}/>
-        ))};
+      setSearchFoodList(data);
     })
     .catch(e => console.log(e));
   }
@@ -620,35 +593,45 @@ const User = () => {
   const handleAddFavoritesButton = (e) => {
     const target = e.target.parentNode.parentNode.parentNode.parentNode.innerText;
     const targetName = target.slice(0,target.indexOf("\n"));
-
-    if(!favoriteList.includes(targetName)){
-      fetch("http://10.125.121.212:8080/api/private/addFavoriteFood",{
-        method : "post",
-        headers : {
-          "Authorization" : token,
-          "Content-Type" : "application/json"
-        },
-        body : JSON.stringify({
-          "foodname" : targetName
+    setSearchFood('');
+    fetch("http://10.125.121.212:8080/api/private/addFavoriteFood",{
+      method : "post",
+      headers : {
+        "Authorization" : token,
+        "Content-Type" : "application/json"
+      },
+      body : JSON.stringify({
+        "foodname" : targetName
+      })
+    })
+    .then(res => {
+      if(res.status === 200){
+        setFavoriteList(prevItem => [...prevItem, targetName])
+        alert("즐겨찾기에 추가되었습니다");
+      }else{
+        fetch("http://10.125.121.212:8080/api/private/deleteFavoriteFood",{
+          method : "delete",
+          headers : {
+            "Authorization" : token,
+            "Content-Type" : "application/json"
+          },
+          body : JSON.stringify({
+            "foodname" : targetName
+          })
         })
-      })
-      .then(res => {
-        if(res.status === 200){
-          setFavoriteList(prevItem => [...prevItem, targetName])
-          alert("즐겨찾기에 추가되었습니다");
-        }else{
-          alert("데이터 전송 중 에러 발생");
-        }
-      })
-      .catch(e => console.log(e))}
-    else{
-      // 여기다가 즐겨찾기 삭제 구현
-    };
-  }
-
-  useEffect(()=>{
-    console.log(arr);
-  },[favoriteList])
+        .then(res => {
+          if(res.status === 200){
+            setFavoriteList(prevItem => prevItem.filter( item => item !== targetName ));
+            setSearchFoodList(prevItem => prevItem.filter( item => item["foodname"] !== targetName));
+            alert("즐겨찾기에서 제외했습니다");
+          }else{
+            alert("데이터 전송 중 에러 발생");
+          }
+        })
+        .catch(e => console.log(e));
+      }})
+    .catch(e => console.log(e))
+  };
 
   /** 달력 날짜 이동 함수 */
   const handleChangeDate = (e) => {
@@ -656,12 +639,22 @@ const User = () => {
     navigate(`/user/${targetDate}/${slot}`)
   }
 
+  /** 자동완성 함수 키다운시 발생하는 함수 */
+  const handleInputSearchKeydown = (e) => {
+    const fastSearch = document.querySelector("#fastSearch");
+    const fastSearchItem = document.querySelectorAll("#fastSearchItem");
+    if( e.key === "ArrowDown"){
+      e.preventDefault();
+      fastSearchItem[0].focus();
+    }
+  }
+
   return (
     <div id="container" className="flex flex-col m-auto items-center w-[95%] relative">
       <div id="detailContainer">{foodDetailInfo}</div>
       <div className="w-full text-2xl sm:text-3xl mt-2 h-20 flex justify-center items-center">
         <img src={leftarrow} alt="leftarrow" onClick={handleLeftButton} className="h-1/2 sm:h-full hover:cursor-pointer drop-shadow-md" />
-        <div className="text-[70%] w-[30%] text-center sm:text-[100%] drop-shadow relative">
+        <div className="text-[80%] w-[40%] text-center sm:text-[100%] drop-shadow relative">
           {day.slice(0, 4) + "년 " + day.slice(5, 7) + "월 " + day.slice(8, 10) + "일"}
           <input type="date" onChange={handleChangeDate} id="date1" name="date1" className="w-full absolute top-0 left-0 opacity-0" defaultValue={day}/>
         </div>
@@ -679,14 +672,16 @@ const User = () => {
       <div className="grid grid-cols-1 gap-2 xl:grid-cols-2 w-full">
         <div id="toggleContainer"
         className="border rounded-lg p-2 shadow-lg bg-[#EAEAEA] h-[30rem] xl:h-[70rem]">
-            <div className="mb-2 w-full relative flex items-center gap-2">
+            <form className="mb-2 w-full relative flex items-center gap-2">
                 <input id="searchfood" type="text" name="food"
-                  className="w-[94%] p-2 shadow-inner rounded-lg border-b-2"
+                  className="w-full p-2 shadow-inner rounded-lg border-b-2"
                   onChange={handleSearchFood}
+                  onKeyDown={handleInputSearchKeydown}
+                  autoComplete="off"
                   placeholder="음식을 검색하세요" />
                 { fastSearch ?
-                <div id="fastSearch" onMouseLeave={()=>{setFastSearch('')}} 
-                className="absolute top-[100%] bg-white border-2 border-gray-700 rounded-md w-[92%] mt-1 z-50">{fastSearch}</div> : '' }
+                <div id="fastSearch" onMouseLeave={()=>{setFastSearch('')}} tabIndex={1}
+                className="absolute top-[100%] bg-white border-2 border-gray-700 rounded-md w-full mt-1 z-50">{fastSearch}</div> : '' }
               <div className="relative">
                 <span id="searchBt" className="text-sm hidden absolute -top-4 -left-3 whitespace-nowrap">검색하기</span>
                 <button
@@ -721,7 +716,7 @@ const User = () => {
                   ★
                 </button>
               </div>
-            </div>
+            </form>
             <div className="border m-1 xl:h-[95%] h-[88%] bg-white rounded-xl shadow-inner p-2 overflow-scroll overflow-x-hidden">
               {searchfood}
             </div>

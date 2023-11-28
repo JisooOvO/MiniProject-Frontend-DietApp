@@ -57,7 +57,7 @@ const FoodDetailInfo = ({targetFood}) => {
       transform: `translateX(${x}px) translateY(${y}px)`,
     }}
     className="absolute lg:top-[20rem] top-48 left-[2rem] z-50 rounded-lg shadow-lg p-2
-     border w-[16rem] h-[25rem] sm:w-[25rem] sm:h-[40rem] bg-[#14A8DD]">
+     border w-[25rem] h-[25rem] sm:w-[35rem] sm:h-[40rem] bg-[#14A8DD]">
         <div className="flex justify-between h-[10%]">
             <div className="border flex justify-between items-center h-full whitespace-nowrap
              bg-white shadow-inner w-[80%] rounded-md text-[50%] sm:text-[100%] p-2">

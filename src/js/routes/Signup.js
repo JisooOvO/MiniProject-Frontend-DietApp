@@ -68,6 +68,7 @@ const Signup = () => {
   }
 
   const handleCheckPassword = () => {
+    
     const password = document.querySelector("#password").value;
     const checkPassword = document.querySelector("#checkPassword").value;
     const checkMsgContainer = document.querySelector("#checkMsg");
@@ -87,7 +88,7 @@ const Signup = () => {
     <div className="border-2 w-4/5 h-[70%] min-h-[40rem] m-auto shadow-xl 
     flex flex-col items-center rounded-lg relative">
       <FormTitle text1={"회원가입시 다양한 서비스를"} text2={"이용하실 수 있습니다"}/>
-        <div className="mt-8 h-[50%] flex flex-col justify-center items-center">
+        <form className="mt-8 h-[50%] flex flex-col justify-center items-center">
             <div className="w-[90%]">
               <label htmlFor="username" className="hidden">아이디</label>
               <input id="username" 
@@ -141,7 +142,7 @@ const Signup = () => {
             drop-shadow-lg bg-[#14A8DD] text-[95%]
             hover:bg-[#3A84F5] justify-center text-lg w-44 border items-center'>회원가입</button>
           </div>
-        </div>
+        </form>
     </div>
   )
 }

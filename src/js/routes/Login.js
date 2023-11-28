@@ -17,7 +17,8 @@ const Login = () => {
     // eslint-disable-next-line
   },[])
 
-  const handleLoginButton = function() {
+  const handleLoginButton = function(e) {
+    e.preventDefault();
     let username = document.querySelector("#id").value;
     let password = document.querySelector("#password").value;
 
@@ -51,28 +52,30 @@ const Login = () => {
   return (
     <div className="border-2 w-4/5 min-h-[40rem] h-[70%] m-auto shadow-xl flex flex-col items-center rounded-lg relative">
       <FormTitle text1={"로그인이 필요한"} text2={" 서비스입니다."}/>
-      <div className="flex flex-col items-center h-[30%]">
-      <div className="mb-4 flex flex-col mt-36 justify-center items-center">
-          <label htmlFor="id" className="hidden">아이디</label>
-            <input id="id" className="md:w-[32rem] h-10 p-1 mb-[8%] border-b" 
-            name="id" type="text" placeholder="아이디" required/>
-          <label htmlFor="password" className="hidden">비밀번호</label>
-            <input id='password' className="md:w-[32rem] h-10 p-1 mb-[8%] border-b" 
-            name="password" type="password" placeholder="비밀번호" required/>
-      </div>
-      <div id='loginButtonContainer' className="grid grid-col-1 w-[11rem] grid-rows-1 gap-2 md:grid-cols-2 md:w-[32rem] items-center justify-center">
-        <input id='loginSubmit' onClick={handleLoginButton} defaultValue={"로그인"} className="border drop-shadow-lg 
-        text-white rounded-md bg-[#14A8DD] hover:bg-[#3A84F5] hover:cursor-pointer"/>    
-        <Link to={'/signUp'} id='signUp' className='flex flex-col h-10 text-white rounded-md drop-shadow-lg bg-[#14A8DD]
-          hover:bg-[#3A84F5] justify-center text-lg border items-center'>회원가입</Link>
-        <div className='col-span-2 hover:cursor-pointer' onClick={handleGoogleoauth}>
-          { isOauth2 ? <div id='googleLogin' className='flex h-10 text-white rounded-md drop-shadow-lg bg-[#14A8DD]
-          hover:bg-[#3A84F5] justify-center text-lg border items-center'>
-            <img src={googlelogo} alt='googlelogo' className='w-6 h-6'/><span>&nbsp; 구글 로그인</span>
-          </div> : ''}
+      <form>
+        <div className="flex flex-col items-center h-[30%]">
+        <div className="mb-4 flex flex-col mt-36 justify-center items-center">
+            <label htmlFor="id" className="hidden">아이디</label>
+              <input id="id" className="md:w-[32rem] h-10 p-1 mb-[8%] border-b"
+              name="id" type="text" placeholder="아이디" required/>
+            <label htmlFor="password" className="hidden">비밀번호</label>
+              <input id='password' className="md:w-[32rem] h-10 p-1 mb-[8%] border-b"
+              name="password" type="password" placeholder="비밀번호" required/>
         </div>
-      </div>
-      </div>
+        <div id='loginButtonContainer' className="grid grid-col-1 w-[11rem] grid-rows-1 gap-2 md:grid-cols-2 md:w-[32rem] items-center justify-center">
+          <button id='loginSubmit' onClick={handleLoginButton} className="border drop-shadow-lg
+          text-white rounded-md bg-[#14A8DD] hover:bg-[#3A84F5] hover:cursor-pointer">로그인</button>
+          <Link to={'/signUp'} id='signUp' className='flex flex-col h-10 text-white rounded-md drop-shadow-lg bg-[#14A8DD]
+            hover:bg-[#3A84F5] justify-center text-lg border items-center'>회원가입</Link>
+          <div className='col-span-2 hover:cursor-pointer' onClick={handleGoogleoauth}>
+            { isOauth2 ? <div id='googleLogin' className='flex h-10 text-white rounded-md drop-shadow-lg bg-[#14A8DD]
+            hover:bg-[#3A84F5] justify-center text-lg border items-center'>
+              <img src={googlelogo} alt='googlelogo' className='w-6 h-6'/><span>&nbsp; 구글 로그인</span>
+            </div> : ''}
+          </div>
+        </div>
+        </div>
+      </form>
     </div>
   );
 };
