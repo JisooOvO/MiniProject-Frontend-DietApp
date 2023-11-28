@@ -11,7 +11,6 @@ const Signup = () => {
   const [checkMsg, setCheckMsg] = useState('');
 
   useEffect(() => {
-    // 여기 수정
     if (auth) navigate(`/user/${today}/아침`);
   }, [auth, navigate, today])
 
@@ -38,7 +37,7 @@ const Signup = () => {
     })
   });
 
-  /** 중복 아이디 검증(미완성) */
+  /** 중복 아이디 검증 */
   const handleIsDuplication = () => {
     const username = document.querySelector("#username").value;
     fetch("http://10.125.121.212:8080/api/searchDuplicatedName", {

@@ -12,7 +12,6 @@ const Login = () => {
   const isOauth2 = false;
 
   useEffect(() => {
-    // 여기 수정
     if (auth) navigate(`/user/${today}/아침`);
     // eslint-disable-next-line
   }, [])

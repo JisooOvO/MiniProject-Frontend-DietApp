@@ -1,4 +1,8 @@
 const NotFound = () => {
+    const handleGoBack = () => {
+        window.history.back();
+    }
+
     return (
         <div className="flex items-center justify-center h-screen bg-gray-100">
             <div className="text-center">
@@ -11,6 +15,13 @@ const NotFound = () => {
                     <line x1="15" y1="9" x2="9" y2="15"></line>
                     <line x1="9" y1="9" x2="15" y2="15"></line>
                 </svg>
+                <div className='flex items-center w-full'>
+                    <span className='border w-1/3'></span>
+                    <div onClick={handleGoBack} className='text-sm sm:text-base flex flex-col h-10 rounded-md drop-shadow-lg grow justify-center whitespace-nowrap mx-1 text-gray-500 items-center hover:cursor-pointer hover:text-gray-600'>
+                        이전 페이지로 돌아가기
+                    </div>
+                    <span className='border w-1/3'></span>
+                </div>
             </div>
         </div>
     )

@@ -654,7 +654,7 @@ const User = () => {
       <div id="detailContainer">{foodDetailInfo}</div>
       <div className="w-full text-2xl sm:text-3xl mt-2 h-20 flex justify-center items-center">
         <img src={leftarrow} alt="leftarrow" onClick={handleLeftButton} className="h-1/2 sm:h-full hover:cursor-pointer drop-shadow-md" />
-        <div className="text-[80%] w-[40%] text-center sm:text-[100%] drop-shadow relative">
+        <div className="text-[80%] w-[40%] max-w-[20rem] text-center sm:text-[100%] drop-shadow relative">
           {day.slice(0, 4) + "년 " + day.slice(5, 7) + "월 " + day.slice(8, 10) + "일"}
           <input type="date" onChange={handleChangeDate} id="date1" name="date1" className="w-full absolute top-0 left-0 opacity-0" defaultValue={day}/>
         </div>
