@@ -1,10 +1,7 @@
 import { useEffect } from "react";
 import "../../style/responsive.css"
 
-const Statistics = ({ height, weight, gender, age, activityFactor, func }) => {
-
-
-
+const UserInformation = ({ height, weight, gender, age, activityFactor, func }) => {
     const handleToggleNurtBt = (e) => {
         e.target.nextSibling.classList.toggle("hidden");
     }
@@ -110,4 +107,4 @@ const Statistics = ({ height, weight, gender, age, activityFactor, func }) => {
     )
 }
 
-export default Statistics
+export default UserInformation

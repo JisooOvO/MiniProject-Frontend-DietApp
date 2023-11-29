@@ -23,9 +23,15 @@ const HorizontalBarChart = ({title,unit,userData,recommendData}) => {
       <div className="w-[100%] mt-1 flex flex-col gap-2
       border p-4 rounded-md shadow-inner">
           <span className="text-sm">일일 권장 섭취 {title}</span>
-          <div style={{width : `${RecommendRatio}%`}} className="bg-blue-500 w-full h-8 rounded-md flex flex-col text-sm justify-center text-end p-2">{recommendData? recommendData.toFixed(2) : 0}{unit}</div>
+          <div className="relative border rounded-md shadow-inner">
+            <div className="absolute right-2 top-[50%] translate-y-[-50%] text-sm">{recommendData? recommendData.toFixed(2) : 0}{unit}</div>
+            <div style={{width : `${RecommendRatio}%`}} className="bg-blue-500 w-full h-8 rounded-md"></div>
+          </div>
           <span className="text-sm">{slot}에 섭취한 {title}</span>
-          <div style={dynamicStyle} className="bg-green-400 rounded-md h-8 flex flex-col justify-center text-sm text-end p-2">{userData ? userData.toFixed(2) : 0}{unit}</div>
+          <div className="relative border rounded-md shadow-inner">
+            <div className="absolute right-2 top-[50%] translate-y-[-50%] text-sm">{userData ? userData.toFixed(2) : 0}{unit}</div>
+            <div style={dynamicStyle} className="bg-green-400 rounded-md h-8"></div>
+          </div>
       </div>
     </div>
   )
