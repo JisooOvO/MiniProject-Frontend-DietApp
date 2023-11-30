@@ -12,6 +12,7 @@ import HorizontalBarChart from "../common/HorizontalBarChart.js";
 import CursorInfo from "../common/CursorInfo.js";
 import FoodDetailInfo from "../common/FoodDetailInfo.js";
 import SearchFoodList from "../common/SearchFoodList.js";
+import TodayTotalNutrient from "../common/TodayTotalNutrient.js";
 
 const User = () => {
   const [searchfood, setSearchFood] = useState();
@@ -36,6 +37,7 @@ const User = () => {
   const [fastSearch, setFastSearch] = useState('');
   const [favoriteList, setFavoriteList] = useState('');
   const [searchFoodList, setSearchFoodList] = useState('');
+  const [todayTotalNutrientInfo,setTodayTotalNutrientInfo] = useState('');
 
   /** 날짜 유효성 검사 함수 */
   const isValidDateFormat = (inputDate) => {
@@ -84,6 +86,7 @@ const User = () => {
       }
 
       if (data.history !== null) {
+        console.log(data.history);
         setSelectFood(data.history.diets);
         setImageUrl(data.history.img);
       } 
@@ -331,7 +334,6 @@ const User = () => {
 
   /** 통계 함수 */
   useEffect(() => {
-    console.log(sumNutr);
     if (sumNutr) {
       setShowwNutr(
         <div className="w-[90%] mt-10 mx-auto flex flex-col justify-center items-center gap-8">
@@ -350,7 +352,7 @@ const User = () => {
           <HorizontalBarChart title={"마그네슘"} unit={"mg"} userData={sumNutr["totalMagnesium"]} recommendData={userInfo["gender"] === "1" ? 350 : 280} />
           <HorizontalBarChart title={"비타민B1"} unit={"mg"} userData={sumNutr["totalVitaB1"]} recommendData={userInfo["gender"] === "1" ? 1.2 : 1.1} />
           <HorizontalBarChart title={"비타민B2"} unit={"mg"} userData={sumNutr["totalVitaB2"]} recommendData={userInfo["gender"] === "1" ? 1.5 : 1.2} />
-          <HorizontalBarChart title={"비타민B12"} unit={"mg"} userData={sumNutr["totalVitaB12"]} recommendData={2.4} />
+          <HorizontalBarChart title={"비타민B12"} unit={"µg"} userData={sumNutr["totalVitaB12"]} recommendData={2.4} />
           <HorizontalBarChart title={"비타민C"} unit={"mg"} userData={sumNutr["totalVitaC"]} recommendData={200} />
         </div>
       );
@@ -483,6 +485,7 @@ const User = () => {
 
   /** 저장 함수 */
   const handleSaveButton = () => {
+    console.log(day,slot,selectfood,imageUrl,sumNutr)
     fetch("http://10.125.121.212:8080/api/private/addFoodList", {
       method: "POST",
       headers: {
@@ -501,8 +504,8 @@ const User = () => {
         if (res.status === 200) {
           alert("저장되었습니다.");
           window.location.reload();
-        } else if (res.status === 400) {
-          alert("")
+        } else {
+          alert("데이터 수신 중 오류 발생")
         }
       })
       .catch(e => {
@@ -518,7 +521,7 @@ const User = () => {
     const input = document.getElementById('image');
     input.value = ''
     setImageUrl("");
-    setSelectFood("");
+    setSelectFood([]);
     img.classList.add('myhidden');
     preview.classList.remove("hidden");
 
@@ -635,13 +638,33 @@ const User = () => {
 
   /** 오늘 통계 보여주는 함수 */
   const handleTotalStaticButton = () => {
+    const todayTotalNutrientContainer = document.querySelector("#todayTotalNutrientContainer");
+    todayTotalNutrientContainer.classList.remove("hidden");
 
+    fetch("http://10.125.121.212:8080/api/private/getTodayTotalNutrient",{
+      method : "post",
+      headers : {
+        "Authorization" : token,
+        "Content-Type" : "application/json"
+      },
+      body : JSON.stringify({
+        "date" : day
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      setTodayTotalNutrientInfo(<TodayTotalNutrient day={day} data={data} bmr={bmr} userInfo={userInfo}/>);
+    })
+    .catch(e => {
+      console.log(e);
+      alert("데이터 수신 중 에러 발생");
+    });
   }
 
   return (
     <div id="container" className="flex flex-col m-auto items-center w-[95%] relative">
       <div id="detailContainer">{foodDetailInfo}</div>
-
+      <div id="todayTotalNutrientContainer">{todayTotalNutrientInfo}</div>
       <div className="w-full text-2xl sm:text-3xl mt-2 h-20 flex justify-center items-center">
         <img src={leftarrow} alt="leftarrow" onClick={handleLeftButton} className="h-1/2 sm:h-full hover:cursor-pointer drop-shadow-md" />
         <div className="text-[80%] w-[55%] max-w-[20rem] text-center sm:text-[100%] drop-shadow whitespace-nowrap relative">
@@ -656,7 +679,7 @@ const User = () => {
           className="border hidden rounded-lg whitespace-nowrap text-[60%] sm:text-[100%] shadow-lg w-32 sm:w-48 h-8 mb-2 
         bg-[#14A8DD] hover:bg-[#3A84F5] text-white">음식 검색하기 ▼</button>
         <div className="flex gap-1 justify-end w-full">
-          <button onClick={handleTotalStaticButton} className="border rounded-lg shadow-lg max-w-[8rem] grow sm:w-44 h-8 mb-2 text-[60%] sm:text-[100%] whitespace-nowrap bg-[#14A8DD] hover:bg-[#3A84F5] text-white">하루 통계</button>
+          <button onClick={handleTotalStaticButton} className="border rounded-lg shadow-lg max-w-[8rem] grow sm:w-44 h-8 mb-2 text-[60%] sm:text-[100%] whitespace-nowrap bg-[#14A8DD] hover:bg-[#3A84F5] text-white">오늘의 기록</button>
           <button onClick={handleCancelButton} className="border rounded-lg shadow-lg w-16 sm:w-24 h-8 mb-2 text-[60%] sm:text-[100%]  bg-[#14A8DD] hover:bg-[#3A84F5] text-white">초기화</button>
           <button onClick={handleSaveButton} className="border rounded-lg shadow-lg w-16 sm:w-24 h-8 mb-2 text-[60%] sm:text-[100%]  bg-[#14A8DD] hover:bg-[#3A84F5] text-white">저장하기</button>
         </div>
