@@ -1,7 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "../../style/responsive.css"
+import { useParams } from "react-router-dom";
 
 const UserInformation = ({ height, weight, gender, age, activityFactor, func }) => {
+    const slot = useParams().slot;
+    const [weightView, setWeightView] = useState('');
     const handleToggleNurtBt = (e) => {
         e.target.nextSibling.classList.toggle("hidden");
     }
@@ -23,16 +26,22 @@ const UserInformation = ({ height, weight, gender, age, activityFactor, func }) 
         handleResize();
     });
 
+
+    useEffect(()=>{
+        setWeightView(
+            <input type="number" id="weight" defaultValue={weight} name="weight"
+            className="border max-w-[5rem] text-[80%] sm:max-w-[7rem] md:max-w-[8rem] shadow-inner p-1 rounded-lg" />
+        )
+    },[weight])
+
     useEffect(()=>{
         handleResize();
     },[])
 
     return (
         <div>
-            <div id="NutrToggleBt" onClick={handleToggleNurtBt}
-                className="border justify-center items-center flex rounded-lg whitespace-nowrap text-[60%] 
-                shadow-lg w-24 h-8 mb-2 ml-[5%] bg-[#14A8DD] hover:bg-[#3A84F5] text-white">
-                    내 정보 보기 🔻
+            <div id="NutrToggleBt" onClick={handleToggleNurtBt} className="border justify-center items-center flex rounded-lg whitespace-nowrap text-[60%] shadow-lg w-24 h-8 mb-2 ml-[5%] bg-[#14A8DD] hover:bg-[#3A84F5] text-white">
+                내 정보 보기 🔻
             </div>
             <div id="NutrToggleHidden" className="grid grid-cols-1 relative md:grid-cols-2 gap-2 items-center w-[90%] mx-auto">
                 <button onClick={func} id="responsiveBt" className="absolute -top-[12%] right-0 md:top-[100%]
@@ -48,18 +57,15 @@ const UserInformation = ({ height, weight, gender, age, activityFactor, func }) 
                         <input type="number" id="height"
                             defaultValue={height} name="height"
                             className="border max-w-[5rem] text-[80%] sm:max-w-[8rem] shadow-inner p-1 rounded-lg" />
-                    
                         <span className="text-[80%]">cm&nbsp;</span>
                     </div>
                 </div>
                 <div className="w-full md:mx-auto p-2 border
                  bg-[#efefef] flex items-center shadow-inner rounded-lg mb-1">
                     <div className="flex flex-col justify-center drop-shadow-md whitespace-nowrap
-                     p-2 w-[40%] text-[80%] text-end">나의 몸무게</div>
+                     p-2 w-[40%] text-[80%] text-end">{slot} 몸무게</div>
                     <div className="flex gap-2 h-full justify-center items-center">
-                        <input type="number" id="weight"
-                            defaultValue={weight} name="weight"
-                            className="border max-w-[5rem] text-[80%] sm:max-w-[7rem] md:max-w-[8rem] shadow-inner p-1 rounded-lg" />
+                        {weightView}
                         <span className=" text-[80%]">kg&nbsp;</span>
                     </div>
                 </div>

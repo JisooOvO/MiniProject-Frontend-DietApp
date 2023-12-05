@@ -30,9 +30,7 @@ const TodayTotalNutrient = ({day,data,bmr,userInfo}) => {
   let lunch;
   let dinner;
 
-  console.log(data);
-
-  if(data) {
+  if(Array.isArray(data)) {
     data = JSON.parse(JSON.stringify(data));
 
     morning = data.filter(item => item["datehistory"]["slot"] === "아침" )[0];
@@ -65,7 +63,7 @@ const TodayTotalNutrient = ({day,data,bmr,userInfo}) => {
   return (
     <div onMouseDown={handleMouseDown} 
     style={{ transform: `translateX(${x}px) translateY(${y}px)`}} 
-    className="absolute lg:top-[20rem] top-48 left-[2rem] z-50 rounded-lg shadow-lg p-3
+    className="absolute lg:top-[10rem] top-48 left-[2rem] lg:left-[30rem] z-50 rounded-lg shadow-lg p-3
     border w-[20rem] h-[35rem] sm:h-[45rem] sm:w-[35rem] bg-[#14A8DD]">
         <div className="h-[10%] w-[80%] bg-white rounded-lg mb-4 flex items-center justify-between px-3 shadow-inner drop-shadow-md">
             <p className="text-sm sm:text-base drop-shadow-md">{day.replace("-","년 ").replace("-","월 ")+" 일의 식단 분석"}</p>

@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@emotion/react": "^11.11.1",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -41,8 +40,7 @@
     ]
   },
   "devDependencies": {
-    "@emotion/styled": "^11.11.0",
-    "babel-plugin-macros": "^3.1.0",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "babel-preset-react-app": "^10.0.1",
     "styled-components": "^6.1.1",
     "tailwind-styled-components": "^2.2.0",

@@ -65,7 +65,7 @@ const Login = () => {
         </div>
         <div id='loginButtonContainer'
           className="w-[80%] items-center justify-center flex flex-col h-[30%]">
-          <button id='loginSubmit' onClick={handleLoginButton} 
+          <button id='loginSubmit' onClick={handleLoginButton}
           className="border mb-2 drop-shadow-lg w-full h-[4rem] text-white rounded-md bg-[#14A8DD] hover:bg-[#3A84F5] hover:cursor-pointer">
             로그인
           </button>

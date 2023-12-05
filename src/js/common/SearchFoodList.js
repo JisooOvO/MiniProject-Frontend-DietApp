@@ -6,6 +6,7 @@ const SearchFoodList = ({ item, idx, favoriteList, handleAddFavoritesButton, han
       favoriteButtons[idx].classList.remove("text-slate-400");
       favoriteButtons[idx].classList.add("text-yellow-300")
     }
+    // eslint-disable-next-line
   }, [favoriteList])
   return (
     <div key={`key${idx}`} className="w-full h-[30%] lg:h-[20%] xl:h-[10%] p-2 border bg-[#efefef] grid grid-cols-2 shadow-inner rounded-lg mb-1">

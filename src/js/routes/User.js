@@ -13,6 +13,7 @@ import CursorInfo from "../common/CursorInfo.js";
 import FoodDetailInfo from "../common/FoodDetailInfo.js";
 import SearchFoodList from "../common/SearchFoodList.js";
 import TodayTotalNutrient from "../common/TodayTotalNutrient.js";
+import Loading from "../common/Loading.js";
 
 const User = () => {
   const [searchfood, setSearchFood] = useState();
@@ -38,6 +39,7 @@ const User = () => {
   const [favoriteList, setFavoriteList] = useState('');
   const [searchFoodList, setSearchFoodList] = useState('');
   const [todayTotalNutrientInfo,setTodayTotalNutrientInfo] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   /** 날짜 유효성 검사 함수 */
   const isValidDateFormat = (inputDate) => {
@@ -58,6 +60,9 @@ const User = () => {
       navigate('/NotFound');
     }
 
+    setUserInfoView('');
+    setIsLoading(true);
+    console.log('hi');
     fetch("http://10.125.121.212:8080/api/private/getUserInformation", {
       method: "post",
       headers: {
@@ -72,21 +77,18 @@ const User = () => {
       if (res.status === 200) {
         return res.json();
       } 
-      else if (res.status === 403) {
+      else {
         alert("로그인이 필요한 서비스입니다. 로그인 페이지로 이동합니다.");
         navigate("/login");
-      } 
-      else {
-        alert("데이터 수신 중 에러 발생");
       }
-      })
+    })
     .then(data => {
+      setIsLoading(false);
+      console.log('bye');
       if (data.Favor !== null) {
         setFavoriteList(data.Favor.map(item => item["foodname"]))
       }
-
       if (data.history !== null) {
-        console.log(data.history);
         setSelectFood(data.history.diets);
         setImageUrl(data.history.img);
       } 
@@ -95,20 +97,29 @@ const User = () => {
       }
 
       if (data.HI !== null) {
+        if(data.HI["gender"] === "MAN") data.HI["gender"] = 1;
+        if(data.HI["gender"] === "WOMAN") data.HI["gender"] = 2;
+        data.HI["age"] = new Date().getFullYear() - data.HI["year"];
+        let weight = 0;
+        if(data.history !== null) weight = data.history["weight"] 
         setUserInfo(data.HI);
-        setBmr(CalBMR( data.HI["height"], data.HI["weight"], data.HI["gender"], data.HI["age"], data.HI["activityFactor"]))
-        setUserInfoView(<UserInformation height={+data.HI["height"]} weight={+data.HI["weight"]} age={+data.HI["age"]} gender={+data.HI["gender"]} activityFactor={+data.HI["activityFactor"]} func={handleUserInfoSaveBt}/>)
+        setBmr(CalBMR( data.HI["height"], weight, data.HI["gender"], data.HI["age"], data.HI["activityFactor"]))
+        setUserInfoView(<UserInformation height={+data.HI["height"]} weight={weight} age={+data.HI["age"]} gender={+data.HI["gender"]} activityFactor={+data.HI["activityFactor"]} func={handleUserInfoSaveBt}/>)
       } 
       else {
         setUserInfoView(<UserInformation height={0} weight={0} age={0} gender={1} activityFactor={1} func={handleUserInfoSaveBt}/>)
       };
     })
     .catch(e => {
-      alert("데이터 전송 중 에러 발생");
-    });
+      console.log(e);
+    })
+  
     // eslint-disable-next-line
   }, [day, slot]);
 
+  useEffect(()=>{
+    setIsLoading(false);
+  },[userInfoView])
 
   /** 화면 사이즈에따른 음식 검색 창 반응형 디자인 */
   const handleResize = () => {
@@ -300,6 +311,8 @@ const User = () => {
 
     setBmr(CalBMR(height, weight, gender, age, activityFactor));
 
+    setIsLoading(true);
+
     fetch("http://10.125.121.212:8080/api/private/addUserInformation", {
       method: "post",
       headers: {
@@ -307,6 +320,8 @@ const User = () => {
         "Authorization": token
       },
       body: JSON.stringify({
+        "date" : day,
+        "slot" : slot,
         "height": height,
         "weight": weight,
         "gender": gender,
@@ -314,22 +329,23 @@ const User = () => {
         "activityFactor": activityFactor
       })
     })
-      .then(res => {
-        if (res.status === 200) {
-          setUserInfo({
-            "height": height,
-            "weight": weight,
-            "gender": gender,
-            "age": age,
-            "activityFactor": activityFactor
-          })
-          alert("저장되었습니다.");
-        }
-      })
-      .catch(e => {
-        console.log(e);
-        alert("유저 정보 저장 중 에러 발생");
-      });
+    .then(res => {
+      if (res.status === 200) {
+        setUserInfo({
+          "height": height,
+          "weight": weight,
+          "gender": gender,
+          "age": age,
+          "activityFactor": activityFactor
+        })
+        alert("저장되었습니다.");
+      }
+    })
+    .catch(e => {
+      console.log(e);
+      alert("유저 정보 저장 중 에러 발생");
+    })
+    .finally(setIsLoading(false));
   }
 
   /** 통계 함수 */
@@ -342,16 +358,16 @@ const User = () => {
           <HorizontalBarChart title={"단백질"} unit={"g"} userData={sumNutr["totalProtein"]} recommendData={userInfo["weight"] ? userInfo["weight"] * 1.2 : bmr / (4 * 4)} />
           <HorizontalBarChart title={"물"} unit={"mL"} userData={sumNutr["totalWater"]} recommendData={2000} />
           <HorizontalBarChart title={"지방"} unit={"g"} userData={sumNutr["totalFat"]} recommendData={bmr / (5 * 9)} />
-          <HorizontalBarChart title={"당류"} unit={"g"} userData={sumNutr["totalSugars"]} recommendData={userInfo["gender"] === "1" ? 36 : 24} />
-          <HorizontalBarChart title={"식이섬유"} unit={"g"} userData={sumNutr["totalFiber"]} recommendData={userInfo["gender"] === "1" ? 25 : 20} />
+          <HorizontalBarChart title={"당류"} unit={"g"} userData={sumNutr["totalSugars"]} recommendData={userInfo["gender"] === 1 ? 36 : 24} />
+          <HorizontalBarChart title={"식이섬유"} unit={"g"} userData={sumNutr["totalFiber"]} recommendData={userInfo["gender"] === 1 ? 25 : 20} />
           <HorizontalBarChart title={"나트륨"} unit={"mg"} userData={sumNutr["totalSodium"]} recommendData={2000} />
           <HorizontalBarChart title={"트랜스지방"} unit={"g"} userData={sumNutr["totalTransFat"]} recommendData={2.2} />
           <HorizontalBarChart title={"포화지방"} unit={"g"} userData={sumNutr["totalSaturatedFat"]} recommendData={15} />
           <HorizontalBarChart title={"콜레스테롤"} unit={"mg"} userData={sumNutr["totalCholesterol"]} recommendData={300} />
           <HorizontalBarChart title={"칼슘"} unit={"mg"} userData={sumNutr["totalCalcium"]} recommendData={1200} />
-          <HorizontalBarChart title={"마그네슘"} unit={"mg"} userData={sumNutr["totalMagnesium"]} recommendData={userInfo["gender"] === "1" ? 350 : 280} />
-          <HorizontalBarChart title={"비타민B1"} unit={"mg"} userData={sumNutr["totalVitaB1"]} recommendData={userInfo["gender"] === "1" ? 1.2 : 1.1} />
-          <HorizontalBarChart title={"비타민B2"} unit={"mg"} userData={sumNutr["totalVitaB2"]} recommendData={userInfo["gender"] === "1" ? 1.5 : 1.2} />
+          <HorizontalBarChart title={"마그네슘"} unit={"mg"} userData={sumNutr["totalMagnesium"]} recommendData={userInfo["gender"] === 1 ? 350 : 280} />
+          <HorizontalBarChart title={"비타민B1"} unit={"mg"} userData={sumNutr["totalVitaB1"]} recommendData={userInfo["gender"] === 1 ? 1.2 : 1.1} />
+          <HorizontalBarChart title={"비타민B2"} unit={"mg"} userData={sumNutr["totalVitaB2"]} recommendData={userInfo["gender"] === 1 ? 1.5 : 1.2} />
           <HorizontalBarChart title={"비타민B12"} unit={"µg"} userData={sumNutr["totalVitaB12"]} recommendData={2.4} />
           <HorizontalBarChart title={"비타민C"} unit={"mg"} userData={sumNutr["totalVitaC"]} recommendData={200} />
         </div>
@@ -448,6 +464,8 @@ const User = () => {
 
     setSearchFood('');
 
+    setIsLoading(true);
+
     fetch("http://10.125.121.212:8080/api/private/searchFoodList", {
       method: "POST",
       headers: {
@@ -464,7 +482,8 @@ const User = () => {
       .catch(e => {
         console.log(e);
         alert("데이터 조회 중 에러 발생");
-      });
+      })
+      .finally(setIsLoading(false));
   }
 
   useEffect(() => {
@@ -486,6 +505,7 @@ const User = () => {
   /** 저장 함수 */
   const handleSaveButton = () => {
     console.log(day,slot,selectfood,imageUrl,sumNutr)
+    setIsLoading(true);
     fetch("http://10.125.121.212:8080/api/private/addFoodList", {
       method: "POST",
       headers: {
@@ -511,7 +531,8 @@ const User = () => {
       .catch(e => {
         console.log(e);
         alert("데이터 저장 중 오류 발생");
-      });
+      })
+      .finally(setIsLoading(false));
   }
 
   /** 초기화 함수 */
@@ -563,17 +584,19 @@ const User = () => {
   const handleFavorites = (e) => {
     e.preventDefault();
     setSearchFood('');
+    setIsLoading(true);
     fetch("http://10.125.121.212:8080/api/private/searchFavoriteFoods", {
       method: "post",
       headers: {
         "Authorization": token,
       }
     })
-      .then(res => res.json())
-      .then(data => {
-        setSearchFoodList(data);
-      })
-      .catch(e => console.log(e));
+    .then(res => res.json())
+    .then(data => {
+      setSearchFoodList(data);
+    })
+    .catch(e => console.log(e))
+    .finally(setIsLoading(false));
   }
 
   /** 즐거찾기 등록 함수 */
@@ -581,6 +604,7 @@ const User = () => {
     const target = e.target.parentNode.parentNode.parentNode.parentNode.innerText;
     const targetName = target.slice(0, target.indexOf("\n"));
     setSearchFood('');
+    setIsLoading(true);
     fetch("http://10.125.121.212:8080/api/private/addFavoriteFood", {
       method: "post",
       headers: {
@@ -619,6 +643,7 @@ const User = () => {
         }
       })
       .catch(e => console.log(e))
+      .finally(setIsLoading(false));
   };
 
   /** 달력 날짜 이동 함수 */
@@ -641,6 +666,8 @@ const User = () => {
     const todayTotalNutrientContainer = document.querySelector("#todayTotalNutrientContainer");
     todayTotalNutrientContainer.classList.remove("hidden");
 
+    setIsLoading(true);
+
     fetch("http://10.125.121.212:8080/api/private/getTodayTotalNutrient",{
       method : "post",
       headers : {
@@ -658,11 +685,13 @@ const User = () => {
     .catch(e => {
       console.log(e);
       alert("데이터 수신 중 에러 발생");
-    });
+    })
+    .finally(setIsLoading(false));
   }
 
   return (
     <div id="container" className="flex flex-col m-auto items-center w-[95%] relative">
+      { isLoading ? <div className="absolute w-screen h-full z-[9999] opacity-70 bg-gray-500 "><Loading/></div> : '' }
       <div id="detailContainer">{foodDetailInfo}</div>
       <div id="todayTotalNutrientContainer">{todayTotalNutrientInfo}</div>
       <div className="w-full text-2xl sm:text-3xl mt-2 h-20 flex justify-center items-center">
@@ -764,7 +793,7 @@ const User = () => {
                 hover:cursor-pointer p-1 flex justify-center items-center">❕</button>
               </div>
               <div>{cursorInfo}</div>
-              {userInfoView}
+              {userInfoView ? userInfoView : ''}
               {showNutr}
             </div>
           </div>

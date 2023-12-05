@@ -46,7 +46,7 @@ const FoodDetailInfo = ({targetFood}) => {
   useEffect(()=>{
     setShowServingSize(
       <input type="number" onChange={handleDetailGramChange}
-      className="border rounded-md shadow-inner text-end w-[5rem]"
+      className="border rounded-md shadow-inner text-end max-w-[5rem]"
       defaultValue={servingSize} id="DetailServingSize"/>
     )
   },[servingSize])
@@ -60,7 +60,7 @@ const FoodDetailInfo = ({targetFood}) => {
      border w-[25rem] h-[25rem] sm:w-[35rem] sm:h-[40rem] bg-[#14A8DD]">
         <div className="flex justify-between h-[10%]">
             <div className="border flex justify-between items-center h-full whitespace-nowrap
-             bg-white shadow-inner w-[80%] rounded-md text-[50%] sm:text-[100%] p-2">
+             bg-white shadow-inner w-[80%] rounded-md text-[50%] sm:text-[100%] py-2 px-4">
               <p className="drop-shadow-md">
                 {targetFood[0]["foodname"]}
                 &nbsp;

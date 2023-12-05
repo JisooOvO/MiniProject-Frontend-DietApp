@@ -20,6 +20,7 @@ const Bar = ({nutr, color, isKcal=false, unit, type}) => {
     case "비타민B2" : BarWidth = nutr / 1.5 * 100; break;
     case "비타민B12" : BarWidth = nutr / 3 * 100; break;
     case "비타민C" : BarWidth = nutr / 100 * 100; break;
+    default : BarWidth = nutr / 2000 * 100;
   }
   const dynamicStyle = { 
     width: `${BarWidth}%`,
