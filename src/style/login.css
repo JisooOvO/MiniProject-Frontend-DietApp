@@ -4,9 +4,6 @@ form.was-validated input:invalid {
 }
 
 @media (max-width:500px){
-    input{
-        width: 100% !important;
-    }
     input::placeholder{
         font-size: 0.6rem;
     }

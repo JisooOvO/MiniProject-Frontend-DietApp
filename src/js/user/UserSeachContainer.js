@@ -18,15 +18,15 @@ const UserSeachContainer = ({setSearchFood,setIsLoading,setSearchFoodList,token,
         "foodname": search
       })
     })
-      .then(res => res.json())
-      .then(data => {
-        setIsLoading(false)
-        setSearchFoodList(data);
-      })
-      .catch(e => {
-        console.log(e);
-        alert("데이터 조회 중 에러 발생");
-      });
+    .then(res => res.json())
+    .then(data => {
+      setIsLoading(false)
+      setSearchFoodList(data);
+    })
+    .catch(e => {
+      console.log(e);
+      alert("데이터 조회 중 에러 발생");
+    });
   } 
   
   /** 초성 확인 함수 */
@@ -54,12 +54,11 @@ const UserSeachContainer = ({setSearchFood,setIsLoading,setSearchFoodList,token,
     })
     .then(res => res.json())
     .then(data => {
-        const target = data.map(item => item["foodname"]).slice();
-        if (target.length > 0) {
-            setFastSearch(target.map((item, idx) =>
-            <div key={`key${idx}`} tabIndex={1} id="fastSearchItem"
-                className="border z-50 p-1 hover:bg-[#EAEAEA] focus:bg-[#EAEAEA]"
-                onKeyDown={(e) => {
+      const target = data.map(item => item["foodname"]).slice();
+      if (target.length > 0) {
+          setFastSearch(target.map((item, idx) =>
+          <div key={`key${idx}`} tabIndex={1} id="fastSearchItem" className="border z-50 p-1 hover:bg-[#EAEAEA] focus:bg-[#EAEAEA]"
+              onKeyDown={(e) => {
                 const searchfood = document.querySelector("#searchfood");
                 if (e.key === "Enter") {
                     searchfood.value = e.target.innerText;
@@ -78,22 +77,22 @@ const UserSeachContainer = ({setSearchFood,setIsLoading,setSearchFoodList,token,
                     if (prev) prev.focus();
                     else searchfood.focus();
                 }
-                }}
-                onClick={(e) => {
+              }}
+              onClick={(e) => {
                 const searchfood = document.querySelector("#searchfood");
                 searchfood.value = e.target.innerText;
                 handleSearch(e);
                 setFastSearch('');
-                }}
-            >{item}</div>
-            ))
-        }
+              }}
+          >{item}</div>
+          ))
+      }
 
-        if (target.length === 0) {
-            setFastSearch(
+      if (target.length === 0) {
+          setFastSearch(
             <div>검색 조건에 해당하는 음식이 존재하지 않습니다.</div>
-            )
-        }
+          )
+      }
     })
     .catch(e => console.log(e));
   }
@@ -120,8 +119,8 @@ const UserSeachContainer = ({setSearchFood,setIsLoading,setSearchFoodList,token,
     })
     .then(res => res.json())
     .then(data => {
-    setIsLoading(false)
-    setSearchFoodList(data);
+      setIsLoading(false)
+      setSearchFoodList(data);
     })
     .catch(e => console.log(e));
   }
@@ -136,7 +135,10 @@ const UserSeachContainer = ({setSearchFood,setIsLoading,setSearchFoodList,token,
         placeholder="음식을 검색하세요" />
         {
         fastSearch ?
-        <div id="fastSearch" onMouseLeave={() => { setFastSearch('') }} tabIndex={1} className="absolute top-[100%] bg-white border-2 border-gray-700 rounded-md w-full mt-1 z-50">
+        <div id="fastSearch" 
+        onMouseLeave={() => { setFastSearch('') }} 
+        tabIndex={1} 
+        className="absolute top-[100%] bg-white border-2 border-gray-700 rounded-md w-full mt-1 z-50">
             {fastSearch}
         </div> 
         : ''
@@ -146,15 +148,14 @@ const UserSeachContainer = ({setSearchFood,setIsLoading,setSearchFoodList,token,
         <button
             onClick={handleSearch}
             onMouseEnter={() => {
-            const searchBt = document.querySelector("#searchBt");
-            searchBt.classList.remove("hidden");
+              const searchBt = document.querySelector("#searchBt");
+              searchBt.classList.remove("hidden");
             }}
             onMouseLeave={() => {
-            const searchBt = document.querySelector("#searchBt");
-            searchBt.classList.add("hidden");
+              const searchBt = document.querySelector("#searchBt");
+              searchBt.classList.add("hidden");
             }}
-            className="hover:cursor-pointer p-1 w-7 h-7 hover:bg-[#707070] shadow-md bg-white
-            rounded-[50%] border flex flex-col justify-center items-center">
+            className="hover:cursor-pointer p-1 w-7 h-7 hover:bg-[#707070] shadow-md bg-white rounded-[50%] border flex flex-col justify-center items-center">
             🔍
         </button>
         </div>
@@ -163,12 +164,12 @@ const UserSeachContainer = ({setSearchFood,setIsLoading,setSearchFoodList,token,
         <button
             onClick={handleFavorites}
             onMouseEnter={() => {
-            const favoritesBt = document.querySelector("#favoritesBt");
-            favoritesBt.classList.remove("hidden");
+              const favoritesBt = document.querySelector("#favoritesBt");
+              favoritesBt.classList.remove("hidden");
             }}
             onMouseLeave={() => {
-            const favoritesBt = document.querySelector("#favoritesBt");
-            favoritesBt.classList.add("hidden");
+              const favoritesBt = document.querySelector("#favoritesBt");
+              favoritesBt.classList.add("hidden");
             }}
             className="hover:cursor-pointer p-1 w-7 h-7 hover:bg-[#707070] shadow-md bg-white text-yellow-300
             rounded-[50%] border flex flex-col justify-center items-center">

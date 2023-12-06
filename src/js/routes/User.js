@@ -135,7 +135,8 @@ const User = () => {
   }
 
   window.addEventListener('resize', () => {
-    handleResize();
+    if (window.innerWidth >= 768) 
+      handleResize();
   });
 
   /** 삭제 함수 */
@@ -342,7 +343,7 @@ const User = () => {
     if (!searchFoodList) return;
     if (searchFoodList.length === 0) {
       setSearchFood(
-        <div className="w-full h-[30%] lg:h-[20%] xl:h-[10%] p-2 border bg-[#efefef] grid grid-cols-2 items-center justify-center shadow-inner rounded-lg mb-1">
+        <div className="w-full h-[30%] lg:h-[20%] xl:h-[10%] p-2 border bg-[#efefef] flex items-center justify-center shadow-inner rounded-lg mb-1">
           검색 조건에 해당하는 음식이 존재하지 않습니다.
         </div>
       )

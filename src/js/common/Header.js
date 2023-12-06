@@ -16,6 +16,7 @@ const Header = () => {
   const handleLogInAndOut = (e) => {
     if(token){
       sessionStorage.removeItem("token");
+      sessionStorage.removeItem("username");
       alert("로그아웃되었습니다. 메인 페이지로 이동합니다.");
       navigate("/");
       window.location.reload();
