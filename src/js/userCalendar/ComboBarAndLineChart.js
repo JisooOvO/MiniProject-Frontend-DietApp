@@ -6,14 +6,13 @@ const ComboChart = ({dates=[],calories=[],weights=[]}) => {
   useEffect(() => {
     const ctx = document.getElementById('comboChart');
     if (chartRef.current) {
-      // 이미 차트가 생성되었다면 파괴
-      chartRef.current.destroy();
+      chartRef.current.destroy(); // 이미 차트가 생성되었다면 파괴
     }
     const data = {
       labels: dates,
       datasets: [
         {
-          type: 'line',  // Line 차트
+          type: 'line',
           label: "몸무게(kg)",
           backgroundColor: 'rgba(255, 99, 132, 1)',
           borderColor: 'rgba(255, 99, 132, 1)',
@@ -22,7 +21,7 @@ const ComboChart = ({dates=[],calories=[],weights=[]}) => {
           data: weights,
         },
         {
-          type: 'bar',  // Bar 차트
+          type: 'bar',
           label: "칼로리(kcal)",
           backgroundColor: 'rgba(75,192,192,0.5)',
           borderColor: 'rgba(75,192,192,1)',
@@ -45,7 +44,7 @@ const ComboChart = ({dates=[],calories=[],weights=[]}) => {
             position: 'right',
           },
           {
-            id: 'y-axis-bar-2',  // 첫 번째 y-축과 구별되는 고유한 식별자
+            id: 'y-axis-bar-2',
             type: 'linear',
             position: 'right',
           },
@@ -55,10 +54,8 @@ const ComboChart = ({dates=[],calories=[],weights=[]}) => {
       maintainAspectRatio: false,
     }
 
-    // Combo Chart 생성
-    // eslint-disable-next-line
     const comboChart = new Chart(ctx, {
-      type: 'bar',  // 초기 차트 타입 설정 (Combo 차트이므로 한 차트만 초기에 설정)
+      type: 'bar',
       data: data,
       options: options,
     });

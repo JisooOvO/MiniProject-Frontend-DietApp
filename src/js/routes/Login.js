@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import "../../style/login.css"
 import googlelogo from "../../images/googlelogo.png"
-import FormTitle from '../common/FormTitle';
+import FormTitle from '../loginAndSignup/FormTitle';
 import { useEffect } from 'react';
 import { CalToday } from '../common/Calday';
 

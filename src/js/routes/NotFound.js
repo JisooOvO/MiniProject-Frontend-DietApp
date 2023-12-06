@@ -1,6 +1,6 @@
 const NotFound = () => {
     const handleGoBack = () => {
-        window.history.back();
+        window.history.go(-2);
     }
 
     return (

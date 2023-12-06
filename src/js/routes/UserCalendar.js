@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../common/Loading.js";
 import ComboBarAndLineChart from "../userCalendar/ComboBarAndLineChart.js";
 import { CalToday } from "../common/Calday.js";
-import "../../style/myhidden.css"
 import ChartContainer from "../userCalendar/ChartContainer.js";
 
 const UserCalendar = () => {

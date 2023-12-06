@@ -1,4 +1,4 @@
-import LinkButton from "../common/LinkButton"
+import LinkButton from "../loginAndSignup/LinkButton"
 import "../../style/responsive.css"
 import Pot from "../../images/Pot"
 import Donut from "../../images/Donut"

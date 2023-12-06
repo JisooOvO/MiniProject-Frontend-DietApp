@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import "../../style/myhidden.css";
 
 const ImgUpload = ({imageUrl,setImageUrl}) => {
   const img = document.getElementById('img');

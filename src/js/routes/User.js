@@ -1,19 +1,20 @@
-import leftarrow from "../../images/left_arrow.png";
-import rightarrow from "../../images/right_arrow.png";
+
 import { useNavigate, useParams } from "react-router-dom";
-import { CalTomorrow, CalYesterday } from "../common/Calday"
+
 import { useEffect, useState } from "react";
-import Bar from "../common/Bar";
-import ImgUpload from "../common/ImgUpload";
-import "../../style/myhidden.css";
-import UserInformation from "../common/UserInformation";
+import ImgUpload from "../user/ImgUpload";
+import UserInformation from "../user/UserInformation";
 import CalBMR from "../common/CalBMR.js";
-import HorizontalBarChart from "../common/HorizontalBarChart.js";
-import CursorInfo from "../common/CursorInfo.js";
-import FoodDetailInfo from "../common/FoodDetailInfo.js";
-import SearchFoodList from "../common/SearchFoodList.js";
-import TodayTotalNutrient from "../common/TodayTotalNutrient.js";
+import HorizontalBarChart from "../user/HorizontalBarChart.js";
+import CursorInfo from "../user/CursorInfo.js";
+import FoodDetailInfo from "../user/foodDetail/FoodDetailInfo.js";
+import SearchFoodList from "../user/SearchFoodList.js";
 import Loading from "../common/Loading.js";
+import UserHeader from "../user/UserHeader.js";
+import UserNav from "../user/UserNav.js";
+import SelectFoodView from "../user/SelectFoodView.js";
+import UserSearchWrapper from "../user/UserSearchWrapper.js";
+import UserSlotNav from "../user/UserSlotNav.js";
 
 const User = () => {
   const [searchfood, setSearchFood] = useState();
@@ -62,7 +63,6 @@ const User = () => {
 
     setUserInfoView('');
     setIsLoading(true);
-    console.log('hi');
     fetch("http://10.125.121.212:8080/api/private/getUserInformation", {
       method: "post",
       headers: {
@@ -84,7 +84,6 @@ const User = () => {
     })
     .then(data => {
       setIsLoading(false);
-      console.log('bye');
       if (data.Favor !== null) {
         setFavoriteList(data.Favor.map(item => item["foodname"]))
       }
@@ -139,28 +138,11 @@ const User = () => {
     handleResize();
   });
 
-  const handleToggleContainer = () => {
-    const toggleContainer = document.querySelector("#toggleContainer");
-    toggleContainer.classList.toggle("hidden");
-  }
-
   /** 삭제 함수 */
   const handleDeleteButton = (e) => {
     const foodNm = e.target.parentNode.parentNode.innerText;
     const searchfoodNm = foodNm.slice(0, foodNm.indexOf("\n"));
     setSelectFood((prevItem => prevItem.filter((item) => item["foodname"] !== searchfoodNm)));
-  }
-
-  /** 날짜 이동 함수 */
-  const handleLeftButton = () => {
-    const yesterday = CalYesterday(day.replaceAll("-", ""));
-    navigate(`/user/${yesterday}/${slot}`)
-  }
-
-  /** 날짜 이동 함수 */
-  const handleRightButton = () => {
-    const tomorrow = CalTomorrow(day.replaceAll("-", ""));
-    navigate(`/user/${tomorrow}/${slot}`);
   }
 
   /** 음식 추가 버튼 */
@@ -205,37 +187,7 @@ const User = () => {
       }
 
       setSelectFoodView(selectfood.map((item, idx) =>
-        <div key={`key${idx}`} className="h-[60%] md:h-[50%] w-[95%] p-2 border my-2 mx-auto rounded-md shadow-md">
-          <div className="flex justify-between mb-1 h-[20%] w-[95%]">
-            <div className="flex gap-2 border rounded-md w-[80%] mb-1 shadow-inner bg-[#EFEFEF] p-2 text-gray-700">
-              <div className="flex items-center text-[80%]">{item["foodname"]}</div>
-              <div className="flex items-center text-[80%]">
-                <div>{item["intake_size"] + "g"}</div>
-              </div>
-            </div>
-            <div className="flex items-center mb-1"><button onClick={handleDeleteButton}
-              className="hover:bg-[#707070] border w-7 h-7 shadow-md bg-white rounded-[50%] 
-            flex justify-center items-center">❌</button></div>
-          </div>
-          <div className="h-[70%] w-full flex flex-col justify-center border-t">
-            <div className="h-[20%] flex gap-2 items-center">
-              <span className="text-[80%] whitespace-nowrap w-[20%] text-center">칼로리</span>
-              <Bar nutr={+item["kcal"]} color={"#F7CD01"} isKcal={true} unit={"kcal"} />
-            </div>
-            <div className="h-[20%] flex gap-2 items-center">
-              <span className="text-[80%] whitespace-nowrap w-[20%] text-center">탄수화물</span>
-              <Bar nutr={+item["carbohydrate"]} color={"#88CB53"} unit={"g"} type={"탄"} />
-            </div>
-            <div className="h-[20%] flex gap-2 items-center">
-              <span className="text-[80%] whitespace-nowrap w-[20%] text-center">단백질</span>
-              <Bar nutr={+item["protein"]} color={"#35abf4"} unit={"g"} type={"단"} />
-            </div>
-            <div className="h-[20%] flex gap-2 items-center">
-              <span className="text-[80%] whitespace-nowrap w-[20%] text-center">지방</span>
-              <Bar nutr={+item["fat"]} color={"#F54545"} unit={"g"} type={"지"} />
-            </div>
-          </div>
-        </div>
+        <SelectFoodView key={`key${idx}`} item={item} idx={idx} handleDeleteButton={handleDeleteButton}/>
       ));
 
       let totalKcal = 0;
@@ -295,8 +247,8 @@ const User = () => {
         "totalSaturatedFat": totalSaturated,
         "totalTransFat": totalTrans
       });
-
-    } else {
+    } 
+    else {
       setSelectFoodView('');
     }
   }, [selectfood]);
@@ -310,8 +262,6 @@ const User = () => {
     const activityFactor = document.querySelector("#activityFactor").value;
 
     setBmr(CalBMR(height, weight, gender, age, activityFactor));
-
-    setIsLoading(true);
 
     fetch("http://10.125.121.212:8080/api/private/addUserInformation", {
       method: "post",
@@ -344,8 +294,7 @@ const User = () => {
     .catch(e => {
       console.log(e);
       alert("유저 정보 저장 중 에러 발생");
-    })
-    .finally(setIsLoading(false));
+    });
   }
 
   /** 통계 함수 */
@@ -353,23 +302,27 @@ const User = () => {
     if (sumNutr) {
       setShowwNutr(
         <div className="w-[90%] mt-10 mx-auto flex flex-col justify-center items-center gap-8">
-          <HorizontalBarChart title={"칼로리"} unit={"kcal"} userData={sumNutr["totalKcal"]} recommendData={bmr} />
-          <HorizontalBarChart title={"탄수화물"} unit={"g"} userData={sumNutr["totalCarbohydrate"]} recommendData={bmr / (2 * 4)} />
-          <HorizontalBarChart title={"단백질"} unit={"g"} userData={sumNutr["totalProtein"]} recommendData={userInfo["weight"] ? userInfo["weight"] * 1.2 : bmr / (4 * 4)} />
-          <HorizontalBarChart title={"물"} unit={"mL"} userData={sumNutr["totalWater"]} recommendData={2000} />
-          <HorizontalBarChart title={"지방"} unit={"g"} userData={sumNutr["totalFat"]} recommendData={bmr / (5 * 9)} />
-          <HorizontalBarChart title={"당류"} unit={"g"} userData={sumNutr["totalSugars"]} recommendData={userInfo["gender"] === 1 ? 36 : 24} />
-          <HorizontalBarChart title={"식이섬유"} unit={"g"} userData={sumNutr["totalFiber"]} recommendData={userInfo["gender"] === 1 ? 25 : 20} />
-          <HorizontalBarChart title={"나트륨"} unit={"mg"} userData={sumNutr["totalSodium"]} recommendData={2000} />
-          <HorizontalBarChart title={"트랜스지방"} unit={"g"} userData={sumNutr["totalTransFat"]} recommendData={2.2} />
-          <HorizontalBarChart title={"포화지방"} unit={"g"} userData={sumNutr["totalSaturatedFat"]} recommendData={15} />
-          <HorizontalBarChart title={"콜레스테롤"} unit={"mg"} userData={sumNutr["totalCholesterol"]} recommendData={300} />
-          <HorizontalBarChart title={"칼슘"} unit={"mg"} userData={sumNutr["totalCalcium"]} recommendData={1200} />
-          <HorizontalBarChart title={"마그네슘"} unit={"mg"} userData={sumNutr["totalMagnesium"]} recommendData={userInfo["gender"] === 1 ? 350 : 280} />
-          <HorizontalBarChart title={"비타민B1"} unit={"mg"} userData={sumNutr["totalVitaB1"]} recommendData={userInfo["gender"] === 1 ? 1.2 : 1.1} />
-          <HorizontalBarChart title={"비타민B2"} unit={"mg"} userData={sumNutr["totalVitaB2"]} recommendData={userInfo["gender"] === 1 ? 1.5 : 1.2} />
-          <HorizontalBarChart title={"비타민B12"} unit={"µg"} userData={sumNutr["totalVitaB12"]} recommendData={2.4} />
-          <HorizontalBarChart title={"비타민C"} unit={"mg"} userData={sumNutr["totalVitaC"]} recommendData={200} />
+          {
+            [
+              ["칼로리","kcal","totalKcal",bmr],
+              ["탄수화물","g","totalCarbohydrate", bmr / (2 * 4)],
+              ["단백질","g","totalProtein",userInfo["weight"] ? userInfo["weight"] * 1.2 : bmr / (4 * 4)],
+              ["물","mL","totalWater",2000],
+              ["지방","g","totalFat",bmr / (5 * 9)],
+              ["당류","g","totalSugars",userInfo["gender"] === 1 ? 36 : 24],
+              ["식이섬유","g","totalFiber",userInfo["gender"] === 1 ? 25 : 20],
+              ["나트륨","mg","totalSodium",2000],
+              ["트랜스지방","g","totalTransFat",2.2],
+              ["포화지방","g","totalTransFat",15],
+              ["콜레스테롤","mg","totalSaturatedFat",300],
+              ["칼슘","mg","totalCalcium",1200],
+              ["마그네슘","mg","totalMagnesium",userInfo["gender"] === 1 ? 350 : 280],
+              ["비타민B1","mg","totalVitaB1",userInfo["gender"] === 1 ? 1.2 : 1.1],
+              ["비타민B2","mg","totalVitaB2",userInfo["gender"] === 1 ? 1.5 : 1.2],
+              ["비타민B12","µg","totalVitaB12",2.4],
+              ["비타민C","mg","totalVitaC",200],
+            ].map((item,idx) => <HorizontalBarChart key={`key${idx}`} title={item[0]} unit={item[1]} userData={sumNutr[item[2]]} recommendData={item[3]} />)
+          }
         </div>
       );
     }
@@ -379,111 +332,10 @@ const User = () => {
   const handleDetailButton = (e) => {
     const food_nameElem = e.target.parentNode.parentNode.parentNode.parentNode.innerText;
     const foodNm = food_nameElem.slice(0, food_nameElem.indexOf("\n"));
-
     const targetFood = searchFoodList.filter((item) => item["foodname"] === foodNm);
-
     const detailContainer = document.querySelector("#detailContainer");
     detailContainer.classList.remove("hidden");
     setFoodDetailInfo(<FoodDetailInfo targetFood={targetFood} />)
-  }
-
-  /** 초성 확인 함수 */
-  function isInitialConsonant(char) {
-    const initialConsonants = /ㄱ|ㄲ|ㄴ|ㄷ|ㄸ|ㄹ|ㅁ|ㅂ|ㅃ|ㅅ|ㅆ|ㅇ|ㅈ|ㅉ|ㅊ|ㅋ|ㅌ|ㅍ|ㅎ/;
-    return initialConsonants.test(char);
-  }
-
-  /** 자동완성 함수 */
-  const handleSearchFood = (e) => {
-    const targetNm = e.target.value;
-
-    if (isInitialConsonant(targetNm)) return;
-    if (targetNm === '') return;
-
-    fetch("http://10.125.121.212:8080/api/private/fastSearch2", {
-      method: 'post',
-      headers: {
-        "Authorization": token,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        "foodname": targetNm
-      })
-    })
-      .then(res => res.json())
-      .then(data => {
-        const target = data.map(item => item["foodname"]).slice();
-        if (target.length > 0) {
-          setFastSearch(target.map((item, idx) =>
-            <div key={`key${idx}`} tabIndex={1} id="fastSearchItem"
-              className="border z-50 p-1 hover:bg-[#EAEAEA] focus:bg-[#EAEAEA]"
-              onKeyDown={(e) => {
-                const searchfood = document.querySelector("#searchfood");
-                if (e.key === "Enter") {
-                  searchfood.value = e.target.innerText;
-                  handleSearch(e);
-                  setFastSearch('');
-                }
-                if (e.key === "ArrowDown") {
-                  e.preventDefault();
-                  const next = e.target.nextSibling;
-                  if (next) next.focus();
-                  else searchfood.focus();
-                }
-                if (e.key === "ArrowUp") {
-                  e.preventDefault();
-                  const prev = e.target.previousSibling;
-                  if (prev) prev.focus();
-                  else searchfood.focus();
-                }
-              }}
-              onClick={(e) => {
-                const searchfood = document.querySelector("#searchfood");
-                searchfood.value = e.target.innerText;
-                handleSearch(e);
-                setFastSearch('');
-              }}
-            >{item}</div>
-          ))
-        }
-
-        if (target.length === 0) {
-          setFastSearch(
-            <div>검색 조건에 해당하는 음식이 존재하지 않습니다.</div>
-          )
-        }
-      })
-      .catch(e => console.log(e));
-  }
-
-
-  /** 검색 함수 */
-  const handleSearch = (e) => {
-    e.preventDefault();
-    const search = document.querySelector("#searchfood").value;
-
-    setSearchFood('');
-
-    setIsLoading(true);
-
-    fetch("http://10.125.121.212:8080/api/private/searchFoodList", {
-      method: "POST",
-      headers: {
-        "Authorization": token
-      },
-      body: JSON.stringify({
-        "foodname": search
-      })
-    })
-      .then(res => res.json())
-      .then(data => {
-        setSearchFoodList(data);
-      })
-      .catch(e => {
-        console.log(e);
-        alert("데이터 조회 중 에러 발생");
-      })
-      .finally(setIsLoading(false));
   }
 
   useEffect(() => {
@@ -502,39 +354,6 @@ const User = () => {
     // eslint-disable-next-line
   }, [searchFoodList, favoriteList])
 
-  /** 저장 함수 */
-  const handleSaveButton = () => {
-    console.log(day,slot,selectfood,imageUrl,sumNutr)
-    setIsLoading(true);
-    fetch("http://10.125.121.212:8080/api/private/addFoodList", {
-      method: "POST",
-      headers: {
-        "Authorization": token,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        "date": day,
-        "slot": slot,
-        "dietList": selectfood,
-        "img": imageUrl,
-        "nutrient" : sumNutr
-      })
-    })
-      .then(res => {
-        if (res.status === 200) {
-          alert("저장되었습니다.");
-          window.location.reload();
-        } else {
-          alert("데이터 수신 중 오류 발생")
-        }
-      })
-      .catch(e => {
-        console.log(e);
-        alert("데이터 저장 중 오류 발생");
-      })
-      .finally(setIsLoading(false));
-  }
-
   /** 초기화 함수 */
   const handleCancelButton = () => {
     const preview = document.getElementById("preview");
@@ -545,19 +364,6 @@ const User = () => {
     setSelectFood([]);
     img.classList.add('myhidden');
     preview.classList.remove("hidden");
-
-  }
-
-  /** 시간대 이동 함수 */
-  const handleSlotLeftButton = () => {
-    setSelectSlotIndex(i => i + 2);
-    setIsClickSlotButton(true);
-  }
-
-  /** 시간대 이동 함수 */
-  const handleSlotRightButton = () => {
-    setSelectSlotIndex(i => i + 1);
-    setIsClickSlotButton(true);
   }
 
   useEffect(() => {
@@ -580,31 +386,11 @@ const User = () => {
     setCursorInfo('')
   }
 
-  /** 즐겨찾기 검색 함수 */
-  const handleFavorites = (e) => {
-    e.preventDefault();
-    setSearchFood('');
-    setIsLoading(true);
-    fetch("http://10.125.121.212:8080/api/private/searchFavoriteFoods", {
-      method: "post",
-      headers: {
-        "Authorization": token,
-      }
-    })
-    .then(res => res.json())
-    .then(data => {
-      setSearchFoodList(data);
-    })
-    .catch(e => console.log(e))
-    .finally(setIsLoading(false));
-  }
-
   /** 즐거찾기 등록 함수 */
   const handleAddFavoritesButton = (e) => {
     const target = e.target.parentNode.parentNode.parentNode.parentNode.innerText;
     const targetName = target.slice(0, target.indexOf("\n"));
     setSearchFood('');
-    setIsLoading(true);
     fetch("http://10.125.121.212:8080/api/private/addFavoriteFood", {
       method: "post",
       headers: {
@@ -615,182 +401,60 @@ const User = () => {
         "foodname": targetName
       })
     })
-      .then(res => {
-        if (res.status === 200) {
-          setFavoriteList(prevItem => [...prevItem, targetName])
-          alert("즐겨찾기에 추가되었습니다");
-        } else {
-          fetch("http://10.125.121.212:8080/api/private/deleteFavoriteFood", {
-            method: "delete",
-            headers: {
-              "Authorization": token,
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              "foodname": targetName
-            })
+    .then(res => {
+      if (res.status === 200) {
+        setFavoriteList(prevItem => [...prevItem, targetName])
+        alert("즐겨찾기에 추가되었습니다");
+      } 
+      else {
+        fetch("http://10.125.121.212:8080/api/private/deleteFavoriteFood", {
+          method: "delete",
+          headers: {
+            "Authorization": token,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            "foodname": targetName
           })
-            .then(res => {
-              if (res.status === 200) {
-                setFavoriteList(prevItem => prevItem.filter(item => item !== targetName));
-                setSearchFoodList(prevItem => prevItem.filter(item => item["foodname"] !== targetName));
-                alert("즐겨찾기에서 제외했습니다");
-              } else {
-                alert("데이터 전송 중 에러 발생");
-              }
-            })
-            .catch(e => console.log(e));
-        }
-      })
-      .catch(e => console.log(e))
-      .finally(setIsLoading(false));
+        })
+        .then(res => {
+          if (res.status === 200) {
+            setFavoriteList(prevItem => prevItem.filter(item => item !== targetName));
+            setSearchFoodList(prevItem => prevItem.filter(item => item["foodname"] !== targetName));
+            alert("즐겨찾기에서 제외했습니다");
+          } else {
+            alert("데이터 전송 중 에러 발생");
+          }
+        })
+        .catch(e => console.log(e));
+      }
+    })
+    .catch(e => console.log(e))
   };
-
-  /** 달력 날짜 이동 함수 */
-  const handleChangeDate = (e) => {
-    const targetDate = e.target.value
-    navigate(`/user/${targetDate}/${slot}`)
-  }
-
-  /** 자동완성 함수 키다운시 발생하는 함수 */
-  const handleInputSearchKeydown = (e) => {
-    const fastSearchItem = document.querySelectorAll("#fastSearchItem");
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      fastSearchItem[0].focus();
-    }
-  }
-
-  /** 오늘 통계 보여주는 함수 */
-  const handleTotalStaticButton = () => {
-    const todayTotalNutrientContainer = document.querySelector("#todayTotalNutrientContainer");
-    todayTotalNutrientContainer.classList.remove("hidden");
-
-    setIsLoading(true);
-
-    fetch("http://10.125.121.212:8080/api/private/getTodayTotalNutrient",{
-      method : "post",
-      headers : {
-        "Authorization" : token,
-        "Content-Type" : "application/json"
-      },
-      body : JSON.stringify({
-        "date" : day
-      })
-    })
-    .then(res => res.json())
-    .then(data => {
-      setTodayTotalNutrientInfo(<TodayTotalNutrient day={day} data={data} bmr={bmr} userInfo={userInfo}/>);
-    })
-    .catch(e => {
-      console.log(e);
-      alert("데이터 수신 중 에러 발생");
-    })
-    .finally(setIsLoading(false));
-  }
 
   return (
     <div id="container" className="flex flex-col m-auto items-center w-[95%] relative">
-      { isLoading ? <div className="absolute w-screen h-full z-[9999] opacity-70 bg-gray-500 "><Loading/></div> : '' }
-      <div id="detailContainer">{foodDetailInfo}</div>
-      <div id="todayTotalNutrientContainer">{todayTotalNutrientInfo}</div>
-      <div className="w-full text-2xl sm:text-3xl mt-2 h-20 flex justify-center items-center">
-        <img src={leftarrow} alt="leftarrow" onClick={handleLeftButton} className="h-1/2 sm:h-full hover:cursor-pointer drop-shadow-md" />
-        <div className="text-[80%] w-[55%] max-w-[20rem] text-center sm:text-[100%] drop-shadow whitespace-nowrap relative">
-          {day.slice(0, 4) + "년 " + day.slice(5, 7) + "월 " + day.slice(8, 10) + "일"}
-          <input type="date" onChange={handleChangeDate} id="date1" name="date1" className="w-full absolute top-0 left-0 opacity-0" defaultValue={day} />
-        </div>
-        <img src={rightarrow} alt="rightarrow" onClick={handleRightButton} className="h-1/2 sm:h-full hover:cursor-pointer drop-shadow-md" />
-      </div>
-
-      <div className="flex gap-1 justify-between w-full">
-        <button id="hiddenBt" onClick={handleToggleContainer}
-          className="border hidden rounded-lg whitespace-nowrap text-[60%] sm:text-[100%] shadow-lg w-32 sm:w-48 h-8 mb-2 
-        bg-[#14A8DD] hover:bg-[#3A84F5] text-white">음식 검색하기 ▼</button>
-        <div className="flex gap-1 justify-end w-full">
-          <button onClick={handleTotalStaticButton} className="border rounded-lg shadow-lg max-w-[8rem] grow sm:w-44 h-8 mb-2 text-[60%] sm:text-[100%] whitespace-nowrap bg-[#14A8DD] hover:bg-[#3A84F5] text-white">오늘의 기록</button>
-          <button onClick={handleCancelButton} className="border rounded-lg shadow-lg w-16 sm:w-24 h-8 mb-2 text-[60%] sm:text-[100%]  bg-[#14A8DD] hover:bg-[#3A84F5] text-white">초기화</button>
-          <button onClick={handleSaveButton} className="border rounded-lg shadow-lg w-16 sm:w-24 h-8 mb-2 text-[60%] sm:text-[100%]  bg-[#14A8DD] hover:bg-[#3A84F5] text-white">저장하기</button>
-        </div>
-      </div>
+      { isLoading ? <div className="absolute w-screen h-full z-[9999] opacity-70 bg-gray-500 "><Loading/></div> : '' } {/* 로딩 창 */}
+      <div id="detailContainer">{foodDetailInfo}</div> {/* 음식 정보 디테일 모달 */}
+      <div id="todayTotalNutrientContainer">{todayTotalNutrientInfo}</div> {/* 하루 전체 영양소 통계 모달 */}
+      <UserHeader day={day} slot={slot} />
+      <UserNav setIsLoading={setIsLoading} token={token} day={day} setTodayTotalNutrientInfo={setTodayTotalNutrientInfo} bmr={bmr} userInfo={userInfo} slot={slot} selectfood={selectfood} imageUrl={imageUrl} sumNutr={sumNutr} handleCancelButton={handleCancelButton}/>
       <div className="grid grid-cols-1 gap-2 xl:grid-cols-2 w-full">
-        <div id="toggleContainer"
-          className="border rounded-lg p-2 shadow-lg bg-[#EAEAEA] h-[30rem] xl:h-[70rem]">
-          <form className="mb-2 w-full relative flex items-center gap-2">
-            <input id="searchfood" type="text" name="food"
-              className="w-full p-2 shadow-inner rounded-lg border-b-2"
-              onChange={handleSearchFood}
-              onKeyDown={handleInputSearchKeydown}
-              autoComplete="off"
-              placeholder="음식을 검색하세요" />
-            {fastSearch ?
-              <div id="fastSearch" onMouseLeave={() => { setFastSearch('') }} tabIndex={1}
-                className="absolute top-[100%] bg-white border-2 border-gray-700 rounded-md w-full mt-1 z-50">{fastSearch}</div> : ''}
-            <div className="relative">
-              <span id="searchBt" className="text-sm hidden absolute -top-4 -left-3 whitespace-nowrap">검색하기</span>
-              <button
-                onClick={handleSearch}
-                onMouseEnter={() => {
-                  const searchBt = document.querySelector("#searchBt");
-                  searchBt.classList.remove("hidden");
-                }}
-                onMouseLeave={() => {
-                  const searchBt = document.querySelector("#searchBt");
-                  searchBt.classList.add("hidden");
-                }}
-                className="hover:cursor-pointer p-1 w-7 h-7 hover:bg-[#707070] shadow-md bg-white
-                rounded-[50%] border flex flex-col justify-center items-center">
-                🔍
-              </button>
-            </div>
-            <div className="relative">
-              <span id="favoritesBt" className="text-sm hidden absolute -top-4 -left-2 whitespace-nowrap">즐겨찾기</span>
-              <button
-                onClick={handleFavorites}
-                onMouseEnter={() => {
-                  const favoritesBt = document.querySelector("#favoritesBt");
-                  favoritesBt.classList.remove("hidden");
-                }}
-                onMouseLeave={() => {
-                  const favoritesBt = document.querySelector("#favoritesBt");
-                  favoritesBt.classList.add("hidden");
-                }}
-                className="hover:cursor-pointer p-1 w-7 h-7 hover:bg-[#707070] shadow-md bg-white text-yellow-300
-                rounded-[50%] border flex flex-col justify-center items-center">
-                ★
-              </button>
-            </div>
-          </form>
-          <div className="border m-1 xl:h-[95%] h-[88%] bg-white rounded-xl shadow-inner p-2 overflow-scroll overflow-x-hidden">
-            {searchfood}
-          </div>
-        </div>
+        <UserSearchWrapper setSearchFood={setSearchFood} setIsLoading={setIsLoading} setSearchFoodList={setSearchFoodList} token={token} fastSearch={fastSearch} setFastSearch={setFastSearch} searchfood={searchfood}/>
 
         <div className="border rounded-lg shadow-lg bg-[#EAEAEA] p-2 lg:h-[70rem]">
-          <div className="h-10 flex justify-between items-center border rounded-lg bg-white shadow-inner m-2">
-            <img src={leftarrow} alt="leftarrow" onClick={handleSlotLeftButton} className="h-full hover:cursor-pointer drop-shadow-md" />
-            <div>{selectSlot}</div>
-            <img src={rightarrow} alt="rightarrow" onClick={handleSlotRightButton} className="h-full hover:cursor-pointer drop-shadow-md" />
-          </div>
+          <UserSlotNav setSelectSlotIndex={setSelectSlotIndex} setIsClickSlotButton={setIsClickSlotButton} selectSlot={selectSlot}/>
           <div className="grid grid-cols-1 grid-rows-2 gap-1 md:grid-cols-2 p-4 w-full lg:h-[87%]">
             <ImgUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
-            <div
-              className="border row-start-2 md:row-start-1 overflow-scroll w-full overflow-x-hidden 
-            bg-white rounded-lg shadow-inner">
+            <div className="border row-start-2 md:row-start-1 overflow-scroll w-full overflow-x-hidden bg-white rounded-lg shadow-inner">
               <div className="my-5 w-[90%] mx-auto h-10 border rounded-lg shadow-inner drop-shadow flex justify-center items-center">식단</div>
               {selectfoodView}
             </div>
             <div
-              className="border col-span-2 bg-white shadow-inner rounded-lg h-min sm:h-[35rem]
-            sm:overflow-scroll sm:overflow-x-hidden p-2">
-              <div className="my-5 w-[90%] mx-auto h-10 border rounded-lg shadow-inner 
-              flex justify-center drop-shadow relative items-center">
+              className="border col-span-2 bg-white shadow-inner rounded-lg h-min sm:h-[35rem] sm:overflow-scroll sm:overflow-x-hidden p-2">
+              <div className="my-5 w-[90%] mx-auto h-10 border rounded-lg shadow-inner flex justify-center drop-shadow relative items-center">
                 <p>식단 분석 🕵️‍♂️</p>
-                <button onMouseEnter={handleCursorInformation}
-                  onMouseLeave={hadleCursorOut}
-                  className="absolute right-5 border w-7 h-7 rounded-[50%] z-50
-                bg-[#14A8DD] hover:bg-[#3A84F5] text-white shadow-md 
-                hover:cursor-pointer p-1 flex justify-center items-center">❕</button>
+                <button onMouseEnter={handleCursorInformation} onMouseLeave={hadleCursorOut} className="absolute right-5 border w-7 h-7 rounded-[50%] z-50 bg-[#14A8DD] hover:bg-[#3A84F5] text-white shadow-md hover:cursor-pointer p-1 flex justify-center items-center">❕</button>
               </div>
               <div>{cursorInfo}</div>
               {userInfoView ? userInfoView : ''}

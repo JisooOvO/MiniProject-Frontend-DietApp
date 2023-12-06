@@ -37,8 +37,6 @@ const TodayTotalNutrient = ({day,data,bmr,userInfo}) => {
     lunch = data.filter(item => item["datehistory"]["slot"] === "점심" )[0];
     dinner = data.filter(item => item["datehistory"]["slot"] === "저녁" )[0]; 
 
-    console.log(morning,lunch,dinner);
-
     if(morning !== undefined) {
         delete morning.datehistory;
         delete morning.nutrient_id;

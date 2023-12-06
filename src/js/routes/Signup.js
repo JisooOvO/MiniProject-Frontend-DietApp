@@ -1,4 +1,4 @@
-import FormTitle from "../common/FormTitle";
+import FormTitle from "../loginAndSignup/FormTitle";
 import "../../style/login.css";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";

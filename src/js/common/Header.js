@@ -4,7 +4,6 @@ import "../../style/responsive.css"
 import { LuUser2 } from "react-icons/lu";
 import { useState } from "react";
 import { CalToday } from "./Calday";
-import "../../style/myhidden.css"
 
 const Header = () => {
   const today = CalToday();
