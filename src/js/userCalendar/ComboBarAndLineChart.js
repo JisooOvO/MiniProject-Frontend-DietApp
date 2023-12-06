@@ -3,7 +3,6 @@ import Chart from 'chart.js/auto';
 
 const ComboChart = ({dates=[],calories=[],weights=[]}) => {
   const chartRef = useRef(null);
-  console.log(dates,calories,weights)
   useEffect(() => {
     const ctx = document.getElementById('comboChart');
     if (chartRef.current) {
@@ -14,22 +13,22 @@ const ComboChart = ({dates=[],calories=[],weights=[]}) => {
       labels: dates,
       datasets: [
         {
-          type: 'bar',  // Bar 차트
-          label: "칼로리",
-          backgroundColor: 'rgba(75,192,192,0.2)',
-          borderColor: 'rgba(75,192,192,1)',
-          borderWidth: 1,
-          yAxisID: 'y-axis-bar',
-          data: calories,
-        },
-        {
           type: 'line',  // Line 차트
-          label: "몸무게",
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          label: "몸무게(kg)",
+          backgroundColor: 'rgba(255, 99, 132, 1)',
           borderColor: 'rgba(255, 99, 132, 1)',
           borderWidth: 2,
           yAxisID: 'y-axis-line',
           data: weights,
+        },
+        {
+          type: 'bar',  // Bar 차트
+          label: "칼로리(kcal)",
+          backgroundColor: 'rgba(75,192,192,0.5)',
+          borderColor: 'rgba(75,192,192,1)',
+          borderWidth: 1,
+          yAxisID: 'y-axis-bar',
+          data: calories,
         },
       ],
     };
@@ -39,23 +38,22 @@ const ComboChart = ({dates=[],calories=[],weights=[]}) => {
         x: {
           stacked: true,
         },
-        yAxes: {
-          yAxes : [
+        yAxes : [
           {
-            id: 'y-axis-bar',
+            id: 'y-axis-line',
             type: 'linear',
             position: 'right',
           },
           {
-            id: 'y-axis-line',
+            id: 'y-axis-bar-2',  // 첫 번째 y-축과 구별되는 고유한 식별자
             type: 'linear',
-            position: 'left',
+            position: 'right',
           },
-        ]},
+        ],
       },
-      responsive: true,  // 반응형 설정
-      maintainAspectRatio: false,  // 차트 비율 유지 해제
-    };
+      responsive: true,
+      maintainAspectRatio: false,
+    }
 
     // Combo Chart 생성
     // eslint-disable-next-line

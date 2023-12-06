@@ -1,12 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Calendar from "../userCalendar/Calendar.js"
 import UserCalendarHeader from "../userCalendar/UserCalendarHeader.js"
 import { useNavigate } from "react-router-dom";
 import Loading from "../common/Loading.js";
 import ComboBarAndLineChart from "../userCalendar/ComboBarAndLineChart.js";
 import { CalToday } from "../common/Calday.js";
+import "../../style/myhidden.css"
+import ChartContainer from "../userCalendar/ChartContainer.js";
 
 const UserCalendar = () => {
+  const date = useRef(CalToday());
+  const [dateState,setDateState] = useState(CalToday());
   const [currentYear,setCurrentYear] = useState(new Date().getFullYear());
   const [currentMonth,setCurrentMonth] = useState(new Date().getMonth() + 1);
   const navigate = useNavigate();
@@ -44,7 +48,7 @@ const UserCalendar = () => {
     .then(res => res.json())
     .then(data => {
       setIsLoading(false);
-      console.log(data)
+      data["dates"] = data["dates"].map(item => String(item).slice(5));
       setCalories(data["calories"]);
       setDates(data["dates"]);
       setWeights(data["weights"]);
@@ -69,12 +73,39 @@ const UserCalendar = () => {
     // eslint-disable-next-line
   },[currentMonth])
 
+  const handleDateChange = () => {
+    setDateState(date.current.value);
+  }
+
+  useEffect(()=>{
+    fetch("http://10.125.121.212:8080/api/private/getMonthlyCaloriesAndWeights",{
+      method : "post",
+      headers : {
+        "Authorization" : token,
+        "Content-Type" : "application/json"
+      },
+      body : JSON.stringify({
+        "today" : dateState
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      setIsLoading(false);
+      data["dates"] = data["dates"].map(item => String(item).slice(5));
+      setCalories(data["calories"]);
+      setDates(data["dates"]);
+      setWeights(data["weights"]);
+    })
+    .catch(e => console.log(e));
+    // eslint-disable-next-line
+  },[dateState])
+
   return (
     <div id="CalendarContainer" className="flex flex-col mx-auto items-center w-[95%] h-full relative">
         { isLoading ? <div className="absolute w-screen h-full z-[9999] opacity-70 bg-gray-500 "><Loading/></div> : '' }
-        <UserCalendarHeader currentYear={currentYear} currentMonth={currentMonth} handleClickLeftArrow={handleClickLeftArrow} handleClickRightArrow={handleClickRightArrow}/>
+        <UserCalendarHeader currentYear={currentYear} currentMonth={currentMonth} handleClickLeftArrow={handleClickLeftArrow} handleClickRightArrow={handleClickRightArrow}/>    
         <Calendar isLoading={isLoading} setIsLoading={setIsLoading} currentYear={currentYear} currentMonth={currentMonth}/>
-        {showChart}
+        <ChartContainer dateState={dateState} handleDateChange={handleDateChange} date={date} today={CalToday()} showChart={showChart}/>
     </div>
   )
 }
