@@ -10,6 +10,7 @@ const Header = () => {
   const [isClick, setIsClick] = useState(false);
   const navigate = useNavigate();
   const token = sessionStorage.getItem("token");
+  const username = sessionStorage.getItem("username");
   const handleClick = () => {
     setIsClick(true);
   }
@@ -69,9 +70,10 @@ const Header = () => {
           className="border relative rounded-[50%] w-7 h-7 flex justify-center items-center bg-white drop-shadow-md hover:cursor-pointer hover:bg-slate-200">
             <LuUser2/>
             <span id="hoverText3" className="hidden absolute top-7 text-sm w-32 -right-10 h-10 flex items-center justify-center">로그인 관리</span>
-            {isClick ? 
-              <div onClickCapture={handleLogInAndOut} className="absolute z-[9999] pointer-events-[fill] flex justify-center items-center p-1 h-12 top-full mt-1 border bg-white hover:bg-slate-200 rounded-md text-sm sm:text-base w-28 sm:w-44 -left-20 sm:-left-36">
-              {token ? "로그아웃하기" : "로그인하기"}
+            {isClick ?
+            <div onClickCapture={handleLogInAndOut} className="absolute z-[9999] pointer-events-[fill] flex flex-col justify-center items-center p-2 h-20 top-full mt-1 border bg-white hover:bg-slate-200 rounded-md text-sm sm:text-base w-28 sm:w-44 -left-20 sm:-left-36">
+              <p className="text-sm">{username ? username+"님 안녕하세요" : ''}</p>              
+              <p className="flex flex-col justify-center items-center text-sm">{token ? "로그아웃하기" : "로그인하기"}</p>
             </div> : ''}
           </li>
         </ul>

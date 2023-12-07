@@ -29,16 +29,9 @@ const Loading = () => {
 
   return (
     <div style={dynamicStyle} className="flex justify-center items-center text-5xl sm:text-6xl">
-      <span ref={(el) => loadingAnimations.current.push(el)} className="loadingAnimation">L</span>
-      <span ref={(el) => loadingAnimations.current.push(el)} className="loadingAnimation">O</span>
-      <span ref={(el) => loadingAnimations.current.push(el)} className="loadingAnimation">A</span>
-      <span ref={(el) => loadingAnimations.current.push(el)} className="loadingAnimation">D</span>
-      <span ref={(el) => loadingAnimations.current.push(el)} className="loadingAnimation">I</span>
-      <span ref={(el) => loadingAnimations.current.push(el)} className="loadingAnimation">N</span>
-      <span ref={(el) => loadingAnimations.current.push(el)} className="loadingAnimation">G</span>
-      <span ref={(el) => loadingAnimations.current.push(el)} className="loadingAnimation">.</span>
-      <span ref={(el) => loadingAnimations.current.push(el)} className="loadingAnimation">.</span>
-      <span ref={(el) => loadingAnimations.current.push(el)} className="loadingAnimation">.</span>
+      {
+        ["L","O","A","D","I","N","G",".",".","."].map((item,idx) => <span key={`key${idx}`} ref={(el) => loadingAnimations.current.push(el)} className="loadingAnimation">{item}</span>)
+      }
     </div>
   );
 };
