@@ -33,8 +33,6 @@ const Bar = ({nutr, color, isKcal=false, unit, type}) => {
     arr.push(i);
   }
 
-  console.log(arr);
-
   return (
     <div className="border h-[70%] w-[70%] relative rounded-md overflow-hidden">
         <div className="absolute z-10 right-2 text-[80%] top-[50%] translate-y-[-50%]">{nutr ? nutr.toFixed(2) : 0}{unit}</div>

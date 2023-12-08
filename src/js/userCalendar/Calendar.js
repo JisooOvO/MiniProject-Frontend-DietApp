@@ -2,7 +2,7 @@ import { useState } from "react";
 import DayComponent from "./DayComponent";
 import "../../style/animation.css";
 
-const Calendar = ({ currentYear, currentMonth }) => {
+const Calendar = ({ currentYear, currentMonth, targetCal, targetWeight }) => {
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
   const currentMonthFirstDate = new Date(
     currentYear + "-" + currentMonth + "-" + 1
@@ -76,6 +76,8 @@ const Calendar = ({ currentYear, currentMonth }) => {
                       isLastMonth={isLastMonth}
                       isNextMonth={isNextMonth}
                       d={d}
+                      targetCal={targetCal}
+                      targetWeight={targetWeight}
                     />
                   );
                 })}

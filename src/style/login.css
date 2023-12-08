@@ -13,9 +13,6 @@ form.was-validated input:invalid {
     #loginTitle{
         font-size: 85%;
     }
-    input{
-        width: 100% !important;
-    }
     input::placeholder{
         font-size: 0.4rem;
     }

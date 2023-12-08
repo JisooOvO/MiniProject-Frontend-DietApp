@@ -6,6 +6,7 @@ import Loading from "../common/Loading.js";
 import ComboBarAndLineChart from "../userCalendar/ComboBarAndLineChart.js";
 import { CalToday } from "../common/Calday.js";
 import ChartContainer from "../userCalendar/ChartContainer.js";
+import TargetCalAndWeight from "../userCalendar/TargetCalAndWeight.js";
 
 const UserCalendar = () => {
   const date = useRef(CalToday());
@@ -20,6 +21,9 @@ const UserCalendar = () => {
   const [dates,setDates] = useState([]);
   const [weights,setWeights] = useState([]);
   const [showChart, setShowChart] = useState('');
+  const [targetCal, setTargetCal] = useState(0);
+  const [targetWeight, setTargetWeight] = useState(0);
+
   const handleClickLeftArrow = () => {
     setCurrentMonth(currentMonth - 1);
   }
@@ -103,7 +107,8 @@ const UserCalendar = () => {
     <div id="CalendarContainer" className="flex flex-col mx-auto items-center w-[95%] h-full relative">
         { isLoading ? <div className="absolute w-screen h-full z-[9999] opacity-70 bg-gray-500 "><Loading/></div> : '' }
         <UserCalendarHeader currentYear={currentYear} currentMonth={currentMonth} handleClickLeftArrow={handleClickLeftArrow} handleClickRightArrow={handleClickRightArrow}/>    
-        <Calendar isLoading={isLoading} setIsLoading={setIsLoading} currentYear={currentYear} currentMonth={currentMonth}/>
+        <TargetCalAndWeight setTargetCal={setTargetCal} setTargetWeight={setTargetWeight}/>
+        <Calendar currentYear={currentYear} currentMonth={currentMonth} targetCal={targetCal} targetWeight={targetWeight}/>
         <ChartContainer dateState={dateState} handleDateChange={handleDateChange} date={date} today={CalToday()} showChart={showChart}/>
     </div>
   )

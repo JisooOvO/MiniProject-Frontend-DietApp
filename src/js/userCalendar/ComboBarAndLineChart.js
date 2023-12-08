@@ -17,7 +17,7 @@ const ComboChart = ({dates=[],calories=[],weights=[]}) => {
           backgroundColor: 'rgba(255, 99, 132, 1)',
           borderColor: 'rgba(255, 99, 132, 1)',
           borderWidth: 2,
-          yAxisID: 'y-axis-line',
+          yAxisID: 'y1',
           data: weights,
         },
         {
@@ -26,7 +26,7 @@ const ComboChart = ({dates=[],calories=[],weights=[]}) => {
           backgroundColor: 'rgba(75,192,192,0.5)',
           borderColor: 'rgba(75,192,192,1)',
           borderWidth: 1,
-          yAxisID: 'y-axis-bar',
+          yAxisID: 'y2',
           data: calories,
         },
       ],
@@ -37,18 +37,17 @@ const ComboChart = ({dates=[],calories=[],weights=[]}) => {
         x: {
           stacked: true,
         },
-        yAxes : [
-          {
-            id: 'y-axis-line',
+        y1: {
             type: 'linear',
             position: 'right',
-          },
-          {
-            id: 'y-axis-bar-2',
+            grid : {
+              display : false
+            }
+        },
+        y2: {
             type: 'linear',
-            position: 'right',
-          },
-        ],
+            position: 'left',
+        },
       },
       responsive: true,
       maintainAspectRatio: false,

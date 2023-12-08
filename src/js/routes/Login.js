@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import "../../style/login.css"
-import googlelogo from "../../images/googlelogo.png"
+//import googlelogo from "../../images/googlelogo.png"
 import FormTitle from '../loginAndSignup/FormTitle';
 import { useEffect } from 'react';
 import ShowPassword from '../loginAndSignup/ShowPassword';
@@ -8,7 +8,7 @@ import ShowPassword from '../loginAndSignup/ShowPassword';
 const Login = () => {
   const navigate = useNavigate();
   const auth = sessionStorage.getItem("token");
-  const isOauth2 = false;
+  //const isOauth2 = false;
 
   useEffect(() => {
     if (auth) navigate(`/userCalendar`);
@@ -19,7 +19,6 @@ const Login = () => {
     e.preventDefault();
     let username = document.querySelector("#id").value;
     let password = document.querySelector("#password").value;
-    console.log(username,password)
     fetch('http://10.125.121.212:8080/login', {
       method: "POST",
       body: JSON.stringify({
@@ -41,14 +40,14 @@ const Login = () => {
     }).catch(e => console.log(e))
   };
 
-  const handleGoogleoauth = () => {
-    fetch('http://10.125.121.212:8080/oauth', {
-      method: 'POST',
-    })
-      .then(res => console.log(res))
-      .then(data => console.log(data))
-      .catch(e => console.log(e))
-  };
+  // const handleGoogleoauth = () => {
+  //   fetch('http://10.125.121.212:8080/oauth', {
+  //     method: 'POST',
+  //   })
+  //   .then(res => console.log(res))
+  //   .then(data => console.log(data))
+  //   .catch(e => console.log(e))
+  // };
 
   return (
     <div className="border-2 w-4/5 max-w-[50rem] min-h-[30rem] h-[70%] m-auto shadow-xl p-2 flex flex-col items-center justify-center rounded-lg relative">
@@ -58,17 +57,17 @@ const Login = () => {
       <form className="w-[90%] h-[70%] p-4 flex flex-col justify-center items-center">
         <div className="flex flex-col w-full justify-center items-center p-2">
           <label htmlFor="id" className="hidden">아이디를 입력하세요.</label>
-          <input id="id" className="w-[80%] max-w-[33rem] h-14 py-1 pl-4 mb-5 border rounded-lg shadow-inner"
+          <input id="id" className="w-full max-w-[33rem] h-14 py-1 pl-4 mb-5 border rounded-lg shadow-inner"
             name="id" type="text" placeholder="🙍‍♂️  아이디를 입력하세요" required />
           <label htmlFor="password" className="hidden">비밀번호를 입력하세요.</label>
-          <div className="w-[80%] max-w-[33rem] relative">
+          <div className="w-full max-w-[33rem] relative">
             <input id='password' className="w-full mb-5 h-14 p-y-1 pl-4 border rounded-lg shadow-inner"
               name="password" type="password" placeholder="🔒  비밀번호를 입력하세요" required/>
             <ShowPassword/>
           </div>
         </div>
         <div id='loginButtonContainer'
-          className="w-[80%] items-center justify-center flex flex-col h-[30%]">
+          className="w-full items-center justify-center flex flex-col h-[30%]">
           <button id='loginSubmit' onClick={handleLoginButton}
           className="border mb-2 drop-shadow-lg w-full h-[4rem] text-white rounded-md bg-[#14A8DD] hover:bg-[#3A84F5] hover:cursor-pointer">
             로그인
@@ -81,7 +80,7 @@ const Login = () => {
             </Link>
             <span className='border w-1/3'></span>
           </div>
-          <div className='col-span-2 hover:cursor-pointer' onClick={handleGoogleoauth}>
+          {/* <div className='col-span-2 hover:cursor-pointer' onClick={handleGoogleoauth}>
             {isOauth2 
             ? 
               <div id='googleLogin' className='flex h-10 text-white rounded-md drop-shadow-lg bg-[#14A8DD]
@@ -90,7 +89,7 @@ const Login = () => {
               </div> 
             : ''
             }
-          </div>
+          </div> */}
         </div>
       </form>
     </div>

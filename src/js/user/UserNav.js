@@ -36,6 +36,7 @@ const UserNav = ({setIsLoading,token,day,setTodayTotalNutrientInfo,bmr,userInfo,
 
   /** 저장 함수 */
   const handleSaveButton = () => {
+    const weight = document.querySelector("#weight").valueAsNumber;
     fetch("http://10.125.121.212:8080/api/private/addFoodList", {
         method: "post",
         headers: {
@@ -47,7 +48,8 @@ const UserNav = ({setIsLoading,token,day,setTodayTotalNutrientInfo,bmr,userInfo,
             "slot": slot,
             "dietList": selectfood,
             "img": imageUrl,
-            "nutrient" : sumNutr
+            "nutrient" : sumNutr,
+            "weight" : weight
         })
     })
     .then(res => {

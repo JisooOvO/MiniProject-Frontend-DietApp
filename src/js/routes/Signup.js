@@ -142,7 +142,7 @@ const Signup = () => {
         <div className="flex flex-col w-full max-w-[33rem] justify-center items-center relative p-2">
           <label htmlFor="username" className="hidden">아이디</label>
           <input id="username" onChange={handleChange} className="w-full max-w-[33rem] h-14 py-1 pl-4 mb-2 border rounded-lg shadow-inner"
-            name="username" type="text" placeholder="🙍‍♂️  아이디는 5 ~ 20자의 영문, 숫자입니다." maxLength={20}
+            name="username" type="text" placeholder="🙍‍♂️  아이디는 5~20자의 영문, 숫자입니다." maxLength={20}
             required title="아이디는 5자이상 20자 이내의 영문과 숫자를 포함하여야합니다." pattern="^[a-zA-Z0-9]{5,20}$" />
           <button id="duplicationBt" onClick={handleIsDuplication} 
             className="absolute top-[1.7rem] right-4 flex flex-col h-8 text-white rounded-md whitespace-nowrap hover:cursor-pointer
@@ -153,7 +153,7 @@ const Signup = () => {
           <div className="w-full max-w-[33rem] relative">
             <input id="password"
               className="w-full max-w-[33rem] h-14 py-1 pl-4 mb-2 border rounded-lg shadow-inner"
-              name="password" type="password" placeholder="🔒  비밀번호는 10 ~ 20자의 영문과 숫자, 특수문자입니다." maxLength={20}
+              name="password" type="password" placeholder="🔒  비밀번호는 10~20자의 영문,숫자,특수문자입니다." maxLength={20}
               required title="비밀먼호는 10자 이상, 20자 이내의 영어 대소문자, 숫자, 특수문자를 포함하여야합니다."
               pattern="^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$]).{10,20}$" />
             <ShowPassword/>

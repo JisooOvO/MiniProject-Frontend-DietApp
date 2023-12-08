@@ -4,7 +4,7 @@ import calorieFoodIcon from "../../images/calories_food_nutrition_icon.png";
 import { useNavigate } from "react-router-dom";
 import { CalToday } from "../common/Calday";
 
-const DayComponent = ({innerWidth,currentYear,currentMonth,isLastMonth,isNextMonth,d}) => {
+const DayComponent = ({innerWidth,currentYear,currentMonth,isLastMonth,isNextMonth,d,targetCal,targetWeight}) => {
   const today = CalToday();
   let targetYear = currentYear;
   let targetMonth = currentMonth;
@@ -13,7 +13,7 @@ const DayComponent = ({innerWidth,currentYear,currentMonth,isLastMonth,isNextMon
   const [weight, setWeight] = useState(0);
   const navigate = useNavigate();
   const token = sessionStorage.getItem("token");
- 
+
   if(isLastMonth){
     targetMonth = currentMonth - 1;
     if(targetMonth < 1) {
@@ -70,6 +70,7 @@ const DayComponent = ({innerWidth,currentYear,currentMonth,isLastMonth,isNextMon
     e.target.nextSibling.classList.toggle("hidden");
     e.target.nextSibling.classList.toggle("absolute");
     e.target.nextSibling.classList.toggle("top-9");
+    e.target.nextSibling.classList.toggle("-right-4");
     e.target.nextSibling.classList.toggle("w-20");
 
   }
@@ -105,7 +106,14 @@ const DayComponent = ({innerWidth,currentYear,currentMonth,isLastMonth,isNextMon
                 :
                 <img src={calorieFoodIcon} onClick={handleClickIcon} className="hover:cursor-pointer hover:bg-[#909090] bg-white shadow-md w-7 h-7 rounded-[50%] border flex items-center justify-center" alt="체중계 아이콘"/>
               }
-              <div id="response" className="hidden text-[65%] border shadow-inner bg-white w-20 sm:w-[70%] whitespace-nowrap drop-shadow-sm text-end rounded-md p-1">{calorie.toFixed(0)+" kcal"}</div></> : '' }
+              { +targetCal && +targetCal < calorie ?
+                <div id="response" className="hidden text-[65%] text-red-500 border shadow-inner bg-white w-20 sm:w-[70%] whitespace-nowrap drop-shadow-sm text-end rounded-md p-1">{calorie.toFixed(0)+" kcal"}</div>
+                :
+                <div id="response" className="hidden text-[65%] border shadow-inner bg-white w-20 sm:w-[70%] whitespace-nowrap drop-shadow-sm text-end rounded-md p-1">{calorie.toFixed(0)+" kcal"}</div>
+              }
+              </> 
+              : '' 
+              }
             </div>
             <div className="relative flex items-center sm:justify-end gap-1 h-8">
               { weight > 0 ? 
@@ -115,7 +123,15 @@ const DayComponent = ({innerWidth,currentYear,currentMonth,isLastMonth,isNextMon
                 :
                 <img src={weightIcon} onClick={handleClickIcon} className="hover:cursor-pointer hover:bg-[#909090] bg-white shadow-md w-7 h-7 rounded-[50%] border flex items-center justify-center" alt="체중계 아이콘"/>
               }
-              <div id="response" className="hidden text-[65%] border shadow-inner bg-white w-20 sm:w-[70%] whitespace-nowrap drop-shadow-sm text-end rounded-md p-1">{ weight.toFixed(1)+" kg"}</div></> : '' }
+              {
+                +targetWeight !== 0 && +targetWeight < weight ?
+                <div id="response" className="hidden text-[65%] text-red-500 border shadow-inner bg-white w-20 sm:w-[70%] whitespace-nowrap drop-shadow-sm text-end rounded-md p-1">{ weight.toFixed(1)+" kg"}</div>
+                :
+                <div id="response" className="hidden text-[65%] border shadow-inner bg-white w-20 sm:w-[70%] whitespace-nowrap drop-shadow-sm text-end rounded-md p-1">{ weight.toFixed(1)+" kg"}</div>
+              }
+              </>
+              : '' 
+              }
             </div>
         </div>
     </td>
