@@ -24,7 +24,7 @@ const Login = () => {
     e.preventDefault();
     let username = document.querySelector("#id").value;
     let password = document.querySelector("#password").value;
-    fetch('https://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/login', {
+    fetch('http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/login', {
       method: "POST",
       body: JSON.stringify({
         "username": username,
