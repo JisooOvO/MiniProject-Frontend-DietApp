@@ -19,8 +19,14 @@ const Signup = () => {
   /** 회원 가입 */
   const handleSubmit = (e) => {
     e.preventDefault();
-    const username = document.querySelector("#username").value;
-    const password = document.querySelector("#password").value;
+    const username = document.querySelector("#username");
+    const password = document.querySelector("#password");
+
+    if(password.validity.valid === false) {
+      alert("비밀번호 형식에 맞지 않습니다.");
+      return;
+    }
+    
     if(!isDuplCheck){
       const duplicationBt = document.querySelector("#duplicationBt");
       duplicationBt.classList.add("bg-red-500");
@@ -28,26 +34,36 @@ const Signup = () => {
       alert("아이디 중복 확인을 해주세요");
       return;
     }
-    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/public/signup", {
-      method: 'POST',
-      headers : {
-        "Content-Type" : "application/json"
-      },
-      body: JSON.stringify({
-        "username": username,
-        "password": password
+
+    console.log(handleCheckPassword());
+
+    if(!handleCheckPassword()){
+      alert("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+
+    if(password.validity.valid && isDuplCheck && handleCheckPassword()){
+      fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/public/signup", {
+        method: 'POST',
+        headers : {
+          "Content-Type" : "application/json"
+        },
+        body: JSON.stringify({
+          "username": username.value,
+          "password": password.value
+        })
       })
-  })
-    .then(res => {
-      if(res.status === 200){
-        alert("회원 가입되셨습니다. 로그인 페이지로 이동합니다.");
-        navigate("/login")
-      }
-    })
-    .catch(e => {
-      console.log(e)
-      alert("데이터 전송 중 에러 발생");
-    });
+      .then(res => {
+        if(res.status === 200){
+          alert("회원 가입되셨습니다. 로그인 페이지로 이동합니다.");
+          navigate("/login")
+        }
+      })
+      .catch(e => {
+        console.log(e)
+        alert("데이터 전송 중 에러 발생");
+      });
+    }
   }
 
   document.querySelectorAll("input").forEach(input => {
@@ -113,11 +129,13 @@ const Signup = () => {
       setCheckMsg("비밀번호가 일치하지 않습니다.");
       checkMsgContainer.classList.add("text-red-700");
       checkMsgContainer.classList.remove("text-blue-700");
+      return false;
     } 
     else if (password === checkPassword) {
       setCheckMsg("비밀번호가 일치합니다.");
       checkMsgContainer.classList.add("text-blue-700");
       checkMsgContainer.classList.remove("text-red-700");
+      return true;
     }
   }
 
@@ -151,7 +169,7 @@ const Signup = () => {
           </button>
           <label htmlFor="password" className="hidden">비밀번호</label>
           <div className="w-full max-w-[33rem] relative">
-            <input id="password"
+            <input id="password" onChange={handleCheckPassword}
               className="w-full max-w-[33rem] h-14 py-1 pl-4 mb-2 border rounded-lg shadow-inner"
               name="password" type="password" placeholder="🔒  비밀번호는 10~20자의 영문,숫자,특수문자입니다." maxLength={20}
               required title="비밀먼호는 10자 이상, 20자 이내의 영어 대소문자, 숫자, 특수문자를 포함하여야합니다."

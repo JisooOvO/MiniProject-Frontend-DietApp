@@ -88,7 +88,7 @@ const UserInformation = ({ height, weight, gender, age, activityFactor, func }) 
                     <div className="flex gap-2 h-full justify-center items-center">
                         <input type="number" id="age"
                             defaultValue={age} name="age"
-                            className="border max-w-[5rem] text-[80%] sm:max-w-[7rem] shadow-inner p-1 rounded-lg" />
+                            className="border max-w-[5rem] text-[80%] w-[6rem] sm:max-w-[7rem] shadow-inner p-1 rounded-lg" />
                         <span className="text-[80%]">세&nbsp;</span>
                     </div>
                 </div>

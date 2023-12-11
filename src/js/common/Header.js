@@ -33,7 +33,7 @@ const Header = () => {
         <ul className="flex gap-2 h-16 items-center">
           { token ?
            <li className="whitespace-nowrap drop-shadow-md text-sm items-center text-white flex">
-            <p className="border-b-2">{username}</p><p>님 안녕하세요</p>
+            <p className="border-b-2 hidden sm:block sm:text-base">{username}</p><p className="hidden sm:block sm:text-base">님 안녕하세요</p>
            </li>
            : ''
           }
