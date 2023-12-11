@@ -34,7 +34,7 @@ const DayComponent = ({innerWidth,currentYear,currentMonth,isLastMonth,isNextMon
   if(today === targetDate) isToday = true;
 
   useEffect(()=>{
-    fetch("http://10.125.121.212:8080/api/private/getMonthlyData",{
+    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/private/getMonthlyData",{
         method : "post",
         headers : {
             "Authorization" : token

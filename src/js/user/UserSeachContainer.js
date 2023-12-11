@@ -9,7 +9,7 @@ const UserSeachContainer = ({setSearchFood,setIsLoading,setSearchFoodList,token,
 
     setIsLoading(true);
 
-    fetch("http://10.125.121.212:8080/api/private/searchFoodList", {
+    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/private/searchFoodList", {
       method: "POST",
       headers: {
         "Authorization": token
@@ -42,7 +42,7 @@ const UserSeachContainer = ({setSearchFood,setIsLoading,setSearchFoodList,token,
     if (isInitialConsonant(targetNm)) return;
     if (targetNm === '') return;
 
-    fetch("http://10.125.121.212:8080/api/private/fastSearch2", {
+    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/private/fastSearch2", {
         method: 'post',
         headers: {
         "Authorization": token,
@@ -111,7 +111,7 @@ const UserSeachContainer = ({setSearchFood,setIsLoading,setSearchFoodList,token,
     e.preventDefault();
     setSearchFood('');
     setIsLoading(true);
-    fetch("http://10.125.121.212:8080/api/private/searchFavoriteFoods", {
+    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/private/searchFavoriteFoods", {
     method: "post",
     headers: {
         "Authorization": token,

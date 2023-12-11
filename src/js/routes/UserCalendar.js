@@ -38,7 +38,7 @@ const UserCalendar = () => {
     }
 
     setIsLoading(true);
-    fetch("http://10.125.121.212:8080/api/private/getMonthlyCaloriesAndWeights",{
+    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/private/getMonthlyCaloriesAndWeights",{
       method : "post",
       headers : {
         "Authorization" : token,
@@ -81,7 +81,7 @@ const UserCalendar = () => {
   }
 
   useEffect(()=>{
-    fetch("http://10.125.121.212:8080/api/private/getMonthlyCaloriesAndWeights",{
+    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/private/getMonthlyCaloriesAndWeights",{
       method : "post",
       headers : {
         "Authorization" : token,
@@ -104,7 +104,7 @@ const UserCalendar = () => {
   },[dateState])
 
   return (
-    <div id="CalendarContainer" className="flex flex-col mx-auto items-center w-[95%] h-full relative">
+    <div id="CalendarContainer" className="flex flex-col mx-auto items-center w-[95%] h-full relative px-10">
         { isLoading ? <div className="absolute w-screen h-full z-[9999] opacity-70 bg-gray-500 "><Loading/></div> : '' }
         <UserCalendarHeader currentYear={currentYear} currentMonth={currentMonth} handleClickLeftArrow={handleClickLeftArrow} handleClickRightArrow={handleClickRightArrow}/>    
         <TargetCalAndWeight setTargetCal={setTargetCal} setTargetWeight={setTargetWeight}/>

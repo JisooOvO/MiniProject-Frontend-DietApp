@@ -28,7 +28,7 @@ const Signup = () => {
       alert("아이디 중복 확인을 해주세요");
       return;
     }
-    fetch("http://10.125.121.212:8080/api/public/signup", {
+    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/public/signup", {
       method: 'POST',
       headers : {
         "Content-Type" : "application/json"
@@ -65,7 +65,7 @@ const Signup = () => {
       return;
     }
     if(isDuplCheck) return;
-    fetch("http://10.125.121.212:8080/api/public/searchDuplicatedName", {
+    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/public/searchDuplicatedName", {
       method: "Post",
       headers: {
         "Content-Type": "application/json"

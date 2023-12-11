@@ -25,7 +25,7 @@ const UserHeader = ({day,slot}) => {
   }
 
   return (
-    <div className="w-full text-2xl sm:text-3xl mt-2 h-20 flex justify-center items-center">
+    <div className="w-full text-2xl sm:text-3xl mt-2 mb-4 h-20 flex justify-center items-center">
     <img src={leftarrow} alt="leftarrow" onClick={handleLeftButton} className="h-1/2 sm:h-full hover:cursor-pointer drop-shadow-md" />
     <div className="text-[80%] w-[55%] max-w-[20rem] text-center sm:text-[100%] drop-shadow whitespace-nowrap relative">
       {day.slice(0, 4) + "년 " + day.slice(5, 7) + "월 " + day.slice(8, 10) + "일"}

@@ -30,7 +30,7 @@ const UserInformation = ({ height, weight, gender, age, activityFactor, func }) 
     useEffect(()=>{
         setWeightView(
             <input type="number" id="weight" defaultValue={weight} name="weight"
-            className="border max-w-[5rem] text-[80%] sm:max-w-[7rem] md:max-w-[8rem] shadow-inner p-1 rounded-lg" />
+            className="border max-w-[5rem] text-[80%] sm:max-w-[6rem] shadow-inner p-1 rounded-lg" />
         )
     },[weight])
 
@@ -56,7 +56,7 @@ const UserInformation = ({ height, weight, gender, age, activityFactor, func }) 
                     <div className="flex gap-2 h-full justify-center items-center">
                         <input type="number" id="height"
                             defaultValue={height} name="height"
-                            className="border max-w-[5rem] text-[80%] sm:max-w-[8rem] shadow-inner p-1 rounded-lg" />
+                            className="border max-w-[5rem] text-[80%] sm:max-w-[7rem] shadow-inner p-1 rounded-lg" />
                         <span className="text-[80%]">cm&nbsp;</span>
                     </div>
                 </div>
@@ -75,7 +75,7 @@ const UserInformation = ({ height, weight, gender, age, activityFactor, func }) 
                      p-2 w-[40%] text-[80%] text-end">나의 성별</div>
                     <div className="flex gap-2 h-full justify-center items-center">
                         <select id="gender" defaultValue={gender} name="gender"
-                            className="border  text-[80%] w-[5rem] sm:w-[9rem] p-1 shadow-inner rounded-lg">
+                            className="border  text-[80%] w-[5rem] sm:w-[7rem] p-1 shadow-inner rounded-lg">
                             <option value={1}>남자</option>
                             <option value={2}>여자</option>
                         </select>
@@ -88,7 +88,7 @@ const UserInformation = ({ height, weight, gender, age, activityFactor, func }) 
                     <div className="flex gap-2 h-full justify-center items-center">
                         <input type="number" id="age"
                             defaultValue={age} name="age"
-                            className="border max-w-[5rem] text-[80%] sm:max-w-[8rem] shadow-inner p-1 rounded-lg" />
+                            className="border max-w-[5rem] text-[80%] sm:max-w-[7rem] shadow-inner p-1 rounded-lg" />
                         <span className="text-[80%]">세&nbsp;</span>
                     </div>
                 </div>
@@ -98,8 +98,8 @@ const UserInformation = ({ height, weight, gender, age, activityFactor, func }) 
                      p-2 w-[40%] text-[80%] text-end sm:text-center">나의 활동량</div>
                     <div className="flex gap-2 h-full justify-center items-center">
                         <select id="activityFactor" defaultValue={activityFactor} name="activityFactor"
-                            className="border text-[80%] md:w-[24rem] p-1 rounded-lg
-                        shadow-inner w-[7rem] sm:w-[18rem]">
+                            className="border text-[80%] md:w-[20rem] p-1 rounded-lg
+                        shadow-inner w-[7rem] sm:w-[16rem]">
                             <option value={1}>휴식 상태(소파에서 누워있는 등)</option>
                             <option value={2}>가벼운 활동(좋아하는 취미 활동)</option>
                             <option value={3}>보통의 활동(가벼운 운동을 주당 3-4회하는 등)</option>

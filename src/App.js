@@ -20,7 +20,7 @@ function App() {
             <Route path="/signUp" element={<Signup/>}></Route>
             <Route path="/userCalendar" element={<UserCalendar/>}></Route>
             <Route path="/user/:date/:slot" element={<User/>}></Route>
-            <Route path="*" element={<NotFound />} />
+            {/* <Route path="*" element={<NotFound />} /> */}
           </Routes>
         </div>
       </BrowserRouter>

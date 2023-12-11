@@ -13,7 +13,7 @@ const UserNav = ({setIsLoading,token,day,setTodayTotalNutrientInfo,bmr,userInfo,
     const todayTotalNutrientContainer = document.querySelector("#todayTotalNutrientContainer");
     todayTotalNutrientContainer.classList.remove("hidden");
     setIsLoading(true);
-    fetch("http://10.125.121.212:8080/api/private/getTodayTotalNutrient",{
+    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/private/getTodayTotalNutrient",{
         method : "post",
         headers : {
         "Authorization" : token,
@@ -37,7 +37,7 @@ const UserNav = ({setIsLoading,token,day,setTodayTotalNutrientInfo,bmr,userInfo,
   /** 저장 함수 */
   const handleSaveButton = () => {
     const weight = document.querySelector("#weight").valueAsNumber;
-    fetch("http://10.125.121.212:8080/api/private/addFoodList", {
+    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/private/addFoodList", {
         method: "post",
         headers: {
             "Authorization": token,

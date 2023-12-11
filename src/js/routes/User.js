@@ -63,7 +63,7 @@ const User = () => {
 
     setUserInfoView('');
     setIsLoading(true);
-    fetch("http://10.125.121.212:8080/api/private/getUserInformation", {
+    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/private/getUserInformation", {
       method: "post",
       headers: {
         "Authorization": token
@@ -264,7 +264,7 @@ const User = () => {
 
     setBmr(CalBMR(height, weight, gender, age, activityFactor));
 
-    fetch("http://10.125.121.212:8080/api/private/addUserInformation", {
+    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/private/addUserInformation", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -392,7 +392,7 @@ const User = () => {
     const target = e.target.parentNode.parentNode.parentNode.parentNode.innerText;
     const targetName = target.slice(0, target.indexOf("\n"));
     setSearchFood('');
-    fetch("http://10.125.121.212:8080/api/private/addFavoriteFood", {
+    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/private/addFavoriteFood", {
       method: "post",
       headers: {
         "Authorization": token,
@@ -408,7 +408,7 @@ const User = () => {
         alert("즐겨찾기에 추가되었습니다");
       } 
       else {
-        fetch("http://10.125.121.212:8080/api/private/deleteFavoriteFood", {
+        fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/private/deleteFavoriteFood", {
           method: "delete",
           headers: {
             "Authorization": token,
@@ -434,7 +434,7 @@ const User = () => {
   };
 
   return (
-    <div id="container" className="flex flex-col m-auto items-center w-[95%] relative">
+    <div id="container" className="flex flex-col m-auto items-center w-[95%] relative px-10">
       { isLoading ? <div className="absolute w-screen h-full z-[9999] opacity-70 bg-gray-500 "><Loading/></div> : '' } {/* 로딩 창 */}
       <div id="detailContainer">{foodDetailInfo}</div> {/* 음식 정보 디테일 모달 */}
       <div id="todayTotalNutrientContainer">{todayTotalNutrientInfo}</div> {/* 하루 전체 영양소 통계 모달 */}

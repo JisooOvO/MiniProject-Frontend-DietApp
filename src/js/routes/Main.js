@@ -4,7 +4,7 @@ import Pot from "../../images/Pot"
 import Donut from "../../images/Donut"
 import "../../style/animation.css"
 
-const Main = () => {
+const Main = () => {  
   return (
     <div id="container" className="h-full bg-gradient-to-t from-cyan-300 to-slate-300 flex flex-col items-center justify-center">
       <div className="flex gap-4 w-40 h-30 sm:w-80 sm:h-40"><Pot/><Donut/></div>
