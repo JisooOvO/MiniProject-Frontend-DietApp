@@ -22,11 +22,19 @@
 |남지수|Frontend, Backend|https://github.com/JisooOvO/kminiproject-dietapp|
 |김윤성|Backend|https://github.com/ORENOL/ToyProject_aDietExer_BACKEND|
 
+## 구현 기능
+
+![기능1](https://github.com/JisooOvO/kminiproject-dietapp/assets/138751028/5b4c57c1-0cd8-48a3-9723-fab188a9a0d7)
+![기능2](https://github.com/JisooOvO/kminiproject-dietapp/assets/138751028/5e8b9080-630e-43ba-8738-9c1e78e1c91f)
 
 ## REST API 목록
 
+![표1](https://github.com/JisooOvO/kminiproject-dietapp/assets/138751028/900d8084-2098-4e55-abbe-2b9217d9b360)
+![표2](https://github.com/JisooOvO/kminiproject-dietapp/assets/138751028/eb827aea-3ca4-4b9a-885e-8d56486e4151)
 
+## 데이터베이스 ERD
 
+![표3](https://github.com/JisooOvO/kminiproject-dietapp/assets/138751028/1b92e698-9b4f-4f45-97bc-3c8b8706ccc4)
 
 ## 활용 기술
 
