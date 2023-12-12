@@ -10,6 +10,9 @@
 
 [Notion 바로가기](https://www.notion.so/kminiproject-healthyfit/Healthyfit-88fa67f6947c42cfb44add1140190f58#a22288793b354910b487d77fb7e52f9d)
 
+## 시연 동영상 바로가기
+
+[유튜브 바로가기](https://youtu.be/-knhyacZKKg)
 
 ## 데이터베이스
 
@@ -30,7 +33,8 @@
 ## REST API 목록
 
 ![표1](https://github.com/JisooOvO/kminiproject-dietapp/assets/138751028/900d8084-2098-4e55-abbe-2b9217d9b360)
-![표2](https://github.com/JisooOvO/kminiproject-dietapp/assets/138751028/eb827aea-3ca4-4b9a-885e-8d56486e4151)
+![표2](https://github.com/JisooOvO/kminiproject-dietapp/assets/138751028/b46b8f75-d5e8-4524-8123-81b90e8fd888)
+
 
 ## 데이터베이스 ERD
 
