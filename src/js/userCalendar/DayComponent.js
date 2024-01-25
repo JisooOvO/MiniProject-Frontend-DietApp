@@ -3,6 +3,7 @@ import weightIcon from "../../images/body_weight_icon.png";
 import calorieFoodIcon from "../../images/calories_food_nutrition_icon.png";
 import { useNavigate } from "react-router-dom";
 import { CalToday } from "../common/Calday";
+import { BACKENDURL } from "../common/BACKEND";
 
 const DayComponent = ({innerWidth,currentYear,currentMonth,isLastMonth,isNextMonth,d,targetCal,targetWeight}) => {
   const today = CalToday();
@@ -34,7 +35,7 @@ const DayComponent = ({innerWidth,currentYear,currentMonth,isLastMonth,isNextMon
   if(today === targetDate) isToday = true;
 
   useEffect(()=>{
-    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/private/getMonthlyData",{
+    fetch(BACKENDURL+"/api/private/getMonthlyData",{
         method : "post",
         headers : {
             "Authorization" : token

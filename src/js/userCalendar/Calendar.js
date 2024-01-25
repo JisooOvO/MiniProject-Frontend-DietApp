@@ -14,7 +14,7 @@ const Calendar = ({ currentYear, currentMonth, targetCal, targetWeight }) => {
   const firstDay = currentMonthFirstDate.getDay(); // 해당 달의 1일의 요일
   let calendarFirstDay = lastMonthLastDate - firstDay + 1; // 달력 상 첫번째 날
 
-  const CALENDARNUMBER = 42; // 달력에서 보일 최대 일 수 = 42
+  const CALENDARNUMBER = 31; // 달력에서 보일 최대 일 수
 
   let dates = [];
 

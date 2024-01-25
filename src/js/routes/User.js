@@ -15,6 +15,7 @@ import UserNav from "../user/UserNav.js";
 import SelectFoodView from "../user/SelectFoodView.js";
 import UserSearchWrapper from "../user/UserSearchWrapper.js";
 import UserSlotNav from "../user/UserSlotNav.js";
+import { BACKENDURL } from "../common/BACKEND.js";
 
 const User = () => {
   const [searchfood, setSearchFood] = useState();
@@ -63,7 +64,7 @@ const User = () => {
 
     setUserInfoView('');
     setIsLoading(true);
-    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/private/getUserInformation", {
+    fetch(BACKENDURL+"/api/private/getUserInformation", {
       method: "post",
       headers: {
         "Authorization": token
@@ -264,7 +265,7 @@ const User = () => {
 
     setBmr(CalBMR(height, weight, gender, age, activityFactor));
 
-    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/private/addUserInformation", {
+    fetch(BACKENDURL+"/api/private/addUserInformation", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -392,7 +393,7 @@ const User = () => {
     const target = e.target.parentNode.parentNode.parentNode.parentNode.innerText;
     const targetName = target.slice(0, target.indexOf("\n"));
     setSearchFood('');
-    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/private/addFavoriteFood", {
+    fetch(BACKENDURL+"/api/private/addFavoriteFood", {
       method: "post",
       headers: {
         "Authorization": token,
@@ -408,7 +409,7 @@ const User = () => {
         alert("즐겨찾기에 추가되었습니다");
       } 
       else {
-        fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/private/deleteFavoriteFood", {
+        fetch(BACKENDURL+"/api/private/deleteFavoriteFood", {
           method: "delete",
           headers: {
             "Authorization": token,

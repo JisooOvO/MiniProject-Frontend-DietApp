@@ -1,3 +1,4 @@
+import { BACKENDURL } from "../common/BACKEND";
 import TodayTotalNutrient from "./totalNutrient/TodayTotalNutrient";
 
 const UserNav = ({setIsLoading,token,day,setTodayTotalNutrientInfo,bmr,userInfo,slot,selectfood,imageUrl,sumNutr,handleCancelButton}) => {
@@ -13,7 +14,7 @@ const UserNav = ({setIsLoading,token,day,setTodayTotalNutrientInfo,bmr,userInfo,
     const todayTotalNutrientContainer = document.querySelector("#todayTotalNutrientContainer");
     todayTotalNutrientContainer.classList.remove("hidden");
     setIsLoading(true);
-    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/private/getTodayTotalNutrient",{
+    fetch(BACKENDURL+"/api/private/getTodayTotalNutrient",{
         method : "post",
         headers : {
         "Authorization" : token,
@@ -37,7 +38,7 @@ const UserNav = ({setIsLoading,token,day,setTodayTotalNutrientInfo,bmr,userInfo,
   /** 저장 함수 */
   const handleSaveButton = () => {
     const weight = document.querySelector("#weight").valueAsNumber;
-    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/private/addFoodList", {
+    fetch(BACKENDURL+"/api/private/addFoodList", {
         method: "post",
         headers: {
             "Authorization": token,

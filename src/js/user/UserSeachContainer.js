@@ -1,3 +1,5 @@
+import { BACKENDURL } from "../common/BACKEND";
+
 const UserSeachContainer = ({setSearchFood,setIsLoading,setSearchFoodList,token,fastSearch,setFastSearch}) => {
 
   /** 검색 함수 */
@@ -9,7 +11,7 @@ const UserSeachContainer = ({setSearchFood,setIsLoading,setSearchFoodList,token,
 
     setIsLoading(true);
 
-    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/private/searchFoodList", {
+    fetch(BACKENDURL+"/api/private/searchFoodList", {
       method: "POST",
       headers: {
         "Authorization": token
@@ -42,7 +44,7 @@ const UserSeachContainer = ({setSearchFood,setIsLoading,setSearchFoodList,token,
     if (isInitialConsonant(targetNm)) return;
     if (targetNm === '') return;
 
-    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/private/fastSearch2", {
+    fetch(BACKENDURL+"/api/private/fastSearch2", {
         method: 'post',
         headers: {
         "Authorization": token,
@@ -111,7 +113,7 @@ const UserSeachContainer = ({setSearchFood,setIsLoading,setSearchFoodList,token,
     e.preventDefault();
     setSearchFood('');
     setIsLoading(true);
-    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/private/searchFavoriteFoods", {
+    fetch(BACKENDURL+"/api/private/searchFavoriteFoods", {
     method: "post",
     headers: {
         "Authorization": token,

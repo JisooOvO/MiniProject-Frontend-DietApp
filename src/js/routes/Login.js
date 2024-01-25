@@ -3,6 +3,7 @@ import "../../style/login.css"
 import FormTitle from '../loginAndSignup/FormTitle';
 import { useEffect } from 'react';
 import ShowPassword from '../loginAndSignup/ShowPassword';
+import { BACKENDURL } from '../common/BACKEND';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const Login = () => {
     e.preventDefault();
     let username = document.querySelector("#id").value;
     let password = document.querySelector("#password").value;
-    fetch('http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/login', {
+    fetch(BACKENDURL+'/login', {
       method: "POST",
       body: JSON.stringify({
         "username": username,
@@ -46,18 +47,18 @@ const Login = () => {
   };
 
 
-  const handleGoogleoauth = () => {
-    console.log("clicked");
-    const url = 'http://10.125.121.212:8080/api/public/oauth';
-    fetch(url, {
-      method: 'post',
-    })
-    .then(res => {
-      window.location.href = res.headers.get("Location")
-    })
-    .catch(e => console.log(e))
+  // const handleGoogleoauth = () => {
+  //   console.log("clicked");
+  //   const url = 'http://10.125.121.212:8080/api/public/oauth';
+  //   fetch(url, {
+  //     method: 'post',
+  //   })
+  //   .then(res => {
+  //     window.location.href = res.headers.get("Location")
+  //   })
+  //   .catch(e => console.log(e))
 
-  };
+  // };
 
   return (
     <div className="border-2 w-4/5 max-w-[50rem] min-h-[30rem] h-[70%] m-auto shadow-xl p-2 flex flex-col items-center justify-center rounded-lg relative">
@@ -90,11 +91,11 @@ const Login = () => {
               </Link>
             <span className='border w-1/3'></span>
           </div>
-          <div className='flex items-center w-full h-10'>
+          {/* <div className='flex items-center w-full h-10'>
             <div className='hover:cursor-pointer whitespace-nowrap flex grow justify-center' onClick={handleGoogleoauth}>
                   <span className='text-sm sm:text-base text-gray-500 hover:text-gray-600 drop-shadow-lg'>&nbsp;구글 로그인하기</span>
             </div>
-          </div>
+          </div> */}
         </div>
       </form>
     </div>

@@ -7,6 +7,7 @@ import ComboBarAndLineChart from "../userCalendar/ComboBarAndLineChart.js";
 import { CalToday } from "../common/Calday.js";
 import ChartContainer from "../userCalendar/ChartContainer.js";
 import TargetCalAndWeight from "../userCalendar/TargetCalAndWeight.js";
+import { BACKENDURL } from "../common/BACKEND.js";
 
 const UserCalendar = () => {
   const date = useRef(CalToday());
@@ -38,7 +39,7 @@ const UserCalendar = () => {
     }
 
     setIsLoading(true);
-    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/private/getMonthlyCaloriesAndWeights",{
+    fetch(BACKENDURL+"/api/private/getMonthlyCaloriesAndWeights",{
       method : "post",
       headers : {
         "Authorization" : token,
@@ -81,7 +82,7 @@ const UserCalendar = () => {
   }
 
   useEffect(()=>{
-    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/private/getMonthlyCaloriesAndWeights",{
+    fetch(BACKENDURL+"/api/private/getMonthlyCaloriesAndWeights",{
       method : "post",
       headers : {
         "Authorization" : token,

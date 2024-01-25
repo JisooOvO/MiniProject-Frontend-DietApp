@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { CalToday } from "../common/Calday";
 import ShowPassword from "../loginAndSignup/ShowPassword";
+import { BACKENDURL } from "../common/BACKEND";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ const Signup = () => {
     }
 
     if(password.validity.valid && isDuplCheck && handleCheckPassword()){
-      fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/public/signup", {
+      fetch(BACKENDURL+"/api/public/signup", {
         method: 'POST',
         headers : {
           "Content-Type" : "application/json"
@@ -81,7 +82,7 @@ const Signup = () => {
       return;
     }
     if(isDuplCheck) return;
-    fetch("http://healthyfit3-env.eba-hmvcyftc.ap-northeast-2.elasticbeanstalk.com/api/public/searchDuplicatedName", {
+    fetch(BACKENDURL+"/api/public/searchDuplicatedName", {
       method: "Post",
       headers: {
         "Content-Type": "application/json"
